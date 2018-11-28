@@ -1,46 +1,36 @@
-import * as AuthActions from '../actions/auth.action';
-import { AuthActionTypes } from '../actions/auth.action';
+import * as userActions from '../actions/auth.action';
+import { User } from '../models/user';
+
+export type Action = userActions.All;
 
 export interface State {
-  user: Array<any>;
-  tokens: Array<any>;
-  error: string;
-  isLoading: boolean;
+  uid: string;
+  displayName: string;
+  loading?: boolean;
+  error?: string;
 }
 
-const initiaState: State = {
-  user: [],
-  tokens: [],
-  error: '',
-  isLoading: false
-}
+const defaultUser: State = { uid: null, displayName: 'GUEST', loading: false};
 
-export function AuthReducer(state = [], action: AuthActions.actions) {
-  switch(action.type) {
-    case AuthActionTypes.LoginUser:
-      return {
-        ...state,
-        isLoading: true,
-        token: action.payload
-      };
-    case AuthActionTypes.LoggedUser:
-      return {
-        ...state,
-        isLoading: false,
-        token: action.payload
-      }
-    case AuthActionTypes.LoginUserError:
-      return {
-        ...state,
-        isLoading: false,
-        error: 'Email or password incorrect'
-      };
-    default:
-      return state;
+export function userReducer (state: State = defaultUser, action: Action) {
+  switch (action.type) {
+    case userActions.AuthActionTypes.GET_USER :
+      return { ...state, loading: true};
+    case userActions.AuthActionTypes.AUTHENTICATED:
+      return { ...state, ...action.payload, loading: false };
+    case userActions.AuthActionTypes.NOT_AUTHENTICATED:
+      return { ...state, ...defaultUser, loading: false };
+    case userActions.AuthActionTypes.EMAIL_LOGIN:
+      return { ...state, loading: true };
+    case userActions.AuthActionTypes.GOOGLE_LOGIN:
+      return { ...state, loading: true };
+    case userActions.AuthActionTypes.FACEBOOK_LOGIN:
+      return { ...state, loading: true };
+    case userActions.AuthActionTypes.AUTH_ERROR:
+      return { ...state, ...action.payload, loading: false };
+    case userActions.AuthActionTypes.LOGOUT:
+      return { ...state, loading: true };
   }
 }
 
-export const getAuthState = (state: State) => state.user;
-export const getAuthAction = (action: any) => action.payload;
-export const getAuthError = (state: any) => state.error;
-export const getAuthLoading = (state: State) => state.isLoading;
+export const getAuthState = (state: State) => state;

@@ -13,8 +13,6 @@ import { HomePageModule } from './home-page/home-page.module';
 /* Components */
 import { AppComponent } from './app.component';
 
-/* Firebase */
-import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 
 /* Routing */
@@ -70,9 +68,6 @@ const NGRX_IMPORTS = [
     FormsModule,
     ReactiveFormsModule,
     CoreModule,
-
-    /* Firebase */
-    AngularFireModule.initializeApp(environment.firebase),
 
     /* Routes */
     HomePageModule,

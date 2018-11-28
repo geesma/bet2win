@@ -1,61 +1,115 @@
 import { Injectable } from '@angular/core';
-import { Action } from '@ngrx/store';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable, of } from 'rxjs';
-import { catchError, map, exhaustMap, tap } from 'rxjs/operators';
+import { Effect, Actions } from '@ngrx/effects';
+import { User } from '../models/user';
 
-import {
-  AuthActionTypes,
-  LoggedIn, LoggedUser,
-  LoginUser, LogoutAuth,
-  LoginUserError
-} from '../actions/auth.action';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
+import * as firebase from 'firebase';
 
+import { Observable, of, from } from 'rxjs';
+import { map, switchMap, catchError } from 'rxjs/operators';
+
+import * as userActions from '../actions/auth.action';
+
+import { NotifyService } from './../../notifiers/notify.service';
+
+export type Action = userActions.All;
 
 @Injectable({
   providedIn: 'root'
 })
+export class UserEffects {
 
-export class AuthEffects {
+    constructor(private actions: Actions, private afAuth: AngularFireAuth, private notify: NotifyService) {}
 
-  @Effect()
-  LoginUserError$: Observable<Action> = this.actions$.pipe(
-    ofType<LoginUserError>(AuthActionTypes.LoginUserError),
-    tap(v => console.log('LoggedAPI error', v.payload)),
-    map(data => {
-      return {
-        type: 'LOGIN_API_ERROR',
-        payload: 'Email or password incorrect'
-      }
-    })
-  )
-
-  @Effect()
-  LoginUser$: Observable<Action> = this.actions$.pipe(
-    ofType<LoginUser>(AuthActionTypes.LoginUser),
-    tap(v => console.log('LoginUser effect', v)),
-    map(action => action.payload),
-    exhaustMap(auth => {
-      return this.authService.login(auth.user).pipe(
-        map(response => new LoggedUser(response)),
-        catchError(error => of(new LoginUserError(error)))
+    @Effect()
+    getUser: Observable<Action> = this.actions.ofType(userActions.AuthActionTypes.GET_USER)
+    .pipe(
+      map((action: userActions.GetUser) => action.payload),
+      switchMap(payload => this.afAuth.authState),
+      map( authData => {
+        if (authData) {
+          const user = new User(authData.uid, authData.displayName, authData.email, authData.emailVerified);
+          return new userActions.Authenticated(user);
+        } else {
+          return new userActions.NotAuthenticated();
+        }
+      }),
+      catchError (err => of(new userActions.AuthError()))
       );
-    })
-  );
 
-  @Effect({ dispatch: false })
-  LoggedUser$: Observable<Action> = this.actions$.pipe(
-    ofType<LoggedUser>(AuthActionTypes.LoggedUser),
-    tap(v => this.router.navigate(['/panel/logged'])),
+      @Effect()
+      loginGoogle: Observable<Action> = this.actions.ofType(userActions.AuthActionTypes.GOOGLE_LOGIN)
+        .pipe(
+          map((action: userActions.GoogleLogin) => action.payload),
+          switchMap(payload => {
+            return from (this.googleLogin());
+          }),
+          map(credential => {
+            return new userActions.GetUser();
+          }),
+          catchError(err => {
+            return of(new userActions.AuthError({error: err.message}));
+          })
+        );
 
-  )
+        @Effect()
+        loginFacebook: Observable<Action> = this.actions.ofType(userActions.AuthActionTypes.FACEBOOK_LOGIN)
+          .pipe(
+            map((action: userActions.FacebookLogin) => action.payload),
+            switchMap(payload => {
+              return from (this.facebookLogin());
+            }),
+            map(credential => {
+              return new userActions.GetUser();
+            }),
+            catchError(err => {
+              return of(new userActions.AuthError({error: err.message}));
+            })
+          );
 
-  constructor(
-    private actions$: Actions,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+      @Effect()
+      loginEmail: Observable<Action> = this.actions.ofType(userActions.AuthActionTypes.EMAIL_LOGIN)
+        .pipe(
+          map((action: userActions.GoogleLogin) => action.payload),
+          switchMap(payload => {
+            return from(this.emailLogin(payload.email,payload.password).catch((err) => {
+              this.notify.update("Email o contraseña incorrectos", 'danger');
+              return of(new userActions.AuthError({error: err.message}));
+            }));
+          }),
+          map(credential => {
+            return new userActions.GetUser();
+          })
+        );
 
+      private googleLogin(): Promise<firebase.auth.UserCredential> {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        return this.afAuth.auth.signInWithPopup(provider);
+      }
+
+      private emailLogin(email: string, password: string): Promise<firebase.auth.UserCredential> {
+        return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+      }
+
+      private facebookLogin(): Promise<firebase.auth.UserCredential> {
+        const provider = new firebase.auth.FacebookAuthProvider();
+        return this.afAuth.auth.signInWithPopup(provider);
+      }
+
+     @Effect()
+      Logout: Observable<Action> = this.actions.ofType(userActions.AuthActionTypes.LOGOUT)
+        .pipe(
+          map((action: userActions.Logout) => action.payload),
+          switchMap(payload => {
+            return of(this.afAuth.auth.signOut());
+          }),
+          map( authData => {
+            return new userActions.NotAuthenticated();
+          }),
+          catchError(err => {
+            console.log('logout', err);
+            return of(new userActions.AuthError({err: err.message}));
+          })
+        )
+      ;
 }

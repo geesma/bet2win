@@ -1,5 +1,5 @@
 <div class="b2w-full-screen-form">
-  <form [formGroup]="loginForm" (ngSubmit)="login()" class="form-signin">
+  <form [formGroup]="loginForm" (ngSubmit)="loginEmail()" class="form-signin">
     <div class="card login-form">
       <a class="navbar-brand" [routerLink]="['/']">
         <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
@@ -24,10 +24,7 @@
           <input type="checkbox" value="remember-me"> Mantener sesión iniciada
         </label>
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!loginForm.valid">Iniciar sesión <i class="fas fa-circle-notch fa-spin" [hidden]="!(isLoading$ | async)"></i></button>
-      <div class="alert alert-warning" role="alert" *ngIf="error$ | async">
-        Error con el nombre de usuario i/o contraseña
-      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!loginForm.valid">Iniciar sesión</button>
     </div>
     <div class="card">
       <div class="row">
@@ -35,7 +32,7 @@
           <button type="button" class="btn btn-block btn-primary b2w-facebook-button" (click)="auth.loginFacebook()" disabled>Iniciar con  <i class="fab fa-facebook-f space-5-l"></i></button>
         </div>
         <div class="col-sm-12 col-md-6">
-          <button type="button" class="btn btn-block btn-primary b2w-google-button" (click)="auth.loginGoogle()">Iniciar con  <i class="fab fa-google space-5-l"></i></button>
+          <button type="button" class="btn btn-block btn-primary b2w-google-button" (click)="loginGoogle()">Iniciar con  <i class="fab fa-google space-5-l"></i></button>
         </div>
       </div>
     </div>

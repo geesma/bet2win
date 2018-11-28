@@ -5,7 +5,7 @@ import { User } from '../../Interfaces/user';
 
 import { Store } from '@ngrx/store';
 import * as fromAuth from '../../core/reducers/reducers';
-import * as Auth from '../../core/auth/actions/auth.action';
+import * as userActions from '../../core/auth/actions/auth.action';
 
 @Component({
   selector: 'app-login',
@@ -18,9 +18,6 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   user: User;
-
-  error$ = this.store.select(fromAuth.getAuthError);
-  isLoading$ = this.store.select(fromAuth.getAuthLoading);
 
   constructor(public fb: FormBuilder, private store: Store<fromAuth.State>) {}
 
@@ -42,16 +39,16 @@ export class LoginComponent implements OnInit {
 
   }
 
-  login() {
-
+  loginEmail() {
     this.user = {
       email: this.loginForm.get('email').value,
       password: this.loginForm.get('password').value
     }
 
-    this.store.dispatch(new Auth.LoginUser({
-      user: this.user
-    }))
+    this.store.dispatch(new userActions.EmailLogin(this.user))
+  }
 
+  loginGoogle() {
+    this.store.dispatch(new userActions.GoogleLogin())
   }
 }

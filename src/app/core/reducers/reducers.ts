@@ -22,7 +22,7 @@ export interface State {
 }
 
 export const reducers: ActionReducerMap<State|any> = {
-  auth: fromAuth.AuthReducer,
+  auth: fromAuth.userReducer,
   router: fromRouter.routerReducer,
 };
 
@@ -44,13 +44,3 @@ export const getAuth = createSelector(
     getAuthState,
     fromAuth.getAuthState
   );
-
-export const getAuthLoading = createSelector(
-    getAuthState,
-    fromAuth.getAuthLoading
-  );
-
-  export const getAuthError = createSelector(
-      getAuthState,
-      fromAuth.getAuthError
-    );

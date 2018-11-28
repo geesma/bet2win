@@ -1,37 +1,71 @@
 import { Action } from '@ngrx/store';
-import { User } from '../../../Interfaces/user';
+import { User } from '../models/user';
 
 export enum AuthActionTypes {
-  LoggedUser = '[Auth] LOGED_USER',
-  LoginUser = '[Auth] LOGIN_USER',
-  LoginUserError = '[Auth] LOGIN_USER_ERROR',
-  LoggedIn = '[Auth] LOGGED_IN',
-  LogoutAuth = '[Auth] LOGOUT_USER'
+  GET_USER = '[Auth] Get User',
+  AUTHENTICATED = '[Auth] Authenticated',
+  NOT_AUTHENTICATED = '[Auth] Not Authenticated',
+  EMAIL_LOGIN = '[Auth] Email and Password Attempt',
+  GOOGLE_LOGIN = '[Auth] Google Login Attempt',
+  FACEBOOK_LOGIN = '[Auth] Facebook Login Attempt',
+  LOGOUT = '[Auth] Logout',
+  AUTH_ERROR = '[Auth] Auth Error',
 }
 
-export class LoggedUser implements Action {
-  readonly type = AuthActionTypes.LoggedUser;
-  constructor(public payload: { isLoading: boolean, error: boolean, user: User }) {}
+export class GetUser implements Action {
+  readonly type = AuthActionTypes.GET_USER;
+  constructor (public payload?: any) {}
 }
 
-export class LoginUser implements Action {
-  readonly type = AuthActionTypes.LoginUser;
-  constructor(public payload: { user: User }) {}
+export class Authenticated implements Action {
+  readonly type = AuthActionTypes.AUTHENTICATED;
+  constructor(public payload?: any) {}
 }
 
-export class LoginUserError implements Action {
-  readonly type = AuthActionTypes.LoginUserError;
-  constructor(public payload: { error: string }) {}
+export class NotAuthenticated implements Action {
+  readonly type = AuthActionTypes.NOT_AUTHENTICATED;
+  constructor(public payload?: any) {}
 }
 
-export class LoggedIn implements Action {
-  readonly type = AuthActionTypes.LoggedIn;
-  constructor(public payload: { isLogin: boolean }) {}
+export class AuthError implements Action {
+  readonly type = AuthActionTypes.AUTH_ERROR;
+  constructor(public payload?: any) {}
 }
 
-export class LogoutAuth implements Action {
-  readonly type = AuthActionTypes.LogoutAuth;
-  constructor(public payload: { isLogin: boolean }) {}
+/// Email and Password Login Actions
+
+export class EmailLogin implements Action {
+  readonly type = AuthActionTypes.EMAIL_LOGIN;
+  constructor(public payload: {email: string, password: string}) {}
 }
 
-export type actions = LoggedUser | LoginUser | LoginUserError | LoggedIn | LogoutAuth;
+/// Google Login Actions
+
+export class GoogleLogin implements Action {
+  readonly type = AuthActionTypes.GOOGLE_LOGIN;
+  constructor(public payload?: any) {}
+}
+
+/// Facebook Login Actions
+
+export class FacebookLogin implements Action {
+  readonly type = AuthActionTypes.FACEBOOK_LOGIN;
+  constructor(public payload?: any) {}
+}
+
+/// Logout Actions
+
+export class Logout implements Action {
+  readonly type = AuthActionTypes.LOGOUT;
+  constructor(public payload?: any) {}
+}
+
+export type All
+= GetUser
+| Authenticated
+| NotAuthenticated
+| EmailLogin
+| GoogleLogin
+| FacebookLogin
+| AuthError
+| Logout;
