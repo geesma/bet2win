@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white b2w-navbar">
+  <div class="container container-navbar">
+    <a class="navbar-brand" [routerLink]="['/']">
+      <img src="assets/images/logos/b2w_logo_menu_lletres.png" srcset="
+                assets/images/logos/b2w_logo_menu_lletres.png 1x,
+                assets/images/logos/b2w_logo_menu_lletres-2x.png 2x,
+                assets/images/logos/b2w_logo_menu_lletres-3x.png 3x"alt="bet2win logo for the menu">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbarToggler" aria-controls="mainNavbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="mainNavbarToggler">
+      <div class="my-2 my-lg-0">
+        <ul class="navbar-nav b2w-navbar-titles">
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link" href="#">Caracteristicas <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link" href="#">Ejemplo</a>
+          </li>
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link" href="#">Precios</a>
+          </li>
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link" href="#">Soporte y ayuda</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary" [routerLink]="['/user/login']">Iniciar sesión</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

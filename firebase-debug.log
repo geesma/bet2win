@@ -1,0 +1,118 @@
+[debug] [2018-11-25T23:24:08.381Z] ----------------------------------------------------------------------
+[debug] [2018-11-25T23:24:08.384Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2018-11-25T23:24:08.384Z] CLI Version:   3.15.2
+[debug] [2018-11-25T23:24:08.384Z] Platform:      darwin
+[debug] [2018-11-25T23:24:08.384Z] Node Version:  v10.13.0
+[debug] [2018-11-25T23:24:08.435Z] Time:          Mon Nov 26 2018 00:24:08 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:08.435Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-11-25T23:24:08.449Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-11-25T23:24:08.449Z] > authorizing via signed-in user
+[debug] [2018-11-25T23:24:08.451Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/test-8f9b5  
+ Mon Nov 26 2018 00:24:08 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:09.224Z] <<< HTTP RESPONSE 200
+[debug] [2018-11-25T23:24:09.226Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/test-8f9b5/tokens  
+ Mon Nov 26 2018 00:24:09 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:09.865Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'test-8f9b5'...
+[info] 
+[info] i  deploying database, storage, firestore, functions, hosting
+[info] i  database: checking rules syntax...
+[debug] [2018-11-25T23:24:10.854Z] >>> HTTP REQUEST PUT https://test-8f9b5.firebaseio.com/.settings/rules.json?dryRun=true {
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+ 
+ Mon Nov 26 2018 00:24:10 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:12.910Z] <<< HTTP RESPONSE 200
+[info] ✔  database: rules syntax for database test-8f9b5 is valid
+[debug] [2018-11-25T23:24:12.912Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/test-8f9b5  
+ Mon Nov 26 2018 00:24:12 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:14.772Z] <<< HTTP RESPONSE 200
+[info] i  storage: checking storage.rules for compilation errors...
+[debug] [2018-11-25T23:24:14.776Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/test-8f9b5:test { source: { files: [ [Object] ] } } 
+ Mon Nov 26 2018 00:24:14 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:17.602Z] <<< HTTP RESPONSE 200
+[info] ✔  storage: rules file storage.rules compiled successfully
+[info] i  firestore: checking firestore.rules for compilation errors...
+[debug] [2018-11-25T23:24:17.608Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/test-8f9b5:test { source: { files: [ [Object] ] } } 
+ Mon Nov 26 2018 00:24:17 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:18.419Z] <<< HTTP RESPONSE 200
+[info] ✔  firestore: rules file firestore.rules compiled successfully
+[debug] [2018-11-25T23:24:18.422Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "tslint --project tsconfig.json",
+    "build": "tsc",
+    "serve": "npm run build && firebase serve --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "~6.0.0",
+    "firebase-functions": "^2.1.0"
+  },
+  "devDependencies": {
+    "tslint": "~5.8.0",
+    "typescript": "~2.8.3"
+  },
+  "private": true
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[info] i  runtimeconfig: ensuring necessary APIs are enabled...
+[debug] [2018-11-25T23:24:18.424Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/test-8f9b5?view=CONSUMER_VIEW  
+ Mon Nov 26 2018 00:24:18 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:18.425Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/test-8f9b5?view=CONSUMER_VIEW  
+ Mon Nov 26 2018 00:24:18 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:19.882Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2018-11-25T23:24:20.010Z] <<< HTTP RESPONSE 200
+[info] ✔  runtimeconfig: all necessary APIs are enabled
+[debug] [2018-11-25T23:24:20.011Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/test-8f9b5  
+ Mon Nov 26 2018 00:24:20 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:20.012Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/test-8f9b5/apiKeys  
+ Mon Nov 26 2018 00:24:20 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:21.081Z] <<< HTTP RESPONSE 200
+[debug] [2018-11-25T23:24:21.085Z] <<< HTTP RESPONSE 200
+[info] i  storage: uploading rules storage.rules...
+[debug] [2018-11-25T23:24:21.093Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/test-8f9b5/rulesets { source: { files: [ [Object] ] } } 
+ Mon Nov 26 2018 00:24:21 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:22.105Z] <<< HTTP RESPONSE 200
+[debug] [2018-11-25T23:24:22.106Z] [rules] created ruleset projects/test-8f9b5/rulesets/42f88c66-ab66-47f0-bc76-e5aa824530fd
+[info] i  firestore: uploading rules firestore.rules...
+[debug] [2018-11-25T23:24:22.108Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/test-8f9b5/rulesets { source: { files: [ [Object] ] } } 
+ Mon Nov 26 2018 00:24:22 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:22.109Z] >>> HTTP REQUEST GET https://firestore.googleapis.com/v1beta1/projects/test-8f9b5/databases/(default)/indexes  
+ Mon Nov 26 2018 00:24:22 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:23.130Z] <<< HTTP RESPONSE 200
+[debug] [2018-11-25T23:24:23.130Z] [rules] created ruleset projects/test-8f9b5/rulesets/73801e7b-9933-41a7-9c7e-c929bdeee8c4
+[debug] [2018-11-25T23:24:23.131Z] <<< HTTP RESPONSE 200
+[info] i  functions: preparing functions directory for uploading...
+[debug] [2018-11-25T23:24:29.431Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/test-8f9b5/configs  
+ Mon Nov 26 2018 00:24:29 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:30.503Z] <<< HTTP RESPONSE 200
+[info] i  hosting: preparing dist directory for upload...
+[debug] [2018-11-25T23:24:32.111Z] >>> HTTP REQUEST PUT https://deploy.firebase.com/v1/hosting/test-8f9b5/uploads/-LSCB1WPmx4D-nh5JjEQ?fileCount=1497&message=  
+ Mon Nov 26 2018 00:24:32 GMT+0100 (GMT+01:00)
+[debug] [2018-11-25T23:24:44.701Z] <<< HTTP RESPONSE 410
+[debug] [2018-11-25T23:24:44.702Z] <<< HTTP RESPONSE BODY undefined
+[debug] [2018-11-25T23:24:44.707Z] TypeError: Cannot read property 'error' of undefined
+    at module.exports (/usr/local/lib/node_modules/firebase-tools/lib/responseToError.js:10:13)
+    at Request._callback (/usr/local/lib/node_modules/firebase-tools/lib/api.js:43:25)
+    at Request.self.callback (/usr/local/lib/node_modules/firebase-tools/node_modules/request/request.js:186:22)
+    at Request.emit (events.js:182:13)
+    at Request.EventEmitter.emit (domain.js:442:20)
+    at Request.<anonymous> (/usr/local/lib/node_modules/firebase-tools/node_modules/request/request.js:1163:10)
+    at Request.emit (events.js:182:13)
+    at Request.EventEmitter.emit (domain.js:442:20)
+    at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/firebase-tools/node_modules/request/request.js:1085:12)
+    at Object.onceWrapper (events.js:273:13)
+[error] 
+[error] Error: An unexpected error has occurred.
