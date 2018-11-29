@@ -29,6 +29,7 @@ export class UserEffects {
       map( authData => {
         if (authData) {
           const user = new User(authData.uid, authData.displayName, authData.email, authData.emailVerified);
+          console.log(authData)
           return new userActions.Authenticated(user);
         } else {
           return new userActions.NotAuthenticated();
@@ -52,25 +53,40 @@ export class UserEffects {
           })
         );
 
-        @Effect()
-        loginFacebook: Observable<Action> = this.actions.ofType(userActions.AuthActionTypes.FACEBOOK_LOGIN)
-          .pipe(
-            map((action: userActions.FacebookLogin) => action.payload),
-            switchMap(payload => {
-              return from (this.facebookLogin());
-            }),
-            map(credential => {
-              return new userActions.GetUser();
-            }),
-            catchError(err => {
+      @Effect()
+      loginFacebook: Observable<Action> = this.actions.ofType(userActions.AuthActionTypes.FACEBOOK_LOGIN)
+        .pipe(
+          map((action: userActions.FacebookLogin) => action.payload),
+          switchMap(payload => {
+            return from (this.facebookLogin());
+          }),
+          map(credential => {
+            return new userActions.GetUser();
+          }),
+          catchError(err => {
+            return of(new userActions.AuthError({error: err.message}));
+          })
+        );
+
+      @Effect()
+      signUpEmail: Observable<Action> = this.actions.ofType(userActions.AuthActionTypes.SIGN_UP_EMAIL)
+        .pipe(
+          map((action: userActions.SignUpEmail) => action.payload),
+          switchMap(payload => {
+            return from(this.emailSignUp(payload.email,payload.password).catch((err) => {
+              this.notify.update("No se ha podido crear la cuenta, puede ser que el email introducido ya tenga una cuenta", 'danger');
               return of(new userActions.AuthError({error: err.message}));
-            })
-          );
+            }));
+          }),
+          map(credential => {
+            return new userActions.GetUser();
+          })
+        );
 
       @Effect()
       loginEmail: Observable<Action> = this.actions.ofType(userActions.AuthActionTypes.EMAIL_LOGIN)
         .pipe(
-          map((action: userActions.GoogleLogin) => action.payload),
+          map((action: userActions.EmailLogin) => action.payload),
           switchMap(payload => {
             return from(this.emailLogin(payload.email,payload.password).catch((err) => {
               this.notify.update("Email o contraseña incorrectos", 'danger');
@@ -87,13 +103,17 @@ export class UserEffects {
         return this.afAuth.auth.signInWithPopup(provider);
       }
 
+      private facebookLogin(): Promise<firebase.auth.UserCredential> {
+        const provider = new firebase.auth.FacebookAuthProvider();
+        return this.afAuth.auth.signInWithPopup(provider);
+      }
+
       private emailLogin(email: string, password: string): Promise<firebase.auth.UserCredential> {
         return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       }
 
-      private facebookLogin(): Promise<firebase.auth.UserCredential> {
-        const provider = new firebase.auth.FacebookAuthProvider();
-        return this.afAuth.auth.signInWithPopup(provider);
+      private emailSignUp(email: string, password: string): Promise<firebase.auth.UserCredential> {
+        return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       }
 
      @Effect()

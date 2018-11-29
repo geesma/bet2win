@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { RegistrationValidator } from '../../core/validators/registration.validator';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 //import { moveIn, fallIn } from '../../router.animations';
+import { User } from '../../Interfaces/user';
 
+import { Store } from '@ngrx/store';
+import * as fromAuth from '../../core/reducers/reducers';
+import * as userActions from '../../core/auth/actions/auth.action';
 
 @Component({
   selector: 'app-register',
@@ -15,8 +19,9 @@ export class RegisterComponent implements OnInit {
   signupForm: FormGroup;
   passwordFormGroup: FormGroup;
   detailForm: FormGroup;
+  user: User;
 
-  constructor(public fb: FormBuilder) {
+  constructor(public fb: FormBuilder, private store: Store<fromAuth.State>) {
     //console.log(auth.isLoggedIn())
   }
 
@@ -55,14 +60,13 @@ export class RegisterComponent implements OnInit {
     return this.signupForm.valid && this.passwordFormGroup.valid
   }
 
-  // get email() { return this.signupForm.get('email') }
-  // get password() { return this.passwordFormGroup.get('password') }
-
   signUp() {
-    const email = this.signupForm.get('email');
-    const password = this.passwordFormGroup.get('password');
-    console.log({email: email.value,pass: password.value})
-    // return this.auth.registerUser(this.email.value, this.password.value)
+    this.user = {
+      email: this.signupForm.get('email').value,
+      password: this.passwordFormGroup.get('password').value
+    }
+
+    this.store.dispatch(new userActions.SignUpEmail(this.user))
   }
 
 }

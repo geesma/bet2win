@@ -10,6 +10,7 @@ export enum AuthActionTypes {
   FACEBOOK_LOGIN = '[Auth] Facebook Login Attempt',
   LOGOUT = '[Auth] Logout',
   AUTH_ERROR = '[Auth] Auth Error',
+  SIGN_UP_EMAIL = '[Auth] SignUp Email Attempt',
 }
 
 export class GetUser implements Action {
@@ -53,6 +54,13 @@ export class FacebookLogin implements Action {
   constructor(public payload?: any) {}
 }
 
+/// Email and Password SignUp Actions
+
+export class SignUpEmail implements Action {
+  readonly type = AuthActionTypes.SIGN_UP_EMAIL;
+  constructor(public payload: {email: string, password: string}) {}
+}
+
 /// Logout Actions
 
 export class Logout implements Action {
@@ -67,5 +75,6 @@ export type All
 | EmailLogin
 | GoogleLogin
 | FacebookLogin
+| SignUpEmail
 | AuthError
 | Logout;

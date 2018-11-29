@@ -26,6 +26,8 @@ export function userReducer (state: State = defaultUser, action: Action) {
       return { ...state, loading: true };
     case userActions.AuthActionTypes.FACEBOOK_LOGIN:
       return { ...state, loading: true };
+    case userActions.AuthActionTypes.SIGN_UP_EMAIL:
+      return { ...state, loading: true };
     case userActions.AuthActionTypes.AUTH_ERROR:
       return { ...state, ...action.payload, loading: false };
     case userActions.AuthActionTypes.LOGOUT:
