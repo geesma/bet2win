@@ -28,7 +28,14 @@ export class UserEffects {
       switchMap(payload => this.afAuth.authState),
       map( authData => {
         if (authData) {
-          const user = new User(authData.uid, authData.displayName, authData.email, authData.emailVerified);
+          var admin: boolean;
+          authData.getIdTokenResult().then((idTokenResult) => {
+            if (!!idTokenResult.claims.admin) {
+              admin = true
+            } else {
+             admin = false
+           }});
+          const user = new User(authData.uid, authData.displayName, authData.email, authData.emailVerified, admin);
           console.log(authData)
           return new userActions.Authenticated(user);
         } else {

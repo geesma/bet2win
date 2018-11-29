@@ -20,13 +20,13 @@ exports.addAdmin = functions.https.onCall((data,context) => {
 exports.setPermisions = functions.auth.user().onCreate(function(user,context){
   admin.auth().setCustomUserClaims(user.uid, {
     admin: true
-  })
+  }).then(success =>"Changed").catch(err =>"Error")
   admin.auth().setCustomUserClaims(user.uid, {
     developer: true
-  })
+  }).then(success =>"Changed").catch(err =>"Error")
   admin.auth().setCustomUserClaims(user.uid, {
     premium: true
-  })
+  }).then(success =>"Changed").catch(err =>"Error")
 })
 
 async function grandAdminRole(email: string): Promise<void> {

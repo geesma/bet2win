@@ -3,10 +3,11 @@ export interface IUser {
   displayName: string;
   email: string;
   emailVerified: boolean;
+  admin: boolean;
   loading?: boolean;
   error?: string;
 }
 
 export class User implements IUser {
-  constructor(public uid: string, public displayName: string, public email: string, public emailVerified: boolean) {}
+  constructor(public uid: string, public displayName: string, public email: string, public emailVerified: boolean, public admin: boolean) {}
 }
