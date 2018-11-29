@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+$fa-font-path: "/assets/fontAwesome-webfonts";
+// @import "assets/styles/fontAwesome/scss/regular.scss";
+// @import "assets/styles/fontAwesome/scss/fontawesome.scss";
+
+
+.container {
+  max-width: 960px;
+}
+
+
+.space-10-l {
+  margin-left: 10px;
+}
+
+
+.space-5-l {
+  margin-left: 5px;
+}

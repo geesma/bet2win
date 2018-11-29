@@ -1,0 +1,25 @@
+#price {
+  background-color: #f5f5f5;
+}
+
+.pricing-header,
+.pricing-bottom {
+    max-width: 700px;
+}
+
+.b2w-pricing-cards {
+  .card {
+    min-width: 290px;
+    .card-body {
+      .card-title {
+        min-height: 100px;
+        text-align: center;
+        vertical-align: middle;
+      }
+      ul li .pricing-option-not-available{
+        text-decoration: line-through;
+        color: grey;
+      }
+    }
+  }
+}

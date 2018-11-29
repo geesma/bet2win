@@ -1,0 +1,18 @@
+<div *ngIf="notify.msg | async as msg" class="full">
+  <div class="alert"
+    [ngClass]="{
+      'alert-primary': msg.style == 'primary',
+      'alert-secondary': msg.style == 'secondary',
+      'alert-success': msg.style == 'success',
+      'alert-danger': msg.style == 'danger',
+      'alert-warning': msg.style == 'warning',
+      'alert-info': msg.style == 'info',
+      'alert-light': msg.style == 'light',
+      'alert-dark': msg.style == 'dark'
+    }">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="notify.clear()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ msg.content }}
+  </div>
+</div>
