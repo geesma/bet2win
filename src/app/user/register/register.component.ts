@@ -3,10 +3,9 @@ import { RegistrationValidator } from '../../core/validators/registration.valida
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 //import { moveIn, fallIn } from '../../router.animations';
 import { User } from '../../Interfaces/user';
-
-import { Store } from '@ngrx/store';
-import * as fromAuth from '../../core/reducers/reducers';
-import * as userActions from '../../core/auth/actions/auth.action';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth/services/auth.service';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Component({
   selector: 'app-register',
@@ -19,9 +18,11 @@ export class RegisterComponent implements OnInit {
   signupForm: FormGroup;
   passwordFormGroup: FormGroup;
   detailForm: FormGroup;
+  emailCodeForm: FormGroup;
   user: User;
+  processVerification: boolean = false;
 
-  constructor(public fb: FormBuilder, private store: Store<fromAuth.State>) {
+  constructor(public fb: FormBuilder, public auth: AuthService, private router: Router, private fun: AngularFireFunctions) {
     //console.log(auth.isLoggedIn())
   }
 
@@ -45,28 +46,92 @@ export class RegisterComponent implements OnInit {
       validator: RegistrationValidator.validate.bind(this)
     });
 
-    this.detailForm = this.fb.group({
-      'name': ['', [Validators.required]],
-      'surname': ['', [Validators.required]],
-      'phone': ['', [Validators.required]],
-      'prefix': ['', [Validators.required]],
-      'nationality': ['', [Validators.required]],
-      'idCard': ['', []],
-      'birthDate': ['', [Validators.required]]
-    });
+    this.auth.user.subscribe((user) => {
+      if(user) {
+        this.buidDetailForm(user)
+      }
+    })
   }
 
-  isSignUpFormValid() {
+  isSignUpFormValid(): boolean {
     return this.signupForm.valid && this.passwordFormGroup.valid
   }
 
-  signUp() {
-    this.user = {
-      email: this.signupForm.get('email').value,
-      password: this.passwordFormGroup.get('password').value
-    }
+  get email() {return this.signupForm.get('email').value}
+  get password() {return this.passwordFormGroup.get('password').value}
 
-    this.store.dispatch(new userActions.SignUpEmail(this.user))
+  signUp() {
+    this.auth.registerUser(this.email, this.password)
+  }
+
+  isDetailFormValid(): boolean {
+    return (
+      this.detailForm.controls.name.valid &&
+      this.detailForm.controls.surname.valid &&
+      this.detailForm.controls.phone.valid &&
+      this.detailForm.controls.prefix.valid &&
+      this.detailForm.controls.nationality.valid &&
+      this.detailForm.controls.birthDate.valid
+    )
+  }
+
+  get name() {return this.detailForm.get('name').value}
+  get surname() {return this.detailForm.get('surname').value}
+  get prefix() {return this.detailForm.get('prefix').value}
+  get phone() {return this.detailForm.get('phone').value}
+  get nationality() {return this.detailForm.get('nationality').value}
+  get idCard() {return this.detailForm.get('idCard').value}
+  get birthDate(){return this.detailForm.get('birthDate').value}
+  private setPhoneNumber() {return '+'+this.prefix + this.phone}
+
+  setDetailsToUser(user: User) {
+    return this.auth.updateUser(user, {
+      name: this.name,
+      surname: this.surname,
+      phone: this.setPhoneNumber(),
+      phoneNumber: this.phone,
+      prefix: this.prefix,
+      nationality: this.nationality,
+      idCard: this.idCard || null,
+      birthDate: this.birthDate,
+    })
+  }
+
+  nextStepInputCode() {
+    // this.fun.functions.
+    this.processVerification = true;
+    this.buidEmailCodeForm()
+  }
+
+  get code(){return this.emailCodeForm.get('code').value}
+
+  sendCode() {
+    console.log(this.code)
+    const callable = this.fun.httpsCallable('sendEmail');
+    callable({ name: 'some-data' }).subscribe((success)=> {
+      console.log(success)
+    });
+  }
+
+  private buidDetailForm(data: User) {
+    this.detailForm = this.fb.group({
+      'name': [data.name || '', [Validators.required]],
+      'surname': [data.surname || '', [Validators.required]],
+      'phone': [data.phone || '', [Validators.required]],
+      'prefix': [data.prefix || '', [Validators.required]],
+      'nationality': [data.nationality || '', [Validators.required]],
+      'idCard': [data.idCard || '',[]],
+      'birthDate': [data.birthDate || '', [Validators.required]]
+    });
+  }
+
+  private buidEmailCodeForm() {
+    this.emailCodeForm = this.fb.group({
+      'code': ['', [
+        Validators.pattern('^[0-9]{6,6}$'),
+        Validators.required
+      ]]
+    })
   }
 
 }

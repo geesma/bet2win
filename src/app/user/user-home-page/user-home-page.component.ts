@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 //import { moveIn, fallIn, moveInLeft } from '../../router.animations';
-
-import { Store } from '@ngrx/store';
-import * as fromAuth from '../../core/reducers/reducers';
-import * as userActions from '../../core/auth/actions/auth.action';
+import { Observable } from 'rxjs';
+import { User } from '../../core/auth/models/user';
+import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AuthService } from 'src/app/core/auth/services/auth.service';
 
 @Component({
   selector: 'app-user-home-page',
@@ -14,17 +15,16 @@ import * as userActions from '../../core/auth/actions/auth.action';
 })
 export class UserHomePageComponent implements OnInit {
 
-  constructor(private store: Store<fromAuth.State>) {
+  user$: Observable<User>;
+  userAuth$: Observable<firebase.User>;
 
-  }
+  constructor(private auth: AuthService, private router: Router, private afAuth: AngularFireAuth) {}
 
   logout() {
-    this.store.dispatch(new userActions.Logout())
+    this.afAuth.auth.signOut()
+    //this.router.navigate(['/user/login']);
   }
 
-
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

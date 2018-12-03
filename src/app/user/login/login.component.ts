@@ -1,11 +1,11 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../../Interfaces/user';
+import { AuthService } from 'src/app/core/auth/services/auth.service';
+import { Router } from '@angular/router';
 // import { moveIn } from '../../router.animations';
 
-import { Store } from '@ngrx/store';
-import * as fromAuth from '../../core/reducers/reducers';
-import * as userActions from '../../core/auth/actions/auth.action';
+
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   user: User;
 
-  constructor(public fb: FormBuilder, private store: Store<fromAuth.State>) {}
+  constructor(public fb: FormBuilder, public auth: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -36,23 +36,26 @@ export class LoginComponent implements OnInit {
         ]
       ]
     });
+    this.auth.user.subscribe((user) => {
+      if(user) {
+        this.router.navigate(['/user/register']);
+      }
+    })
 
   }
 
-  loginEmail() {
-    this.user = {
-      email: this.loginForm.get('email').value,
-      password: this.loginForm.get('password').value
-    }
+  get email() {return this.loginForm.get('email').value}
+  get password() {return this.loginForm.get('password').value}
 
-    this.store.dispatch(new userActions.EmailLogin(this.user))
+  loginEmail() {
+    this.auth.loginUser(this.email,this.password)
   }
 
   loginGoogle() {
-    this.store.dispatch(new userActions.GoogleLogin())
+    this.auth.loginGoogle();
   }
 
   loginFacebook() {
-    this.store.dispatch(new userActions.FacebookLogin())
+    this.auth.loginFacebook();
   }
 }

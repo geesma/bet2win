@@ -25,6 +25,12 @@ exports.setPermisions = functions.auth.user().onCreate(function(user,context){
   }).then(success =>"Changed").catch(err =>"Error")
 })
 
+exports.sendEmail = functions.https.onCall((data,context) => {
+  return {
+    result: "sendEmail function"
+  }
+})
+
 async function grandAdminRole(email: string): Promise<void> {
   const user = await getUser(email);
   if(user.customClaims && (user.customClaims as any).admin === true) {

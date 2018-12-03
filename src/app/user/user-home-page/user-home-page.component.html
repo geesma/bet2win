@@ -1,9 +1,8 @@
-<div class="form-container" id="toolbar">
-    <header>
+<ng-container *ngIf="(auth.user | async) || {} as user">
+  <header>
       <button (click)="logout()" class="basic-btn">Logout</button>
     </header>
-    <div id="page">
-      <h2>Hey to everyone</h2>
-    </div>
-
-</div>
+{{ user.uid }}
+{{ user | json }}
+hello
+</ng-container>

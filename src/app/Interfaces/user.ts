@@ -27,16 +27,50 @@
 // }
 
 export interface User {
+  uid: string;
   email: string;
-  password: string;
-  // uid: string;
-  // email: string;
-  // name?: string;
-  // surname?: string;
-  // phone?: number;
-  // prefix?: number;
-  // nationality?: string;
-  // idCard?: string;
-  // birthDate?: Date;
-  // emailConfirmed: boolean;
+  userConfirmed: boolean;
+  name?: string;
+  surname?: string;
+  phone?: number;
+  phoneNumber?: number;
+  prefix?: number;
+  nationality?: string;
+  idCard?: string;
+  birthDate?: Date;
 }
+
+//   {
+//     uid: user.uid,
+//     email: user.email,
+//     name: user.name || null,
+//     surname: user.surname || null,
+//     phone: user.phone || null,
+//     prefix: user.prefix || null,
+//     nationality: user.nationality || null,
+//     idCard: user.idCard || null,
+//     birthDate: user.birthDate || null,
+//     emailConfirmed: user.emailConfirmed || false,
+//     roles: user.roles || {
+//       premium: true,
+//       developer: true,
+//       admin: true,
+//     },
+//     subscriptions: user.subscriptions || {
+//       active: false,
+//       start: null,
+//       end: null,
+//       price: null,
+//       type: {
+//         name: null,
+//         price: null,
+//         autoUpdate: null,
+//         remaining: null,
+//         platform: {
+//           name: null,
+//           extraPrice: null,
+//           avaliable: false
+//         }
+//       },
+//     }
+//   }
