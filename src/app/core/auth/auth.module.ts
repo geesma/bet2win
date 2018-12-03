@@ -6,13 +6,8 @@ import { FormsModule ,ReactiveFormsModule }   from '@angular/forms';
 import { RegisterComponent } from '../../user/register/register.component';
 import { LoginComponent } from '../../user/login/login.component';
 
-
 /* Modules */
 import { AuthRoutingModule } from './auth-routing.module';
-import { StoreModule } from '@ngrx/store';
-import * as fromAuth from './reducers/auth.reducer';
-import {EffectsModule} from '@ngrx/effects';
-import { UserEffects } from './effects/auth.effects';
 
 @NgModule({
   declarations: [
@@ -23,9 +18,7 @@ import { UserEffects } from './effects/auth.effects';
     CommonModule,
     AuthRoutingModule,
     FormsModule,
-    ReactiveFormsModule,
-    StoreModule.forFeature('auth', fromAuth.userReducer),
-    EffectsModule.forFeature([UserEffects])
+    ReactiveFormsModule
   ]
 })
 export class AuthModule { }

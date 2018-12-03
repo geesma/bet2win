@@ -25,10 +25,8 @@ exports.setPermisions = functions.auth.user().onCreate(function(user,context){
   }).then(success =>"Changed").catch(err =>"Error")
 })
 
-exports.sendEmail = functions.https.onCall((data,context) => {
-  return {
-    result: "sendEmail function"
-  }
+exports.sendEmail = functions.https.onRequest((data,context) => {
+  return context.status(200).send(true)
 })
 
 async function grandAdminRole(email: string): Promise<void> {

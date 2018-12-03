@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 //import { moveIn, fallIn, moveInLeft } from '../../router.animations';
 import { Observable } from 'rxjs';
-import { User } from '../../core/auth/models/user';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
+import { User } from 'src/app/Interfaces/user';
 
 @Component({
   selector: 'app-user-home-page',

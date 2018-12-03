@@ -3,10 +3,6 @@ import { FormsModule ,ReactiveFormsModule }   from '@angular/forms';
 
 /* Modules */
 import { NgModule } from '@angular/core';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CoreModule } from './core/core.module';
 import { HomePageModule } from './home-page/home-page.module';
 
@@ -30,19 +26,6 @@ import { FooterComponent } from './layouts/page-parts/footer/footer.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { InteractiveExampleComponent } from './home-page/interactive-example/interactive-example.component';
 import { PricingComponent } from './home-page/pricing/pricing.component';
-
-import { metaReducers, reducers } from './core/reducers/reducers';
-
-const NGRX_IMPORTS = [
-  StoreModule.forRoot(reducers, { metaReducers }),
-  StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
-  EffectsModule.forRoot([]),
-  StoreDevtoolsModule.instrument({
-    name: 'AngularBet2winNgRX',
-    logOnly: environment.production,
-    maxAge: 25
-  })
-]
 
 
 @NgModule({
@@ -71,8 +54,7 @@ const NGRX_IMPORTS = [
 
     /* Routes */
     HomePageModule,
-    AppRoutingModule,
-    ...NGRX_IMPORTS
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
