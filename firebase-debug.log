@@ -1,49 +1,24 @@
-[debug] [2018-11-25T23:24:08.381Z] ----------------------------------------------------------------------
-[debug] [2018-11-25T23:24:08.384Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
-[debug] [2018-11-25T23:24:08.384Z] CLI Version:   3.15.2
-[debug] [2018-11-25T23:24:08.384Z] Platform:      darwin
-[debug] [2018-11-25T23:24:08.384Z] Node Version:  v10.13.0
-[debug] [2018-11-25T23:24:08.435Z] Time:          Mon Nov 26 2018 00:24:08 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:08.435Z] ----------------------------------------------------------------------
+[debug] [2018-12-04T11:50:22.136Z] ----------------------------------------------------------------------
+[debug] [2018-12-04T11:50:22.138Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2018-12-04T11:50:22.138Z] CLI Version:   3.15.2
+[debug] [2018-12-04T11:50:22.138Z] Platform:      darwin
+[debug] [2018-12-04T11:50:22.138Z] Node Version:  v10.13.0
+[debug] [2018-12-04T11:50:22.138Z] Time:          Tue Dec 04 2018 12:50:22 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:22.139Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2018-11-25T23:24:08.449Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2018-11-25T23:24:08.449Z] > authorizing via signed-in user
-[debug] [2018-11-25T23:24:08.451Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/test-8f9b5  
- Mon Nov 26 2018 00:24:08 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:09.224Z] <<< HTTP RESPONSE 200
-[debug] [2018-11-25T23:24:09.226Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/test-8f9b5/tokens  
- Mon Nov 26 2018 00:24:09 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:09.865Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:22.153Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-12-04T11:50:22.154Z] > authorizing via signed-in user
+[debug] [2018-12-04T11:50:22.156Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/test-8f9b5  
+ Tue Dec 04 2018 12:50:22 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:23.021Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:23.022Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/test-8f9b5/tokens  
+ Tue Dec 04 2018 12:50:23 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:23.796Z] <<< HTTP RESPONSE 200
 [info] 
 [info] === Deploying to 'test-8f9b5'...
 [info] 
-[info] i  deploying database, storage, firestore, functions, hosting
-[info] i  database: checking rules syntax...
-[debug] [2018-11-25T23:24:10.854Z] >>> HTTP REQUEST PUT https://test-8f9b5.firebaseio.com/.settings/rules.json?dryRun=true {
-  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
-  "rules": {
-    ".read": true,
-    ".write": true
-  }
-}
- 
- Mon Nov 26 2018 00:24:10 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:12.910Z] <<< HTTP RESPONSE 200
-[info] ✔  database: rules syntax for database test-8f9b5 is valid
-[debug] [2018-11-25T23:24:12.912Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/test-8f9b5  
- Mon Nov 26 2018 00:24:12 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:14.772Z] <<< HTTP RESPONSE 200
-[info] i  storage: checking storage.rules for compilation errors...
-[debug] [2018-11-25T23:24:14.776Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/test-8f9b5:test { source: { files: [ [Object] ] } } 
- Mon Nov 26 2018 00:24:14 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:17.602Z] <<< HTTP RESPONSE 200
-[info] ✔  storage: rules file storage.rules compiled successfully
-[info] i  firestore: checking firestore.rules for compilation errors...
-[debug] [2018-11-25T23:24:17.608Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/test-8f9b5:test { source: { files: [ [Object] ] } } 
- Mon Nov 26 2018 00:24:17 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:18.419Z] <<< HTTP RESPONSE 200
-[info] ✔  firestore: rules file firestore.rules compiled successfully
-[debug] [2018-11-25T23:24:18.422Z] > [functions] package.json contents: {
+[info] i  deploying functions
+[debug] [2018-12-04T11:50:24.672Z] > [functions] package.json contents: {
   "name": "functions",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
@@ -56,6 +31,8 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@sendgrid/mail": "^6.3.1",
+    "cors": "^2.8.5",
     "firebase-admin": "~6.0.0",
     "firebase-functions": "^2.1.0"
   },
@@ -67,52 +44,123 @@
 }
 [info] i  functions: ensuring necessary APIs are enabled...
 [info] i  runtimeconfig: ensuring necessary APIs are enabled...
-[debug] [2018-11-25T23:24:18.424Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/test-8f9b5?view=CONSUMER_VIEW  
- Mon Nov 26 2018 00:24:18 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:18.425Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/test-8f9b5?view=CONSUMER_VIEW  
- Mon Nov 26 2018 00:24:18 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:19.882Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:24.675Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/test-8f9b5?view=CONSUMER_VIEW  
+ Tue Dec 04 2018 12:50:24 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:24.676Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/test-8f9b5?view=CONSUMER_VIEW  
+ Tue Dec 04 2018 12:50:24 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:26.555Z] <<< HTTP RESPONSE 200
 [info] ✔  functions: all necessary APIs are enabled
-[debug] [2018-11-25T23:24:20.010Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:26.559Z] <<< HTTP RESPONSE 200
 [info] ✔  runtimeconfig: all necessary APIs are enabled
-[debug] [2018-11-25T23:24:20.011Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/test-8f9b5  
- Mon Nov 26 2018 00:24:20 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:20.012Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/test-8f9b5/apiKeys  
- Mon Nov 26 2018 00:24:20 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:21.081Z] <<< HTTP RESPONSE 200
-[debug] [2018-11-25T23:24:21.085Z] <<< HTTP RESPONSE 200
-[info] i  storage: uploading rules storage.rules...
-[debug] [2018-11-25T23:24:21.093Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/test-8f9b5/rulesets { source: { files: [ [Object] ] } } 
- Mon Nov 26 2018 00:24:21 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:22.105Z] <<< HTTP RESPONSE 200
-[debug] [2018-11-25T23:24:22.106Z] [rules] created ruleset projects/test-8f9b5/rulesets/42f88c66-ab66-47f0-bc76-e5aa824530fd
-[info] i  firestore: uploading rules firestore.rules...
-[debug] [2018-11-25T23:24:22.108Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/test-8f9b5/rulesets { source: { files: [ [Object] ] } } 
- Mon Nov 26 2018 00:24:22 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:22.109Z] >>> HTTP REQUEST GET https://firestore.googleapis.com/v1beta1/projects/test-8f9b5/databases/(default)/indexes  
- Mon Nov 26 2018 00:24:22 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:23.130Z] <<< HTTP RESPONSE 200
-[debug] [2018-11-25T23:24:23.130Z] [rules] created ruleset projects/test-8f9b5/rulesets/73801e7b-9933-41a7-9c7e-c929bdeee8c4
-[debug] [2018-11-25T23:24:23.131Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:26.560Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/test-8f9b5  
+ Tue Dec 04 2018 12:50:26 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:26.560Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/test-8f9b5/apiKeys  
+ Tue Dec 04 2018 12:50:26 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:27.731Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:27.734Z] <<< HTTP RESPONSE 200
 [info] i  functions: preparing functions directory for uploading...
-[debug] [2018-11-25T23:24:29.431Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/test-8f9b5/configs  
- Mon Nov 26 2018 00:24:29 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:30.503Z] <<< HTTP RESPONSE 200
-[info] i  hosting: preparing dist directory for upload...
-[debug] [2018-11-25T23:24:32.111Z] >>> HTTP REQUEST PUT https://deploy.firebase.com/v1/hosting/test-8f9b5/uploads/-LSCB1WPmx4D-nh5JjEQ?fileCount=1497&message=  
- Mon Nov 26 2018 00:24:32 GMT+0100 (GMT+01:00)
-[debug] [2018-11-25T23:24:44.701Z] <<< HTTP RESPONSE 410
-[debug] [2018-11-25T23:24:44.702Z] <<< HTTP RESPONSE BODY undefined
-[debug] [2018-11-25T23:24:44.707Z] TypeError: Cannot read property 'error' of undefined
-    at module.exports (/usr/local/lib/node_modules/firebase-tools/lib/responseToError.js:10:13)
-    at Request._callback (/usr/local/lib/node_modules/firebase-tools/lib/api.js:43:25)
-    at Request.self.callback (/usr/local/lib/node_modules/firebase-tools/node_modules/request/request.js:186:22)
-    at Request.emit (events.js:182:13)
-    at Request.EventEmitter.emit (domain.js:442:20)
-    at Request.<anonymous> (/usr/local/lib/node_modules/firebase-tools/node_modules/request/request.js:1163:10)
-    at Request.emit (events.js:182:13)
-    at Request.EventEmitter.emit (domain.js:442:20)
-    at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/firebase-tools/node_modules/request/request.js:1085:12)
-    at Object.onceWrapper (events.js:273:13)
-[error] 
-[error] Error: An unexpected error has occurred.
+[debug] [2018-12-04T11:50:36.422Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/test-8f9b5/configs  
+ Tue Dec 04 2018 12:50:36 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:37.766Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:37.768Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/test-8f9b5/configs/sendgrid/variables  
+ Tue Dec 04 2018 12:50:37 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:38.175Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:38.176Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/test-8f9b5/configs/sendgrid/variables/key  
+ Tue Dec 04 2018 12:50:38 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:39.169Z] <<< HTTP RESPONSE 200
+[info] i  functions: packaged functions (53.34 KB) for uploading
+[debug] [2018-12-04T11:50:42.549Z] >>> HTTP REQUEST GET https://www.googleapis.com/storage/v1/b/staging.test-8f9b5.appspot.com  
+ Tue Dec 04 2018 12:50:42 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:42.885Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:42.886Z] >>> HTTP REQUEST POST https://www.googleapis.com/upload/storage/v1/b/staging.test-8f9b5.appspot.com/o?uploadType=media&name=firebase-functions-source ReadStream {
+  _readableState:
+   ReadableState {
+     objectMode: false,
+     highWaterMark: 65536,
+     buffer: BufferList { head: [Object], tail: [Object], length: 2 },
+     length: 54622,
+     pipes: null,
+     pipesCount: 0,
+     flowing: null,
+     ended: true,
+     endEmitted: false,
+     reading: false,
+     sync: false,
+     needReadable: false,
+     emittedReadable: true,
+     readableListening: false,
+     resumeScheduled: false,
+     emitClose: false,
+     destroyed: false,
+     defaultEncoding: 'utf8',
+     awaitDrain: 0,
+     readingMore: false,
+     decoder: null,
+     encoding: null },
+  readable: true,
+  domain: null,
+  _events: { end: [Function] },
+  _eventsCount: 1,
+  _maxListeners: undefined,
+  path:
+   '/var/folders/3l/lvfg3b6n18s6yc5b9kcpx57h0000gn/T/firebase-functions-34401PSTnFkdp4lrp.zip',
+  fd: 29,
+  flags: 'r',
+  mode: 438,
+  start: undefined,
+  end: Infinity,
+  autoClose: true,
+  pos: undefined,
+  bytesRead: 54622,
+  closed: false } 
+ Tue Dec 04 2018 12:50:42 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:43.434Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: functions folder uploaded successfully
+[debug] [2018-12-04T11:50:43.435Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/test-8f9b5/locations/us-central1/functions  
+ Tue Dec 04 2018 12:50:43 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:43.911Z] <<< HTTP RESPONSE 200
+[info] i  functions: updating function sendEmail...
+[debug] [2018-12-04T11:50:43.916Z] Trigger is: 
+[info] i  functions: updating function addAdmin...
+[debug] [2018-12-04T11:50:43.916Z] Trigger is: 
+[info] i  functions: updating function setPermisions...
+[debug] [2018-12-04T11:50:43.916Z] Trigger is: 
+[debug] [2018-12-04T11:50:43.917Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/test-8f9b5/locations/us-central1/functions/sendEmail { sourceArchiveUrl:
+   'gs://staging.test-8f9b5.appspot.com/firebase-functions-source',
+  name:
+   'projects/test-8f9b5/locations/us-central1/functions/sendEmail',
+  entryPoint: 'sendEmail',
+  labels: { 'deployment-tool': 'cli-firebase' },
+  httpsTrigger: {} } 
+ Tue Dec 04 2018 12:50:43 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:43.918Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/test-8f9b5/locations/us-central1/functions/addAdmin { sourceArchiveUrl:
+   'gs://staging.test-8f9b5.appspot.com/firebase-functions-source',
+  name:
+   'projects/test-8f9b5/locations/us-central1/functions/addAdmin',
+  entryPoint: 'addAdmin',
+  labels: { 'deployment-tool': 'cli-firebase' },
+  httpsTrigger: {} } 
+ Tue Dec 04 2018 12:50:43 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:43.919Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/test-8f9b5/locations/us-central1/functions/setPermisions { sourceArchiveUrl:
+   'gs://staging.test-8f9b5.appspot.com/firebase-functions-source',
+  name:
+   'projects/test-8f9b5/locations/us-central1/functions/setPermisions',
+  entryPoint: 'setPermisions',
+  labels: { 'deployment-tool': 'cli-firebase' },
+  eventTrigger:
+   { resource: 'projects/test-8f9b5',
+     eventType: 'providers/firebase.auth/eventTypes/user.create',
+     service: 'firebaseauth.googleapis.com' } } 
+ Tue Dec 04 2018 12:50:43 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:44.263Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:44.365Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:44.395Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:44.396Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZW5kRW1haWwvU2JONS02S3MyMUk  
+ Tue Dec 04 2018 12:50:44 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:44.396Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9hZGRBZG1pbi9PT3RxTzdOWDdKYw  
+ Tue Dec 04 2018 12:50:44 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:44.397Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZXRQZXJtaXNpb25zL1dENmcwNWdIdFhR  
+ Tue Dec 04 2018 12:50:44 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T11:50:45.138Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:45.140Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T11:50:45.752Z] <<< HTTP RESPONSE 200

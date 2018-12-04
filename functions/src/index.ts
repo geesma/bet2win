@@ -1,7 +1,71 @@
+/* Importations */
+
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import * as cors from 'cors';
+import * as sgMail from '@sendgrid/mail';
+
+/* Constants */
+
+const corsHandler = cors({origin: true});
+const SENDGRID_API_KEY = functions.config().sendgrid.key;
+
+/* Configurations */
 
 admin.initializeApp();
+sgMail.setApiKey(SENDGRID_API_KEY);
+
+/* Global functions */
+
+// function getDataFromDatabase(doc: string, uid: string) {
+//   return admin.firestore().doc(`/${doc}/${uid}`)
+// }
+
+/* Email sender Functions */
+
+export const sendEmail = functions.https.onRequest((request,response) => {
+  return corsHandler(request, response, () => {
+    const code = Math.floor(Math.random()*900000) + 100000;
+    // const user = getDataFromDatabase("users",request.body.uid)
+    request.body.code = code;
+    // const newParams = {
+    //   name: request.body.name,
+    //   email: request.body.email,
+    //   code: code,
+    //   url: request.body.url,
+    // }
+    return response.status(200).send({response: request.body})
+      // sendEmailToUser(newParams).then(() => {
+      //   return response.status(200).send({response: newParams})
+      // }).catch((err) => {
+      //   return response.status(500).send({error: err})
+      // }).catch((err) => response.status(500).send({error: err}))
+  });
+})
+
+// async function sendEmailToUser(newParams) {
+//   const msg = {
+//       to: newParams.email,
+//       from: 'ro-reply@escoliesmartinez.cat',
+//       //subject:  'New Follower',
+//       // text: `Hey ${toName}. You have a new follower!!! `,
+//       // html: `<strong>Hey ${toName}. You have a new follower!!!</strong>`,
+//
+//       // custom templates
+//       templateId: 'd-74113eed37444c34924419cdb5deab5a',
+//       substitutionWrappers: ['{{', '}}'],
+//       substitutions: {
+//         name: newParams.name,
+//         url: newParams.url,
+//         code: newParams.code
+//       }
+//   };
+//   return sgMail.send(msg)
+// }
+
+
+
+/* Roles Functions */
 
 exports.addAdmin = functions.https.onCall((data,context) => {
   if (context.auth.token.developer !== true && context.auth.token.admin !== true) {
@@ -19,14 +83,10 @@ exports.addAdmin = functions.https.onCall((data,context) => {
 
 exports.setPermisions = functions.auth.user().onCreate(function(user,context){
   admin.auth().setCustomUserClaims(user.uid, {
-    admin: true,
-    developer: true,
-    premium: true
+    admin: false,
+    developer: false,
+    premium: false
   }).then(success =>"Changed").catch(err =>"Error")
-})
-
-exports.sendEmail = functions.https.onRequest((data,context) => {
-  return context.status(200).send(true)
 })
 
 async function grandAdminRole(email: string): Promise<void> {

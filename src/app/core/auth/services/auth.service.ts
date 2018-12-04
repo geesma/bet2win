@@ -47,13 +47,20 @@ export class AuthService {
       .catch(error => this.handleError(error) );
   }
 
-  loginUser(email: string, password: string) {
-    this.afAuth.auth.signInWithEmailAndPassword(email,password).then(userdata => {
-      this.router.navigate(['/user/register']);
-      this.handleSuccess('Bienvenido ' + userdata.user.email)
-    }).catch((err) => {
-      this.handleError(err)
-    })
+  loginUser(email: string, password: string, remember: boolean) {
+    if(remember) {
+      this.afAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+        this.emailPasswordUserLogin(email, password);
+      }).catch((err) => {
+        this.handleError(err)
+      })
+    } else {
+      this.afAuth.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
+        this.emailPasswordUserLogin(email, password);
+      }).catch((err) => {
+        this.handleError(err)
+      })
+    }
   }
 
   isAuth() {
@@ -107,6 +114,15 @@ export class AuthService {
 
     return userRef.set(data)
 
+  }
+
+  private emailPasswordUserLogin(email: string, password: string) {
+    this.afAuth.auth.signInWithEmailAndPassword(email,password).then(userdata => {
+      this.router.navigate(['/user/register']);
+      this.handleSuccess('Bienvenido ' + userdata.user.email)
+    }).catch((err) => {
+      this.handleError(err)
+    })
   }
 
   updateUser(user: User, data: any) {

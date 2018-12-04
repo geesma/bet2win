@@ -34,10 +34,12 @@ export class LoginComponent implements OnInit {
         Validators.maxLength(25),
         Validators.required
         ]
-      ]
+      ],
+      'remember': ['', []]
     });
     this.auth.user.subscribe((user) => {
       if(user) {
+        console.log("here")
         this.router.navigate(['/user/register']);
       }
     })
@@ -46,9 +48,10 @@ export class LoginComponent implements OnInit {
 
   get email() {return this.loginForm.get('email').value}
   get password() {return this.loginForm.get('password').value}
+  get remember() {return this.loginForm.get('remember').value}
 
   loginEmail() {
-    this.auth.loginUser(this.email,this.password)
+    this.auth.loginUser(this.email,this.password, this.remember)
   }
 
   loginGoogle() {

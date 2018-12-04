@@ -21,7 +21,7 @@
       <div *ngIf="loginForm.valid" >Form looks good! Let's do this.</div>
       <div class="checkbox mb-3">
         <label>
-          <input type="checkbox" value="remember-me"> Mantener sesión iniciada
+          <input type="checkbox" formControlName="remember" name="remember"> Mantener sesión iniciada
         </label>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!loginForm.valid">Iniciar sesión</button>

@@ -5,11 +5,10 @@ import { FormsModule ,ReactiveFormsModule }   from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CoreModule } from './core/core.module';
 import { HomePageModule } from './home-page/home-page.module';
+import { HttpClientModule } from '@angular/common/http';
 
 /* Components */
 import { AppComponent } from './app.component';
-
-import { environment } from '../environments/environment';
 
 /* Routing */
 import { AppRoutingModule } from './app-routing.module';
@@ -51,7 +50,8 @@ import { PricingComponent } from './home-page/pricing/pricing.component';
     FormsModule,
     ReactiveFormsModule,
     CoreModule,
-
+    HttpClientModule,
+    
     /* Routes */
     HomePageModule,
     AppRoutingModule

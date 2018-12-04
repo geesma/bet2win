@@ -5,7 +5,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../../Interfaces/user';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
-import { AngularFireFunctions } from '@angular/fire/functions';
+import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functions.service';
+
 
 @Component({
   selector: 'app-register',
@@ -22,8 +23,10 @@ export class RegisterComponent implements OnInit {
   user: User;
   processVerification: boolean = false;
 
-  constructor(public fb: FormBuilder, public auth: AuthService, private router: Router, private fun: AngularFireFunctions) {
-    //console.log(auth.isLoggedIn())
+  constructor(public fb: FormBuilder,
+              public auth: AuthService,
+              private router: Router,
+              private functions: FirebaseFunctionsService) {
   }
 
   ngOnInit() {
@@ -98,7 +101,6 @@ export class RegisterComponent implements OnInit {
   }
 
   nextStepInputCode() {
-    // this.fun.functions.
     this.processVerification = true;
     this.buidEmailCodeForm()
   }
@@ -107,10 +109,7 @@ export class RegisterComponent implements OnInit {
 
   sendCode() {
     console.log(this.code)
-    const callable = this.fun.httpsCallable('sendEmail');
-    callable({ name: 'some-data' }).subscribe((success)=> {
-      console.log(success)
-    });
+    this.sendEmail()
   }
 
   private buidDetailForm(data: User) {
@@ -131,6 +130,18 @@ export class RegisterComponent implements OnInit {
         Validators.pattern('^[0-9]{6,6}$'),
         Validators.required
       ]]
+    })
+  }
+
+  private sendEmail() {
+    this.auth.user.subscribe((user) => {
+      let params = {
+        name: user.name,
+        email: user.email,
+        uid: user.uid,
+        url: "localhost:4200/users/register"
+      }
+      return this.functions.sendEmail(params, user)
     })
   }
 

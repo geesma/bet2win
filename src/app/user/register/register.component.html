@@ -1,5 +1,6 @@
 <ng-container *ngIf="(auth.user | async) || {} as user">
   <div class="b2w-full-screen-form">
+    <!-- Email and password -->
     <form [formGroup]="signupForm" *ngIf="!user.uid" (ngSubmit)="signUp()" class="form-signin">
       <div class="card register-form">
         <a class="navbar-brand" [routerLink]="['/']">
@@ -26,62 +27,15 @@
           <label for="inputPasswordRepeat" class="sr-only">Confirmar contraseña</label>
           <input type="password" formControlName="repeatPassword" id="inputPasswordRepeat" class="form-control b2w-confirmPassword" name="repeatPassword" placeholder="Contraseña" required>
         </div>
+        I accept the Terms of Service and have read the Services Privacy Policy
         <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!isSignUpFormValid()">Siguiente</button>
       </div>
       <div class="card b2w-login-card">
         <p>Ya dispones de una cuenta <a [routerLink]="['/user/login']">iniciar sesión</a></p>
       </div>
     </form>
-    <div *ngIf="user.uid && !user.userConfirmed" class="email-confirmation">
-      <div class="card register-form">
-        <div class="card-body">
-          <a class="navbar-brand" [routerLink]="['/']">
-            <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
-                      assets/images/logos/b2w_logo_72px.png 1x,
-                      assets/images/logos/b2w_logo_72px-2x.png 2x,
-                      assets/images/logos/b2w_logo_72px-3x.png 3x"alt="bet2win logo for the login page">
-          </a>
-          <h1 class="card-title">Confirma tu cuenta</h1>
-          <h3 class="card-subtitle mb-2 text-muted">La cuenta debe ser verificada</h3>
-          <div class="row justify-content-around">
-            <!-- SMS user confirmation -->
-            <!-- <div class="col-lg-5 col-md-6 col-sm-12 py-3">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">SMS</h4>
-                  <p class="card-text">Va a recibir en su mobil y de forma gratuita un SMS con un codigo de 6 digitos para confirmar su cuenta</p>
-                  <div class="row">
-                    <div class="col-12">
-                      <a href="#" class="card-link">Confirmar por SMS</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-            <div class="col-lg-5 col-md-6 col-sm-12 py-3">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Correo Electronico</h4>
-                  <p class="card-text">Va a recibir en su email y de forma gratuita un correo con un codigo de 6 digitos para confirmar su cuenta</p>
-                  <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode()" class="" *ngIf="processVerification">
-                    <div class="form-group">
-                      <label for="inputCode" class="sr-only">Codigo</label>
-                      <input type="number" formControlName="code" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="emailCodeForm.controls.code.invalid" [class.is-valid]="!emailCodeForm.controls.code.invalid">
-                      <div *ngIf="emailCodeForm.controls.code.invalid" class="invalid-feedback">
-                        El codigo debe tener 6 digitos.
-                      </div>
-                    </div>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!emailCodeForm.valid">Confirmar</button>
-                  </form>
-                  <a href (click)="$event.preventDefault(); nextStepInputCode()" *ngIf="!processVerification" class="card-link">Confirmar por email</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <form [formGroup]="detailForm" *ngIf="user.uid && user.userConfirmed && (!user.name || !user.surname || !user.phone || !user.nationality || !user.birthDate)" (ngSubmit)="setDetailsToUser(user)" class="form-details">
+    <!-- More information -->
+    <form [formGroup]="detailForm" *ngIf="user.uid && (!user.name || !user.surname || !user.phone || !user.nationality || !user.birthDate)" (ngSubmit)="setDetailsToUser(user)" class="form-details">
       <div class="card register-form">
         <a class="navbar-brand" [routerLink]="['/']">
           <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
@@ -142,6 +96,57 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!isDetailFormValid()">Siguiente</button>
       </div>
     </form>
+    <!-- Email confirmation -->
+    <div *ngIf="user.uid && !user.userConfirmed && user.name && user.surname && user.phone && user.nationality && user.birthDate" class="email-confirmation">
+      <div class="card register-form">
+        <div class="card-body">
+          <a class="navbar-brand" [routerLink]="['/']">
+            <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
+                      assets/images/logos/b2w_logo_72px.png 1x,
+                      assets/images/logos/b2w_logo_72px-2x.png 2x,
+                      assets/images/logos/b2w_logo_72px-3x.png 3x"alt="bet2win logo for the login page">
+          </a>
+          <h1 class="card-title">Confirma tu cuenta</h1>
+          <h3 class="card-subtitle mb-2 text-muted">La cuenta debe ser verificada</h3>
+          <div class="row justify-content-around align-items-center">
+            <!-- SMS user confirmation -->
+            <!-- <div class="col-lg-5 col-md-6 col-sm-12 py-3">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">SMS</h4>
+                  <p class="card-text">Va a recibir en su mobil y de forma gratuita un SMS con un codigo de 6 digitos para confirmar su cuenta</p>
+                  <div class="row">
+                    <div class="col-12">
+                      <a href="#" class="card-link">Confirmar por SMS</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <div class="col-lg-5 col-md-6 col-sm-12 py-3">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Correo Electronico</h4>
+                  <p class="card-text">Va a recibir en su email y de forma gratuita un correo con un codigo de 6 digitos para confirmar su cuenta</p>
+                  <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode()" class="" *ngIf="processVerification">
+                    <div class="form-group">
+                      <label for="inputCode" class="sr-only">Codigo</label>
+                      <input type="number" formControlName="code" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="emailCodeForm.controls.code.invalid" [class.is-valid]="!emailCodeForm.controls.code.invalid">
+                      <div *ngIf="emailCodeForm.controls.code.invalid" class="invalid-feedback">
+                        El codigo debe tener 6 digitos.
+                      </div>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!emailCodeForm.valid">Confirmar</button>
+                  </form>
+                  <a href (click)="$event.preventDefault(); nextStepInputCode()" *ngIf="!processVerification" class="card-link">Confirmar por email</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- User Confirmed -->
     <div *ngIf="user.uid && user.name && user.surname && user.phone && user.nationality && user.birthDate && user.userConfirmed">
       Ususari confirmat
     </div>

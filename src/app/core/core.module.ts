@@ -11,10 +11,11 @@ import { AuthService } from './auth/services/auth.service';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { AngularFireFunctionsModule } from '@angular/fire/functions';
+import { AngularFireFunctionsModule, FunctionsRegionToken } from '@angular/fire/functions';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/Storage';
 import { AngularFireMessagingModule } from '@angular/fire/Messaging';
+import { FirebaseFunctionsService } from './services/firebase-functions.service';
 
 
 const FIREBASE_IMPORTS = [
@@ -37,7 +38,9 @@ const FIREBASE_IMPORTS = [
   ],
   providers: [
     NotifyService,
-    AuthService
+    AuthService,
+    FirebaseFunctionsService,
+    { provide: FunctionsRegionToken, useValue: 'us-central1' }
   ]
 })
 export class CoreModule { }
