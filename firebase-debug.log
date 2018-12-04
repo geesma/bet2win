@@ -1,24 +1,24 @@
-[debug] [2018-12-04T11:50:22.136Z] ----------------------------------------------------------------------
-[debug] [2018-12-04T11:50:22.138Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
-[debug] [2018-12-04T11:50:22.138Z] CLI Version:   3.15.2
-[debug] [2018-12-04T11:50:22.138Z] Platform:      darwin
-[debug] [2018-12-04T11:50:22.138Z] Node Version:  v10.13.0
-[debug] [2018-12-04T11:50:22.138Z] Time:          Tue Dec 04 2018 12:50:22 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:22.139Z] ----------------------------------------------------------------------
+[debug] [2018-12-04T12:34:39.036Z] ----------------------------------------------------------------------
+[debug] [2018-12-04T12:34:39.039Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2018-12-04T12:34:39.039Z] CLI Version:   3.15.2
+[debug] [2018-12-04T12:34:39.039Z] Platform:      darwin
+[debug] [2018-12-04T12:34:39.039Z] Node Version:  v10.13.0
+[debug] [2018-12-04T12:34:39.040Z] Time:          Tue Dec 04 2018 13:34:39 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:34:39.040Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2018-12-04T11:50:22.153Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2018-12-04T11:50:22.154Z] > authorizing via signed-in user
-[debug] [2018-12-04T11:50:22.156Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/test-8f9b5  
- Tue Dec 04 2018 12:50:22 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:23.021Z] <<< HTTP RESPONSE 200
-[debug] [2018-12-04T11:50:23.022Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/test-8f9b5/tokens  
- Tue Dec 04 2018 12:50:23 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:23.796Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:34:39.086Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-12-04T12:34:39.086Z] > authorizing via signed-in user
+[debug] [2018-12-04T12:34:39.089Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/test-8f9b5  
+ Tue Dec 04 2018 13:34:39 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:34:40.405Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:34:40.407Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/test-8f9b5/tokens  
+ Tue Dec 04 2018 13:34:40 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:34:41.265Z] <<< HTTP RESPONSE 200
 [info] 
 [info] === Deploying to 'test-8f9b5'...
 [info] 
 [info] i  deploying functions
-[debug] [2018-12-04T11:50:24.672Z] > [functions] package.json contents: {
+[debug] [2018-12-04T12:34:42.043Z] > [functions] package.json contents: {
   "name": "functions",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
@@ -44,41 +44,41 @@
 }
 [info] i  functions: ensuring necessary APIs are enabled...
 [info] i  runtimeconfig: ensuring necessary APIs are enabled...
-[debug] [2018-12-04T11:50:24.675Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/test-8f9b5?view=CONSUMER_VIEW  
- Tue Dec 04 2018 12:50:24 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:24.676Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/test-8f9b5?view=CONSUMER_VIEW  
- Tue Dec 04 2018 12:50:24 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:26.555Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:34:42.045Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/test-8f9b5?view=CONSUMER_VIEW  
+ Tue Dec 04 2018 13:34:42 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:34:42.046Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/test-8f9b5?view=CONSUMER_VIEW  
+ Tue Dec 04 2018 13:34:42 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:34:43.555Z] <<< HTTP RESPONSE 200
 [info] ✔  functions: all necessary APIs are enabled
-[debug] [2018-12-04T11:50:26.559Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:34:43.569Z] <<< HTTP RESPONSE 200
 [info] ✔  runtimeconfig: all necessary APIs are enabled
-[debug] [2018-12-04T11:50:26.560Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/test-8f9b5  
- Tue Dec 04 2018 12:50:26 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:26.560Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/test-8f9b5/apiKeys  
- Tue Dec 04 2018 12:50:26 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:27.731Z] <<< HTTP RESPONSE 200
-[debug] [2018-12-04T11:50:27.734Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:34:43.571Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/test-8f9b5  
+ Tue Dec 04 2018 13:34:43 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:34:43.572Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/test-8f9b5/apiKeys  
+ Tue Dec 04 2018 13:34:43 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:34:44.543Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:34:44.616Z] <<< HTTP RESPONSE 200
 [info] i  functions: preparing functions directory for uploading...
-[debug] [2018-12-04T11:50:36.422Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/test-8f9b5/configs  
- Tue Dec 04 2018 12:50:36 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:37.766Z] <<< HTTP RESPONSE 200
-[debug] [2018-12-04T11:50:37.768Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/test-8f9b5/configs/sendgrid/variables  
- Tue Dec 04 2018 12:50:37 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:38.175Z] <<< HTTP RESPONSE 200
-[debug] [2018-12-04T11:50:38.176Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/test-8f9b5/configs/sendgrid/variables/key  
- Tue Dec 04 2018 12:50:38 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:39.169Z] <<< HTTP RESPONSE 200
-[info] i  functions: packaged functions (53.34 KB) for uploading
-[debug] [2018-12-04T11:50:42.549Z] >>> HTTP REQUEST GET https://www.googleapis.com/storage/v1/b/staging.test-8f9b5.appspot.com  
- Tue Dec 04 2018 12:50:42 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:42.885Z] <<< HTTP RESPONSE 200
-[debug] [2018-12-04T11:50:42.886Z] >>> HTTP REQUEST POST https://www.googleapis.com/upload/storage/v1/b/staging.test-8f9b5.appspot.com/o?uploadType=media&name=firebase-functions-source ReadStream {
+[debug] [2018-12-04T12:34:54.657Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/test-8f9b5/configs  
+ Tue Dec 04 2018 13:34:54 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:34:55.602Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:34:55.604Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/test-8f9b5/configs/sendgrid/variables  
+ Tue Dec 04 2018 13:34:55 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:34:56.728Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:34:56.729Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/test-8f9b5/configs/sendgrid/variables/key  
+ Tue Dec 04 2018 13:34:56 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:34:58.059Z] <<< HTTP RESPONSE 200
+[info] i  functions: packaged functions (53.23 KB) for uploading
+[debug] [2018-12-04T12:35:00.408Z] >>> HTTP REQUEST GET https://www.googleapis.com/storage/v1/b/staging.test-8f9b5.appspot.com  
+ Tue Dec 04 2018 13:35:00 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:00.926Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:00.928Z] >>> HTTP REQUEST POST https://www.googleapis.com/upload/storage/v1/b/staging.test-8f9b5.appspot.com/o?uploadType=media&name=firebase-functions-source ReadStream {
   _readableState:
    ReadableState {
      objectMode: false,
      highWaterMark: 65536,
      buffer: BufferList { head: [Object], tail: [Object], length: 2 },
-     length: 54622,
+     length: 54503,
      pipes: null,
      pipesCount: 0,
      flowing: null,
@@ -103,7 +103,7 @@
   _eventsCount: 1,
   _maxListeners: undefined,
   path:
-   '/var/folders/3l/lvfg3b6n18s6yc5b9kcpx57h0000gn/T/firebase-functions-34401PSTnFkdp4lrp.zip',
+   '/var/folders/3l/lvfg3b6n18s6yc5b9kcpx57h0000gn/T/firebase-functions-348655EX9ieGl0RII.zip',
   fd: 29,
   flags: 'r',
   mode: 438,
@@ -111,37 +111,37 @@
   end: Infinity,
   autoClose: true,
   pos: undefined,
-  bytesRead: 54622,
+  bytesRead: 54503,
   closed: false } 
- Tue Dec 04 2018 12:50:42 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:43.434Z] <<< HTTP RESPONSE 200
+ Tue Dec 04 2018 13:35:00 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:01.593Z] <<< HTTP RESPONSE 200
 [info] ✔  functions: functions folder uploaded successfully
-[debug] [2018-12-04T11:50:43.435Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/test-8f9b5/locations/us-central1/functions  
- Tue Dec 04 2018 12:50:43 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:43.911Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:01.594Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/test-8f9b5/locations/us-central1/functions  
+ Tue Dec 04 2018 13:35:01 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:02.156Z] <<< HTTP RESPONSE 200
 [info] i  functions: updating function sendEmail...
-[debug] [2018-12-04T11:50:43.916Z] Trigger is: 
+[debug] [2018-12-04T12:35:02.159Z] Trigger is: 
 [info] i  functions: updating function addAdmin...
-[debug] [2018-12-04T11:50:43.916Z] Trigger is: 
+[debug] [2018-12-04T12:35:02.159Z] Trigger is: 
 [info] i  functions: updating function setPermisions...
-[debug] [2018-12-04T11:50:43.916Z] Trigger is: 
-[debug] [2018-12-04T11:50:43.917Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/test-8f9b5/locations/us-central1/functions/sendEmail { sourceArchiveUrl:
+[debug] [2018-12-04T12:35:02.160Z] Trigger is: 
+[debug] [2018-12-04T12:35:02.161Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/test-8f9b5/locations/us-central1/functions/sendEmail { sourceArchiveUrl:
    'gs://staging.test-8f9b5.appspot.com/firebase-functions-source',
   name:
    'projects/test-8f9b5/locations/us-central1/functions/sendEmail',
   entryPoint: 'sendEmail',
   labels: { 'deployment-tool': 'cli-firebase' },
   httpsTrigger: {} } 
- Tue Dec 04 2018 12:50:43 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:43.918Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/test-8f9b5/locations/us-central1/functions/addAdmin { sourceArchiveUrl:
+ Tue Dec 04 2018 13:35:02 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:02.162Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/test-8f9b5/locations/us-central1/functions/addAdmin { sourceArchiveUrl:
    'gs://staging.test-8f9b5.appspot.com/firebase-functions-source',
   name:
    'projects/test-8f9b5/locations/us-central1/functions/addAdmin',
   entryPoint: 'addAdmin',
   labels: { 'deployment-tool': 'cli-firebase' },
   httpsTrigger: {} } 
- Tue Dec 04 2018 12:50:43 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:43.919Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/test-8f9b5/locations/us-central1/functions/setPermisions { sourceArchiveUrl:
+ Tue Dec 04 2018 13:35:02 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:02.162Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/test-8f9b5/locations/us-central1/functions/setPermisions { sourceArchiveUrl:
    'gs://staging.test-8f9b5.appspot.com/firebase-functions-source',
   name:
    'projects/test-8f9b5/locations/us-central1/functions/setPermisions',
@@ -151,16 +151,79 @@
    { resource: 'projects/test-8f9b5',
      eventType: 'providers/firebase.auth/eventTypes/user.create',
      service: 'firebaseauth.googleapis.com' } } 
- Tue Dec 04 2018 12:50:43 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:44.263Z] <<< HTTP RESPONSE 200
-[debug] [2018-12-04T11:50:44.365Z] <<< HTTP RESPONSE 200
-[debug] [2018-12-04T11:50:44.395Z] <<< HTTP RESPONSE 200
-[debug] [2018-12-04T11:50:44.396Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZW5kRW1haWwvU2JONS02S3MyMUk  
- Tue Dec 04 2018 12:50:44 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:44.396Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9hZGRBZG1pbi9PT3RxTzdOWDdKYw  
- Tue Dec 04 2018 12:50:44 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:44.397Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZXRQZXJtaXNpb25zL1dENmcwNWdIdFhR  
- Tue Dec 04 2018 12:50:44 GMT+0100 (GMT+01:00)
-[debug] [2018-12-04T11:50:45.138Z] <<< HTTP RESPONSE 200
-[debug] [2018-12-04T11:50:45.140Z] <<< HTTP RESPONSE 200
-[debug] [2018-12-04T11:50:45.752Z] <<< HTTP RESPONSE 200
+ Tue Dec 04 2018 13:35:02 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:02.565Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:02.583Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:02.592Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:02.594Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZW5kRW1haWwvak9SUklDWjZzdkE  
+ Tue Dec 04 2018 13:35:02 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:02.594Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9hZGRBZG1pbi8yYWM1YzhiSmJOYw  
+ Tue Dec 04 2018 13:35:02 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:02.595Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZXRQZXJtaXNpb25zL29FRjZBNXhwbEZr  
+ Tue Dec 04 2018 13:35:02 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:02.974Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:02.975Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:02.976Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:04.981Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZXRQZXJtaXNpb25zL29FRjZBNXhwbEZr  
+ Tue Dec 04 2018 13:35:04 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:04.982Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZW5kRW1haWwvak9SUklDWjZzdkE  
+ Tue Dec 04 2018 13:35:04 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:04.982Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9hZGRBZG1pbi8yYWM1YzhiSmJOYw  
+ Tue Dec 04 2018 13:35:04 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:05.217Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:05.243Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:05.329Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:07.220Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZXRQZXJtaXNpb25zL29FRjZBNXhwbEZr  
+ Tue Dec 04 2018 13:35:07 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:07.245Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9hZGRBZG1pbi8yYWM1YzhiSmJOYw  
+ Tue Dec 04 2018 13:35:07 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:07.331Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZW5kRW1haWwvak9SUklDWjZzdkE  
+ Tue Dec 04 2018 13:35:07 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:07.447Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:07.452Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:07.546Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:09.448Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZXRQZXJtaXNpb25zL29FRjZBNXhwbEZr  
+ Tue Dec 04 2018 13:35:09 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:09.453Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9hZGRBZG1pbi8yYWM1YzhiSmJOYw  
+ Tue Dec 04 2018 13:35:09 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:09.550Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZW5kRW1haWwvak9SUklDWjZzdkE  
+ Tue Dec 04 2018 13:35:09 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:09.703Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:09.736Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:09.772Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:11.706Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZXRQZXJtaXNpb25zL29FRjZBNXhwbEZr  
+ Tue Dec 04 2018 13:35:11 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:11.739Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9hZGRBZG1pbi8yYWM1YzhiSmJOYw  
+ Tue Dec 04 2018 13:35:11 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:11.776Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZW5kRW1haWwvak9SUklDWjZzdkE  
+ Tue Dec 04 2018 13:35:11 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:11.925Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:11.972Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:11.991Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:13.929Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZXRQZXJtaXNpb25zL29FRjZBNXhwbEZr  
+ Tue Dec 04 2018 13:35:13 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:13.974Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9hZGRBZG1pbi8yYWM1YzhiSmJOYw  
+ Tue Dec 04 2018 13:35:13 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:13.992Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZW5kRW1haWwvak9SUklDWjZzdkE  
+ Tue Dec 04 2018 13:35:13 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:14.153Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:14.202Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:14.216Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:16.157Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZXRQZXJtaXNpb25zL29FRjZBNXhwbEZr  
+ Tue Dec 04 2018 13:35:16 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:16.203Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9hZGRBZG1pbi8yYWM1YzhiSmJOYw  
+ Tue Dec 04 2018 13:35:16 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:16.217Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZW5kRW1haWwvak9SUklDWjZzdkE  
+ Tue Dec 04 2018 13:35:16 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:16.381Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:16.426Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:16.441Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:18.386Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZXRQZXJtaXNpb25zL29FRjZBNXhwbEZr  
+ Tue Dec 04 2018 13:35:18 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:18.427Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9zZW5kRW1haWwvak9SUklDWjZzdkE  
+ Tue Dec 04 2018 13:35:18 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:18.444Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dGVzdC04ZjliNS91cy1jZW50cmFsMS9hZGRBZG1pbi8yYWM1YzhiSmJOYw  
+ Tue Dec 04 2018 13:35:18 GMT+0100 (GMT+01:00)
+[debug] [2018-12-04T12:35:18.608Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:18.639Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T12:35:18.676Z] <<< HTTP RESPONSE 200

@@ -17,51 +17,44 @@ sgMail.setApiKey(SENDGRID_API_KEY);
 
 /* Global functions */
 
-// function getDataFromDatabase(doc: string, uid: string) {
-//   return admin.firestore().doc(`/${doc}/${uid}`)
-// }
+function getDataFromDatabase(doc: string, uid: string) {
+  return admin.firestore().doc(`/${doc}/${uid}`)
+}
 
 /* Email sender Functions */
 
 export const sendEmail = functions.https.onRequest((request,response) => {
   return corsHandler(request, response, () => {
     const code = Math.floor(Math.random()*900000) + 100000;
-    // const user = getDataFromDatabase("users",request.body.uid)
     request.body.code = code;
-    // const newParams = {
-    //   name: request.body.name,
-    //   email: request.body.email,
-    //   code: code,
-    //   url: request.body.url,
-    // }
-    return response.status(200).send({response: request.body})
-      // sendEmailToUser(newParams).then(() => {
-      //   return response.status(200).send({response: newParams})
-      // }).catch((err) => {
-      //   return response.status(500).send({error: err})
-      // }).catch((err) => response.status(500).send({error: err}))
+    return sendEmailToUser(request.body).then(() => {
+      response.status(200).send({response: request.body})
+    }).catch(err => {
+      return response.status(500).send({error: err})
+    })
   });
 })
 
-// async function sendEmailToUser(newParams) {
-//   const msg = {
-//       to: newParams.email,
-//       from: 'ro-reply@escoliesmartinez.cat',
-//       //subject:  'New Follower',
-//       // text: `Hey ${toName}. You have a new follower!!! `,
-//       // html: `<strong>Hey ${toName}. You have a new follower!!!</strong>`,
-//
-//       // custom templates
-//       templateId: 'd-74113eed37444c34924419cdb5deab5a',
-//       substitutionWrappers: ['{{', '}}'],
-//       substitutions: {
-//         name: newParams.name,
-//         url: newParams.url,
-//         code: newParams.code
-//       }
-//   };
-//   return sgMail.send(msg)
-// }
+async function sendEmailToUser(params) {
+  const user = await getDataFromDatabase("users",params.uid);
+  await user.update({code:params.code})
+  const msg = {
+      to: params.email,
+      from: 'no-reply@escoliesmartinez.cat',
+      //subject:  'New Follower',
+      // text: `Hey ${toName}. You have a new follower!!! `,
+      // html: `<strong>Hey ${toName}. You have a new follower!!!</strong>`,
+
+      // custom templates
+      templateId: 'd-74113eed37444c34924419cdb5deab5a',
+      sub: {
+        "{{name}}": params.name,
+        "{{url}}": params.url,
+        "{{code}}": params.code,
+      }
+  };
+  sgMail.send(msg)
+}
 
 
 

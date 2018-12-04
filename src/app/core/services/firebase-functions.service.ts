@@ -18,7 +18,9 @@ export class FirebaseFunctionsService {
 
   sendEmail(params: any, user: User) {
     this.auth.updateUser(user, {userConfirmationMethod: "email"})
-    this.send("sendEmail", params).toPromise().catch((err) => console.error(err))
+    this.send("sendEmail", params).toPromise().catch((val) => {
+      console.log(val)
+    })
   }
 
   private send(uri: string, params: any) {
