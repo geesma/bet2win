@@ -39,7 +39,6 @@ export class LoginComponent implements OnInit {
     });
     this.auth.user.subscribe((user) => {
       if(user) {
-        console.log("here")
         this.router.navigate(['/user/register']);
       }
     })

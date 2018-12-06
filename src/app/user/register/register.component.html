@@ -128,17 +128,24 @@
                 <div class="card-body">
                   <h4 class="card-title">Correo Electronico</h4>
                   <p class="card-text">Va a recibir en su email y de forma gratuita un correo con un codigo de 6 digitos para confirmar su cuenta</p>
-                  <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode()" class="" *ngIf="processVerification">
+                  <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode(user.uid)" class="" *ngIf="processEmailVerification || (user.userConfirmationMethod == 'email')">
                     <div class="form-group">
                       <label for="inputCode" class="sr-only">Codigo</label>
-                      <input type="number" formControlName="code" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="emailCodeForm.controls.code.invalid" [class.is-valid]="!emailCodeForm.controls.code.invalid">
+                      <input type="number" formControlName="code" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="emailCodeForm.controls.code.invalid || codeConfirmationError" [class.is-valid]="!emailCodeForm.controls.code.invalid || !codeConfirmationError">
                       <div *ngIf="emailCodeForm.controls.code.invalid" class="invalid-feedback">
                         El codigo debe tener 6 digitos.
                       </div>
+                      <div *ngIf="codeConfirmationError" class="invalid-feedback">
+                        {{ errorMessage }}
+                      </div>
                     </div>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!emailCodeForm.valid">Confirmar</button>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!emailCodeForm.valid || codeConfirmationProcess || errorMessage == 'Demasiados intentos'">Confirmar <i class="fas fa-circle-notch fa-spin" *ngIf="codeConfirmationProcess"></i></button>
+                    <div class="pt-4">
+                      <a href (click)="$event.preventDefault(); sendAnotherEmail(user.uid)" *ngIf="errorMessage == 'Demasiados intentos'" class="card-link">Volver a enviar un correo</a>
+                      <small *ngIf="errorMessage !== 'Demasiados intentos'">Si no ha recibido ningun correo, puede ser que este se encuentre en correo no deseaso, si lo desea puede <a href (click)="$event.preventDefault(); sendAnotherEmail(user.uid)" class="card-link">volver a enviar un correo</a></small>
+                    </div>
                   </form>
-                  <a href (click)="$event.preventDefault(); nextStepInputCode()" *ngIf="!processVerification" class="card-link">Confirmar por email</a>
+                  <a href (click)="$event.preventDefault(); nextStepInputCode(user.uid)" *ngIf="!processEmailVerification && user.userConfirmationMethod !== 'email' && user.userConfirmationMethod !== ''" class="card-link">Confirmar por email</a>
                 </div>
               </div>
             </div>
@@ -147,8 +154,33 @@
       </div>
     </div>
     <!-- User Confirmed -->
-    <div *ngIf="user.uid && user.name && user.surname && user.phone && user.nationality && user.birthDate && user.userConfirmed">
-      Ususari confirmat
+    <div class="referal-form" *ngIf="user.uid && user.name && user.surname && user.phone && user.nationality && user.birthDate && user.userConfirmed">
+      <div class="card register-form">
+        <div class="card-body">
+          <a class="navbar-brand" [routerLink]="['/']">
+            <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
+                      assets/images/logos/b2w_logo_72px.png 1x,
+                      assets/images/logos/b2w_logo_72px-2x.png 2x,
+                      assets/images/logos/b2w_logo_72px-3x.png 3x"alt="bet2win logo for the login page">
+          </a>
+          <h1 class="card-title">Referido</h1>
+          <h3 class="card-subtitle mb-2 text-muted">Estas a un paso de empezar a disfrutar de nuestro servicio, pero antes necesitamos saber su algun usuario te ha referido</h3>
+          <div class="row justify-content-around align-items-center">
+            <div class="col-lg-5 col-md-6 col-sm-12 py-3">
+              <form [formGroup]="referalForm" (ngSubmit)="sendReferal(user.uid)" class="" *ngIf="true">
+                <div class="form-group">
+                  <label for="inputCode" class="sr-only">Codigo de referido</label>
+                  <input type="text" formControlName="referalCode" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="false" [class.is-valid]="true">
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="false">Confirmar</button>
+                <div class="pt-4">
+                  <small>Si no te ha referido nadie y quieras empezar a usar nuestro servicio <a href (click)="$event.preventDefault(); sendAnotherEmail(user.uid)" class="card-link">haz click aquí</a>, pero recuerde que no se podrá poner a un referido más adelante</small>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </ng-container>

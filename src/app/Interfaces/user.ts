@@ -1,8 +1,8 @@
-// export interface Roles {
-//   premium?: boolean;
-//   developer?: boolean;
-//   admin?: boolean;
-// }
+export interface Roles {
+  premium?: boolean;
+  developer?: boolean;
+  admin?: boolean;
+}
 //
 // export interface platformsTypes {
 //   name: string,
@@ -30,7 +30,6 @@ export interface User {
   uid: string;
   email: string;
   userConfirmed?: boolean;
-  userConfirmationCode?: number;
   userConfirmationMethod?: string;
   name?: string;
   surname?: string;
@@ -40,4 +39,7 @@ export interface User {
   nationality?: string;
   idCard?: string;
   birthDate?: Date;
+  referalNumber: number;
+  referalString: string;
+  referal?: string;
 }

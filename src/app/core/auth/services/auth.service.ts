@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NotifyService } from './../../notifiers/notify.service';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { User } from '../../../Interfaces/user';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -26,7 +26,7 @@ export class AuthService {
           if (user) {
             // logged in, get custom user from Firestore
             this.afs.doc<User>(`users/${user.uid}`).valueChanges().subscribe((userData) => {
-              if(!userData){
+              if(!userData.email){
                 this.setUserDoc(user)
               }
             })
@@ -110,9 +110,11 @@ export class AuthService {
       userConfirmed: user.emailVerified,
       uid: user.uid,
       email: user.email,
+      referalNumber: 0,
+      referalString: user.uid
     }
 
-    return userRef.set(data)
+    return userRef.update(data)
 
   }
 

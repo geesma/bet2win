@@ -6,6 +6,7 @@ import { User } from '../../Interfaces/user';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functions.service';
+import { map, take, switchMap, share } from 'rxjs/operators';
 
 
 @Component({
@@ -20,13 +21,20 @@ export class RegisterComponent implements OnInit {
   passwordFormGroup: FormGroup;
   detailForm: FormGroup;
   emailCodeForm: FormGroup;
+  referalForm: FormGroup;
   user: User;
-  processVerification: boolean = false;
+  currentUser: User;
+  processEmailVerification: boolean = false;
+  codeConfirmationProcess: boolean = false;
+  codeConfirmationError: boolean = false;
+  resendEmail: boolean = false;
+  errorMessage: string = "";
 
   constructor(public fb: FormBuilder,
               public auth: AuthService,
               private router: Router,
               private functions: FirebaseFunctionsService) {
+
   }
 
   ngOnInit() {
@@ -48,6 +56,20 @@ export class RegisterComponent implements OnInit {
     }, {
       validator: RegistrationValidator.validate.bind(this)
     });
+
+    this.emailCodeForm = this.fb.group({
+      'code': ['', [
+        Validators.pattern('^[0-9]{6,6}$'),
+        Validators.required
+      ]]
+    })
+
+    this.referalForm = this.fb.group({
+      'referalCode': ['', [
+        Validators.pattern('^[0-9]{6,6}$'),
+        Validators.required
+      ]]
+    })
 
     this.auth.user.subscribe((user) => {
       if(user) {
@@ -100,16 +122,53 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  nextStepInputCode() {
-    this.processVerification = true;
-    this.buidEmailCodeForm()
+  nextStepInputCode(uid: string) {
+    this.processEmailVerification = true;
+    this.sendEmail(uid)
   }
 
   get code(){return this.emailCodeForm.get('code').value}
 
-  sendCode() {
-    console.log(this.code)
-    this.sendEmail()
+  sendCode(uid: string) {
+    this.codeConfirmationProcess = true;
+    let params = {
+      uid: uid,
+      code: this.code
+    }
+    this.functions.checkCode(params).then(() => {
+      this.codeConfirmationError = false;
+    }).catch((err) => {
+      this.errorMessage = err.error.error
+      this.codeConfirmationError = true
+    }).then(()=> {
+      this.codeConfirmationProcess = false;
+    })
+  }
+
+  sendAnotherEmail(uid: string) {
+    this.resendEmail = true;
+    this.errorMessage = "";
+    let user: User = {
+      email: '',
+      uid: uid,
+      referalNumber: 0,
+      referalString: uid
+    }
+    this.functions.sendVoid(user)
+    this.resendEmail = false
+  }
+
+  get referal() {return this.emailCodeForm.get('code').value}
+
+  sendReferal(uid: string) {
+    let user: User = {
+      uid: uid,
+      email: '',
+      referalNumber: 0,
+      referalString: uid,
+      referal: this.referal
+    }
+
   }
 
   private buidDetailForm(data: User) {
@@ -124,25 +183,14 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  private buidEmailCodeForm() {
-    this.emailCodeForm = this.fb.group({
-      'code': ['', [
-        Validators.pattern('^[0-9]{6,6}$'),
-        Validators.required
-      ]]
-    })
-  }
-
-  private sendEmail() {
-    this.auth.user.subscribe((user) => {
-      let params = {
-        name: user.name,
-        email: user.email,
-        uid: user.uid,
-        url: "localhost:4200/users/register"
-      }
-      return this.functions.sendEmail(params, user)
-    })
+  private sendEmail(uid: string) {
+    let user: User = {
+      email: '',
+      uid: uid,
+      referalNumber: 0,
+      referalString: uid
+    }
+    this.functions.sendEmail(user)
   }
 
 }

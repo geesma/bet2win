@@ -12,7 +12,8 @@
 
 .form-signin,
 .form-details,
-.email-confirmation {
+.email-confirmation,
+.referal-form {
   width: 100%;
   margin: auto;
   .card {
@@ -60,6 +61,10 @@
 
 .email-confirmation {
   max-width: 90%;
+}
+
+.referal-form {
+  max-width: 80%;
 }
 
 .b2w-login-card p{
