@@ -39,7 +39,7 @@ export interface User {
   nationality?: string;
   idCard?: string;
   birthDate?: Date;
-  referalNumber: number;
-  referalString: string;
+  referalNumber?: number;
+  referalString?: string;
   referal?: string;
 }

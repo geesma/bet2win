@@ -179,12 +179,13 @@ exports.addAdmin = functions.https.onCall((data,context) => {
 
 exports.setPermisions = functions.auth.user().onCreate(function(user,context){
   const permisions = {
-    admin: false,
-    developer: false,
-    premium: false
+    admin: true,
+    developer: true,
+    premium: true
   }
   admin.auth().setCustomUserClaims(user.uid, permisions).then(success =>"Changed").catch(err =>"Error")
-  updateOrCreateDataToDatabase("users",{uid: user.uid ,roles: permisions})
+  updateOrCreateDataToDatabase("users",{uid: user.uid ,roles: permisions, referalString: user.uid, referalNumber: 0})
+  updateOrCreateDataToDatabase("referalStrings",{uid: user.uid, userId: user.uid})
 })
 
 exports.deleteUserInformation = functions.auth.user().onDelete(function(user,context){

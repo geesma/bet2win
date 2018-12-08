@@ -109,9 +109,7 @@ export class AuthService {
     const data: User = {
       userConfirmed: user.emailVerified,
       uid: user.uid,
-      email: user.email,
-      referalNumber: 0,
-      referalString: user.uid
+      email: user.email
     }
 
     return userRef.update(data)
