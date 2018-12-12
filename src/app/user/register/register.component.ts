@@ -137,6 +137,7 @@ export class RegisterComponent implements OnInit {
     }
     this.functions.checkCode(params).then(() => {
       this.codeConfirmationError = false;
+      this.processEmailVerification = false
     }).catch((err) => {
       this.errorMessage = err.error.error
       this.codeConfirmationError = true

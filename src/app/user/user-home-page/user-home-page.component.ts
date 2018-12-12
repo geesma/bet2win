@@ -18,7 +18,7 @@ export class UserHomePageComponent implements OnInit {
   user$: Observable<User>;
   userAuth$: Observable<firebase.User>;
 
-  constructor(private auth: AuthService, private router: Router, private afAuth: AngularFireAuth) {}
+  constructor(public auth: AuthService, private router: Router, private afAuth: AngularFireAuth) {}
 
   logout() {
     this.afAuth.auth.signOut()

@@ -23,8 +23,8 @@ function getDataFromDatabase(doc: string, uid: string) {
   return admin.firestore().doc(`/${doc}/${uid}`).get()
 }
 
-function setDataToDatabase(doc: string, data) {
-  return admin.firestore().doc(`/${doc}/${data.uid}`).create(data)
+async function setDataToDatabase(doc: string, data) {
+  return await admin.firestore().doc(`/${doc}/${data.uid}`).create(data)
 }
 
 async function updateOrCreateDataToDatabase(doc: string, data) {
@@ -51,7 +51,7 @@ function sendEmailToUser(name: string, email: string, url: string, code: string)
   }
   sgMail.send(msg).then(() => {
     console.log("email - sended")
-  })
+  }).catch((err) => {return err})
 }
 
 async function grandAdminRole(email: string): Promise<void> {
@@ -81,7 +81,8 @@ function getUser(email: string) {
 /* User detele */
 
 exports.deleteUser = functions.firestore.document('users/{userID}').onDelete(function(user,context) {
-  admin.firestore().doc(`user-confirmations/${user.data().uid}`).delete()
+  admin.firestore().doc(`user-confirmations/${user.data().uid}`).delete().catch((err) => {return err})
+  admin.firestore().doc(`referalStrings/${user.data().referalString}`).delete().catch((err) => {return err})
 })
 
 /* Account verification */
@@ -89,7 +90,7 @@ exports.deleteUser = functions.firestore.document('users/{userID}').onDelete(fun
 exports.sendVerification = functions.firestore.document('users/{userId}').onUpdate((change, context) => {
   const newValue = change.after.data();
   const oldValue = change.before.data();
-  if(newValue.userConfirmationMethod !== oldValue.userConfirmationMethod && oldValue.userConfirmed == false) {
+  if(newValue.userConfirmationMethod !== oldValue.userConfirmationMethod && oldValue.userConfirmed === false) {
     const code = Math.floor(Math.random()*900000) + 100000;
     switch(newValue.userConfirmationMethod) {
       case "email":
@@ -97,18 +98,35 @@ exports.sendVerification = functions.firestore.document('users/{userId}').onUpda
         sendEmailToUser(newValue.name, newValue.email, REGISTER_URL, ""+code+"")
         break;
       case "":
-        updateOrCreateDataToDatabase("users", {uid: newValue.uid, userConfirmationMethod: oldValue.userConfirmationMethod})
-        admin.firestore().doc(`user-confirmations/${newValue.uid}`).delete()
+        updateOrCreateDataToDatabase("users", {uid: oldValue.uid, userConfirmationMethod: oldValue.userConfirmationMethod}).catch((err) => {return err})
+        admin.firestore().doc(`user-confirmations/${newValue.uid}`).delete().catch((err) => {return err})
         break;
+      case "delete":
+        admin.firestore().doc(`user-confirmations/${oldValue.uid}`).delete().catch((err) => {return err})
+        admin.firestore().doc(`users/${oldValue.uid}`).update({userConfirmationMethod: admin.firestore.FieldValue.delete()}).catch((err) => {return err})
       default:
-        admin.firestore().doc(`user-confirmations/${newValue.uid}`).delete()
         break;
     }
   }
   if(newValue.userConfirmed !== oldValue.userConfirmed) {
     if(newValue.userConfirmed == false) {
-      admin.firestore().doc(`users/${oldValue.uid}`).update({userConfirmationMethod: admin.firestore.FieldValue.delete()})
+      admin.firestore().doc(`users/${oldValue.uid}`).update({userConfirmationMethod: "delete"}).catch((err) => {return err})
+    } else {
+      admin.firestore().doc(`user-confirmations/${oldValue.uid}`).delete().catch((err) => {return err})
     }
+  }
+  if(newValue.referalString !== oldValue.referalString ) {
+    // Change referalString from referalStrings
+  }
+  if(newValue.referal !== null) {
+    if(newValue.referal !== oldValue.referal)
+    admin.firestore().doc(`referalString/${newValue.referal}`).get().then((userData) => {
+      const data = userData.data();
+      admin.firestore().doc(`users/${data.userId}`).get().then((user) => {
+        const referals = user.data().referalNumber + 1
+        user.ref.update({referalNumber: referals}).catch((err) => {return err})
+      }).catch((err) => {return err})
+    }).catch(err => {return err})
   }
   return "operations done"
 });
@@ -119,36 +137,35 @@ export const checkEmailWithCode = functions.https.onRequest((request,response) =
   corsHandler(request, response, async () => {
     try {
       const params = request.body;
-      const user = await getDataFromDatabase("user-confirmations",params.uid);
+      const user = await getDataFromDatabase("user-confirmations",params.uid).catch((err) => {return err});
       const data = user.data()
       if(data.attemps && data.attemps < 9) {
-        updateOrCreateDataToDatabase("user-confirmations", {uid: data.uid, attemps: data.attemps+1})
+        updateOrCreateDataToDatabase("user-confirmations", {uid: data.uid, attemps: data.attemps+1}).catch((err) => {return err})
         if(params.code == data.code && data.method === "email") {
-          updateOrCreateDataToDatabase("users",{uid: data.uid, userConfirmed: true})
-          admin.firestore().doc(`user-confirmations/${data.uid}`).delete()
+          updateOrCreateDataToDatabase("users",{uid: data.uid, userConfirmed: true}).catch((err) => {return err})
           return response.status(200).send({response: "Los codigos coinciden"})
         } else {
           return response.status(500).send({error: "Los codigos no coinciden o el metodo seleccionado no es correcto"})
         }
       } else if (data.attemps >= 9 && data.attemps < 20) {
-        updateOrCreateDataToDatabase("user-confirmations", {uid: data.uid, attemps: data.attemps+1})
+        updateOrCreateDataToDatabase("user-confirmations", {uid: data.uid, attemps: data.attemps+1}).catch((err) => {return err})
         return response.status(500).send({error: "Demasiados intentos"})
       } else if (data.attemps == 20 ) {
         try {
           admin.firestore().doc(`user-confirmations/${data.uid}`).delete().then(() => {
             admin.firestore().doc(`users/${data.uid}`).delete().then(() => {
-              admin.auth().deleteUser(data.uid)
-            })
-          })
+              admin.auth().deleteUser(data.uid).catch((err) => {return err})
+            }).catch((err) => {return err})
+          }).catch((err) => {return err})
           return response.status(500).send({error: "Demasiados intentos, usuari eliminado"})
         }
         catch(err) {
           return response.status(500).send({error: err})
         }
       } else {
-        updateOrCreateDataToDatabase("user-confirmations", {uid: data.uid, attemps: 1})
+        updateOrCreateDataToDatabase("user-confirmations", {uid: data.uid, attemps: 1}).catch((err) => {return err})
         if(params.code == data.code && data.method === "email") {
-          updateOrCreateDataToDatabase("users",{uid: data.uid, userConfirmed: true})
+          updateOrCreateDataToDatabase("users",{uid: data.uid, userConfirmed: true}).catch((err) => {return err})
           return response.status(200).send({response: "Los codigos coinciden"})
         } else {
           return response.status(500).send({error: "Los codigos no coinciden o el metodo seleccionado no es correcto"})
@@ -177,17 +194,18 @@ exports.addAdmin = functions.https.onCall((data,context) => {
   })
 })
 
-exports.setPermisions = functions.auth.user().onCreate(function(user,context){
+exports.createUserWithData = functions.auth.user().onCreate(function(user,context){
   const permisions = {
-    admin: true,
-    developer: true,
-    premium: true
+    admin: false,
+    developer: false,
+    premium: false,
+    promotor: false
   }
   admin.auth().setCustomUserClaims(user.uid, permisions).then(success =>"Changed").catch(err =>"Error")
-  updateOrCreateDataToDatabase("users",{uid: user.uid ,roles: permisions, referalString: user.uid, referalNumber: 0})
-  updateOrCreateDataToDatabase("referalStrings",{uid: user.uid, userId: user.uid})
+  setDataToDatabase("users",{uid: user.uid, email: user.email ,roles: permisions, userConfirmed: user.emailVerified, referalString: user.uid, referalNumber: 0}).catch((err) => {return err})
+  setDataToDatabase("referalStrings",{uid: user.uid, userId: user.uid}).catch((err) => {return err})
 })
 
 exports.deleteUserInformation = functions.auth.user().onDelete(function(user,context){
-  admin.firestore().doc(`users/${user.uid}`).delete()
+  admin.firestore().doc(`users/${user.uid}`).delete().catch((err) => {return err})
 })
