@@ -3,10 +3,9 @@ import { RegistrationValidator } from '../../core/validators/registration.valida
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 //import { moveIn, fallIn } from '../../router.animations';
 import { User } from '../../Interfaces/user';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functions.service';
-import { map, take, switchMap, share } from 'rxjs/operators';
 
 
 @Component({
@@ -29,12 +28,19 @@ export class RegisterComponent implements OnInit {
   codeConfirmationError: boolean = false;
   resendEmail: boolean = false;
   errorMessage: string = "";
+  referalStringUrl: string;
+  hasReferalUrl: boolean = false;
+  step = 1;
 
   constructor(public fb: FormBuilder,
               public auth: AuthService,
+              private route: ActivatedRoute,
               private router: Router,
               private functions: FirebaseFunctionsService) {
-
+    if(this.route.snapshot.params.referalString) {
+      this.referalStringUrl = this.route.snapshot.params.referalString
+      this.hasReferalUrl = true;
+    }
   }
 
   ngOnInit() {
@@ -66,7 +72,6 @@ export class RegisterComponent implements OnInit {
 
     this.referalForm = this.fb.group({
       'referalCode': ['', [
-        Validators.pattern('^[0-9]{6,6}$'),
         Validators.required
       ]]
     })
@@ -74,6 +79,25 @@ export class RegisterComponent implements OnInit {
     this.auth.user.subscribe((user) => {
       if(user) {
         this.buidDetailForm(user)
+      }
+    })
+
+    this.auth.user.subscribe((user) => {
+      if(user) {
+        this.step = 2
+        if(user.name && user.surname && user.phone && user.nationality && user.birthDate) {
+          this.step = 3
+          if(user.userConfirmed) {
+            this.step = 4
+            if(user.isReferal || user.isReferal == false) {
+              this.router.navigate(['/user/subscription']);
+            }
+          } else if (user.isReferal || user.isReferal == false) {
+            this.hasReferalUrl = true
+          }
+        } else if (user.isReferal || user.isReferal == false) {
+          this.hasReferalUrl = true
+        }
       }
     })
   }
@@ -110,6 +134,12 @@ export class RegisterComponent implements OnInit {
   private setPhoneNumber() {return '+'+this.prefix + this.phone}
 
   setDetailsToUser(user: User) {
+    if(this.hasReferalUrl) {
+      this.auth.updateUser(user, {
+        referal: this.referalStringUrl || null,
+        isReferal: this.hasReferalUrl
+      })
+    }
     return this.auth.updateUser(user, {
       name: this.name,
       surname: this.surname,
@@ -118,7 +148,7 @@ export class RegisterComponent implements OnInit {
       prefix: this.prefix,
       nationality: this.nationality,
       idCard: this.idCard || null,
-      birthDate: this.birthDate,
+      birthDate: this.birthDate
     })
   }
 
@@ -159,24 +189,33 @@ export class RegisterComponent implements OnInit {
     this.resendEmail = false
   }
 
-  get referal() {return this.emailCodeForm.get('code').value}
+  get referal() {return this.emailCodeForm.get('referalCode').value}
 
   sendReferal(uid: string) {
     let user: User = {
       uid: uid,
       email: '',
-      referalNumber: 0,
-      referalString: uid,
-      referal: this.referal
+      referal: this.referal,
+      isReferal: true
     }
+    this.functions.sendReferal(user)
+  }
 
+  passWithoutReferal(uid: string) {
+    let user: User = {
+      uid: uid,
+      email: '',
+      referal: '',
+      isReferal: false
+    }
+    this.functions.sendReferal(user)
   }
 
   private buidDetailForm(data: User) {
     this.detailForm = this.fb.group({
       'name': [data.name || '', [Validators.required]],
       'surname': [data.surname || '', [Validators.required]],
-      'phone': [data.phone || '', [Validators.required]],
+      'phone': [data.phoneNumber || '', [Validators.required]],
       'prefix': [data.prefix || '', [Validators.required]],
       'nationality': [data.nationality || '', [Validators.required]],
       'idCard': [data.idCard || '',[]],

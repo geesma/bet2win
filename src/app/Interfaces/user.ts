@@ -2,6 +2,7 @@ export interface Roles {
   premium?: boolean;
   developer?: boolean;
   admin?: boolean;
+  promotor?: boolean;
 }
 //
 // export interface platformsTypes {
@@ -41,5 +42,7 @@ export interface User {
   birthDate?: Date;
   referalNumber?: number;
   referalString?: string;
+  isReferal?: boolean;
   referal?: string;
+  roles?: Roles;
 }

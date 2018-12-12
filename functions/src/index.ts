@@ -19,8 +19,8 @@ sgMail.setSubstitutionWrappers('{{', '}}');
 
 /* Global functions */
 
-function getDataFromDatabase(doc: string, uid: string) {
-  return admin.firestore().doc(`/${doc}/${uid}`).get()
+async function getDataFromDatabase(doc: string, uid: string) {
+  return await admin.firestore().doc(`/${doc}/${uid}`).get()
 }
 
 async function setDataToDatabase(doc: string, data) {
@@ -35,7 +35,7 @@ async function updateOrCreateDataToDatabase(doc: string, data) {
 
 async function getCurrentUserRoles(email: string) {
   const user = await getUser(email);
-  return user.customClaims
+  return (user.customClaims as any)
 }
 
 function sendEmailToUser(name: string, email: string, url: string, code: string) {
@@ -87,46 +87,52 @@ exports.deleteUser = functions.firestore.document('users/{userID}').onDelete(fun
 
 /* Account verification */
 
-exports.sendVerification = functions.firestore.document('users/{userId}').onUpdate((change, context) => {
+exports.sendVerification = functions.firestore.document('users/{userId}').onUpdate(async (change, context) => {
   const newValue = change.after.data();
   const oldValue = change.before.data();
   if(newValue.userConfirmationMethod !== oldValue.userConfirmationMethod && oldValue.userConfirmed === false) {
     const code = Math.floor(Math.random()*900000) + 100000;
     switch(newValue.userConfirmationMethod) {
       case "email":
-        updateOrCreateDataToDatabase("user-confirmations", {uid: newValue.uid, code: code, method: newValue.userConfirmationMethod}).catch(err => {return {error: err}});
+        await updateOrCreateDataToDatabase("user-confirmations", {uid: newValue.uid, code: code, method: newValue.userConfirmationMethod}).catch(err => {return {error: err}});
         sendEmailToUser(newValue.name, newValue.email, REGISTER_URL, ""+code+"")
         break;
       case "":
-        updateOrCreateDataToDatabase("users", {uid: oldValue.uid, userConfirmationMethod: oldValue.userConfirmationMethod}).catch((err) => {return err})
-        admin.firestore().doc(`user-confirmations/${newValue.uid}`).delete().catch((err) => {return err})
+        await updateOrCreateDataToDatabase("users", {uid: oldValue.uid, userConfirmationMethod: oldValue.userConfirmationMethod}).catch((err) => {return err})
+        await admin.firestore().doc(`user-confirmations/${newValue.uid}`).delete().catch((err) => {return err})
         break;
       case "delete":
-        admin.firestore().doc(`user-confirmations/${oldValue.uid}`).delete().catch((err) => {return err})
-        admin.firestore().doc(`users/${oldValue.uid}`).update({userConfirmationMethod: admin.firestore.FieldValue.delete()}).catch((err) => {return err})
+        await admin.firestore().doc(`user-confirmations/${oldValue.uid}`).delete().catch((err) => {return err})
+        await admin.firestore().doc(`users/${oldValue.uid}`).update({userConfirmationMethod: admin.firestore.FieldValue.delete()}).catch((err) => {return err})
       default:
         break;
     }
   }
   if(newValue.userConfirmed !== oldValue.userConfirmed) {
-    if(newValue.userConfirmed == false) {
-      admin.firestore().doc(`users/${oldValue.uid}`).update({userConfirmationMethod: "delete"}).catch((err) => {return err})
+    if(newValue.userConfirmed === false) {
+      await admin.firestore().doc(`users/${oldValue.uid}`).update({userConfirmationMethod: "delete"}).catch((err) => {return err})
     } else {
-      admin.firestore().doc(`user-confirmations/${oldValue.uid}`).delete().catch((err) => {return err})
+      await admin.firestore().doc(`user-confirmations/${oldValue.uid}`).delete().catch((err) => {return err})
     }
   }
-  if(newValue.referalString !== oldValue.referalString ) {
-    // Change referalString from referalStrings
+  if(newValue.referalString !== oldValue.referalString) {
+    admin.firestore().doc(`referalStrings/${oldValue.uid}`).delete().then(() => {
+      setDataToDatabase('referalStrings',{uid: newValue.referalString, userId: newValue.uid}).catch((err) => {return err})
+    }).catch((err) => {return err})
   }
-  if(newValue.referal !== null) {
-    if(newValue.referal !== oldValue.referal)
-    admin.firestore().doc(`referalString/${newValue.referal}`).get().then((userData) => {
-      const data = userData.data();
+  if(newValue.referal !== oldValue.referal && newValue.isReferal) {
+    await admin.firestore().doc(`referalStrings/${newValue.referal}`).get().then((userdata) => {
+      const data = userdata.data()
       admin.firestore().doc(`users/${data.userId}`).get().then((user) => {
         const referals = user.data().referalNumber + 1
-        user.ref.update({referalNumber: referals}).catch((err) => {return err})
+        user.ref.update({referalNumber: referals}).then(() => {
+          console.log("+1 referal => " + data.userID)
+        }).catch((err) => {
+          console.error(err)
+          return err
+        })
       }).catch((err) => {return err})
-    }).catch(err => {return err})
+    }).catch((err) => {return err})
   }
   return "operations done"
 });
@@ -140,32 +146,32 @@ export const checkEmailWithCode = functions.https.onRequest((request,response) =
       const user = await getDataFromDatabase("user-confirmations",params.uid).catch((err) => {return err});
       const data = user.data()
       if(data.attemps && data.attemps < 9) {
-        updateOrCreateDataToDatabase("user-confirmations", {uid: data.uid, attemps: data.attemps+1}).catch((err) => {return err})
-        if(params.code == data.code && data.method === "email") {
-          updateOrCreateDataToDatabase("users",{uid: data.uid, userConfirmed: true}).catch((err) => {return err})
+        await updateOrCreateDataToDatabase("user-confirmations", {uid: data.uid, attemps: data.attemps+1}).catch((err) => {return err})
+        if(params.code === data.code && data.method === "email") {
+          await updateOrCreateDataToDatabase("users",{uid: data.uid, userConfirmed: true}).catch((err) => {return err})
           return response.status(200).send({response: "Los codigos coinciden"})
         } else {
           return response.status(500).send({error: "Los codigos no coinciden o el metodo seleccionado no es correcto"})
         }
       } else if (data.attemps >= 9 && data.attemps < 20) {
-        updateOrCreateDataToDatabase("user-confirmations", {uid: data.uid, attemps: data.attemps+1}).catch((err) => {return err})
+        await updateOrCreateDataToDatabase("user-confirmations", {uid: data.uid, attemps: data.attemps+1}).catch((err) => {return err})
         return response.status(500).send({error: "Demasiados intentos"})
-      } else if (data.attemps == 20 ) {
+      } else if (data.attemps === 20 ) {
         try {
-          admin.firestore().doc(`user-confirmations/${data.uid}`).delete().then(() => {
+          await admin.firestore().doc(`user-confirmations/${data.uid}`).delete().then(() => {
             admin.firestore().doc(`users/${data.uid}`).delete().then(() => {
               admin.auth().deleteUser(data.uid).catch((err) => {return err})
             }).catch((err) => {return err})
           }).catch((err) => {return err})
-          return response.status(500).send({error: "Demasiados intentos, usuari eliminado"})
+          return response.status(500).send({error: "Demasiados intentos, usuario eliminado"})
         }
         catch(err) {
           return response.status(500).send({error: err})
         }
       } else {
-        updateOrCreateDataToDatabase("user-confirmations", {uid: data.uid, attemps: 1}).catch((err) => {return err})
-        if(params.code == data.code && data.method === "email") {
-          updateOrCreateDataToDatabase("users",{uid: data.uid, userConfirmed: true}).catch((err) => {return err})
+        await updateOrCreateDataToDatabase("user-confirmations", {uid: data.uid, attemps: 1}).catch((err) => {return err})
+        if(params.code === data.code && data.method === "email") {
+          await updateOrCreateDataToDatabase("users",{uid: data.uid, userConfirmed: true}).catch((err) => {return err})
           return response.status(200).send({response: "Los codigos coinciden"})
         } else {
           return response.status(500).send({error: "Los codigos no coinciden o el metodo seleccionado no es correcto"})
@@ -202,7 +208,7 @@ exports.createUserWithData = functions.auth.user().onCreate(function(user,contex
     promotor: false
   }
   admin.auth().setCustomUserClaims(user.uid, permisions).then(success =>"Changed").catch(err =>"Error")
-  setDataToDatabase("users",{uid: user.uid, email: user.email ,roles: permisions, userConfirmed: user.emailVerified, referalString: user.uid, referalNumber: 0}).catch((err) => {return err})
+  setDataToDatabase("users",{uid: user.uid, email: user.email ,roles: permisions, userConfirmed: user.emailVerified, referalString: user.uid, referalNumber: 0, hasReferal: false}).catch((err) => {return err})
   setDataToDatabase("referalStrings",{uid: user.uid, userId: user.uid}).catch((err) => {return err})
 })
 

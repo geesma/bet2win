@@ -8,7 +8,7 @@ import { UserHomePageComponent } from './user-home-page/user-home-page.component
 
 @NgModule({
   declarations: [
-    UserHomePageComponent,
+    UserHomePageComponent
   ],
   imports: [
     CommonModule,

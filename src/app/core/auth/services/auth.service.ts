@@ -38,13 +38,15 @@ export class AuthService {
         }))
   }
 
-  registerUser(email: string, password: string) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-      .then(user => {
-        this.handleSuccess('Bienvenido ' + user.user.email);
-        return this.setUserDoc(user.user) // create initial user document
-      })
-      .catch(error => this.handleError(error) );
+  async registerUser(email: string, password: string) {
+    try {
+      const user = await this.afAuth.auth.createUserWithEmailAndPassword(email, password);
+      await this.setUserDoc(user.user);
+      this.handleSuccess('Bienvenido ' + user.user.email);
+    }
+    catch (error) {
+      return this.handleError(error);
+    }
   }
 
   loginUser(email: string, password: string, remember: boolean) {
@@ -68,7 +70,7 @@ export class AuthService {
   }
 
   logout() {
-    this.afAuth.auth.signOut().then((res) => this.router.navigate(['/'])).then((res) => {
+    this.afAuth.auth.signOut().then(() => this.router.navigate(['/'])).then(() => {
       this.notify.update('Hasta pronto', 'success');
     });
   }

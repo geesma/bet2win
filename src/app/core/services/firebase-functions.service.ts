@@ -26,8 +26,8 @@ export class FirebaseFunctionsService {
     })
   }
 
-  sendRefera(user: User) {
-    this.auth.updateUser(user, {referal: user.referal}).catch(err => {
+  sendReferal(user: User) {
+    this.auth.updateUser(user, {isReferal: user.isReferal, referal: user.referal}).catch(err => {
       console.log(err)
     })
   }
