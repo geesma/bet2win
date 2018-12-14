@@ -1,3 +1,261 @@
-<p>
-  subscription works!
-</p>
+<section class="b2w-full-screen-form">
+  <div class="container">
+    <div class="goBack" *ngIf="step > 1">
+      <a href="" (click)="$event.preventDefault(); stepBack()">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+
+    </div>
+    <!-- Subscripciones types -->
+    <div class="container" *ngIf="step == 1">
+      <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h2>Subscripciones</h2>
+        <p class="lead">Quieres cambiar al plan premium</p>
+      </div>
+      <div class="card-deck mb-3 text-center b2w-pricing-cards">
+        <div class="card mb-4 box-shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Gratuita</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">Gratis</h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Disfrutas de nuestro servicio</li>
+              <li>Rentabilidad hasta el 3 %</li>
+              <li><span class="pricing-option-not-available">Soporte</span></li>
+              <li><span class="pricing-option-not-available">Ventajas de fidelidad</span></li>
+            </ul>
+            <button type="button" (click)="freePlan()" class="btn btn-lg btn-block btn-outline-primary">Seguir sin premium</button>
+          </div>
+        </div>
+        <div class="card mb-4 box-shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Premium</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title"><small class="text-muted">Desde</small> 25€ <small class="text-muted"></small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Modo de pago adaptado</li>
+              <li>Precio fijo asegurado*</li>
+              <li>Pago automatico</li>
+              <li>Ventajas de fidelidad</li>
+            </ul>
+            <button type="button" (click)="premiumPacks()" class="btn btn-lg btn-block btn-primary">Mirar los paquetes</button>
+          </div>
+        </div>
+      </div>
+      <div class="pricing-bottom px-3 py-3 mx-auto text-center">
+        <p>* Precio fijo asegurado con las funciones contratadas, en caso de una actualización de la cuota mensual con nuevas funciones, cada cliente tendra la opción de mantener o actualizar la cuota, dependiendo si desea las nuevas funcionalidades o mantener las actuales</p>
+      </div>
+    </div>
+    <!-- Subscriptions packs -->
+    <div class="container" *ngIf="step == 2">
+      <div class="row text-left">
+        <div class="col-md-5 col-lg-4 order-md-2 mb-4">
+          <div class="pb-md-5 text-center">
+            <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
+                      assets/images/logos/b2w_logo_72px.png 1x,
+                      assets/images/logos/b2w_logo_72px-2x.png 2x,
+                      assets/images/logos/b2w_logo_72px-3x.png 3x"alt="bet2win logo for the login page">
+            <h2>Formulario de compra</h2>
+            <p class="lead">Como quieres realizar el pago</p>
+          </div>
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Tu cesta</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0">{{ cart.product.title }}</h6>
+                <small class="text-muted">{{ cart.product.subtitle }}</small>
+              </div>
+              <span class="text-muted">{{ cart.product.price }} €</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed" *ngFor="let extra of cart.extras">
+              <div>
+                <h6 class="my-0">{{ extra.title }}</h6>
+                <small class="text-muted">{{ extra.subtitle }}</small>
+              </div>
+              <span class="text-muted">{{ extra.price }} €</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (EUR)</span>
+              <strong><small>{{ !cart.product.monthly? "pago único":"al mes" }}</small> {{ cart.total }} €</strong>
+            </li>
+          </ul>
+          <form class="card p-2 d-none d-md-block">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Promo code">
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-secondary">Canjear</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-7 col-lg-8 order-md-1">
+          <div class="container">
+            <form [formGroup]="subscriptionForm" (ngSubmit)="generatePayment()">
+              <h4>Tipo de contrato</h4>
+              <hr class="my-4">
+              <div class="d-block my-3">
+                <div class="row">
+                  <div class="col-6 col-lg">
+                    <input id="oneMonth" formControlName="paymentFrequency" value="oneMonth" type="radio" (change)="updatePrice()" checked required>
+                    <label class="payment-method" for="oneMonth">
+                      <div class="row justify-content-between">
+                        <div class="col align-self-center">
+                          1 mes
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="col-6 col-lg">
+                    <input id="threeMonth" formControlName="paymentFrequency" value="threeMonth" type="radio" (change)="updatePrice()" checked required>
+                    <label class="payment-method" for="threeMonth">
+                      <div class="row justify-content-between">
+                        <div class="col align-self-center">
+                          3 meses
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="col-6 col-lg">
+                    <input id="sixMonth" formControlName="paymentFrequency" value="sixMonth" type="radio" (change)="updatePrice()" checked required>
+                    <label class="payment-method" for="sixMonth">
+                      <div class="row justify-content-between">
+                        <div class="col align-self-center">
+                          6 meses
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="col-6 col-lg">
+                    <input id="twelveMonth" formControlName="paymentFrequency" value="twelveMonth" type="radio" (change)="updatePrice()" checked required>
+                    <label class="payment-method" for="twelveMonth">
+                      <div class="row justify-content-between">
+                        <div class="col align-self-center">
+                          12 meses
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <h4 class="mt-5">Modalidad de pago</h4>
+              <hr class="my-4">
+              <div class="d-block my-3">
+                <div class="row">
+                  <div class="col-12 col-sm-6">
+                    <input id="monthly" formControlName="paymentTime" value="monthly" type="radio" (change)="updatePrice()" checked required>
+                    <label class="payment-method" for="monthly">
+                      <div class="row justify-content-between">
+                        <div class="col align-self-center">
+                          {{ string_1 }}
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <input id="allNow" formControlName="paymentTime" value="allNow" type="radio" (change)="updatePrice()" checked required>
+                    <label class="payment-method" for="allNow">
+                      <div class="row justify-content-between">
+                        <div class="col align-self-center">
+                          {{ string_2 }}
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <h4 class="mt-5">Plataforma de pago</h4>
+              <hr class="my-4">
+              <div class="d-block my-3">
+                <div>
+                  <input id="card" formControlName="paymentMethod" value="card" type="radio" (change)="updatePrice()" checked required>
+                  <label class="payment-method" for="card">
+                    <div class="row justify-content-between">
+                      <div class="col align-self-center">
+                        Tarjetas
+                      </div>
+                      <div class="col text-right align-self-end">
+                        <span class="brands d-none d-md-block">
+                          <img src="assets/images/brand-logos/cards/visa.png" srcset="
+                                    assets/images/brand-logos/cards/visa.png 1x,
+                                    assets/images/brand-logos/cards/visa-2x.png 2x,
+                                    assets/images/brand-logos/cards/visa-3x.png 3x"alt="visa logo for the payment page">
+                          <img src="assets/images/brand-logos/cards/mastercard.png" srcset="
+                                    assets/images/brand-logos/cards/mastercard.png 1x,
+                                    assets/images/brand-logos/cards/mastercard-2x.png 2x,
+                                    assets/images/brand-logos/cards/mastercard-3x.png 3x"alt="visa logo for the payment page">
+                        </span>
+                        <span class="brands d-block d-md-none">
+                          <i class="fas fa-credit-card"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+                <div>
+                  <input id="paypal" formControlName="paymentMethod" value="paypal" type="radio" (change)="updatePrice()" required>
+                  <label class="payment-method" for="paypal">
+                    <div class="row justify-content-between">
+                      <div class="col align-self-center">
+                        Paypal
+                      </div>
+                      <div class="col text-right align-self-end">
+                        <span class="brands d-none d-md-block">
+                          <img src="assets/images/brand-logos/cards/paypal.png" srcset="
+                                    assets/images/brand-logos/cards/paypal.png 1x,
+                                    assets/images/brand-logos/cards/paypal-2x.png 2x,
+                                    assets/images/brand-logos/cards/paypal-3x.png 3x"alt="visa logo for the payment page">
+                        </span>
+                        <span class="brands d-block d-md-none">
+                          <i class="fab fa-paypal"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <hr class="mb-4">
+              <div class="d-block d-md-none mb-5">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="text-muted">Tu cesta</span>
+                </h4>
+                <ul class="list-group mb-3">
+                  <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                      <h6 class="my-0">{{ cart.product.title }}</h6>
+                      <small class="text-muted">{{ cart.product.subtitle }}</small>
+                    </div>
+                    <span class="text-muted">{{ cart.product.price }} €</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between lh-condensed" *ngFor="let extra of cart.extras">
+                    <div>
+                      <h6 class="my-0">{{ extra.title }}</h6>
+                      <small class="text-muted">{{ extra.subtitle }}</small>
+                    </div>
+                    <span class="text-muted">{{ extra.price }} €</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span>Total (EUR)</span>
+                    <strong><small>{{ !cart.product.monthly? "pago único":"al mes" }}</small> {{ cart.total }} €</strong>
+                  </li>
+                </ul>
+                <form class="card p-2">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Promo code">
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-secondary">Canjear</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <button class="btn btn-primary btn-lg btn-block" [disabled]="subscriptionForm.invalid" type="submit">Continua con la compra</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

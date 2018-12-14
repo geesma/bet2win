@@ -2,7 +2,7 @@
   <header>
       <button (click)="logout()" class="basic-btn">Logout</button>
     </header>
-{{ user.uid }}
 {{ user | json }}
-hello
+
+<h1>{{ auth.isAdmin(user) }}</h1>
 </ng-container>

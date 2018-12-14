@@ -31,6 +31,9 @@ export class RegisterComponent implements OnInit {
   referalStringUrl: string;
   hasReferalUrl: boolean = false;
   step = 1;
+  loading: boolean = false;
+  loading2: boolean = false;
+  loading3: boolean = false;
 
   constructor(public fb: FormBuilder,
               public auth: AuthService,
@@ -79,11 +82,6 @@ export class RegisterComponent implements OnInit {
     this.auth.user.subscribe((user) => {
       if(user) {
         this.buidDetailForm(user)
-      }
-    })
-
-    this.auth.user.subscribe((user) => {
-      if(user) {
         this.step = 2
         if(user.name && user.surname && user.phone && user.nationality && user.birthDate) {
           this.step = 3
@@ -110,6 +108,7 @@ export class RegisterComponent implements OnInit {
   get password() {return this.passwordFormGroup.get('password').value}
 
   signUp() {
+    this.loading = true;
     this.auth.registerUser(this.email, this.password)
   }
 
@@ -134,6 +133,7 @@ export class RegisterComponent implements OnInit {
   private setPhoneNumber() {return '+'+this.prefix + this.phone}
 
   setDetailsToUser(user: User) {
+    this.loading2 = true
     if(this.hasReferalUrl) {
       this.auth.updateUser(user, {
         referal: this.referalStringUrl || null,
@@ -189,9 +189,10 @@ export class RegisterComponent implements OnInit {
     this.resendEmail = false
   }
 
-  get referal() {return this.emailCodeForm.get('referalCode').value}
+  get referal() {return this.referalForm.get('referalCode').value}
 
   sendReferal(uid: string) {
+    this.loading3 = true
     let user: User = {
       uid: uid,
       email: '',
@@ -202,6 +203,7 @@ export class RegisterComponent implements OnInit {
   }
 
   passWithoutReferal(uid: string) {
+    this.loading3 = true
     let user: User = {
       uid: uid,
       email: '',

@@ -80,9 +80,23 @@ function getUser(email: string) {
 
 /* User detele */
 
-exports.deleteUser = functions.firestore.document('users/{userID}').onDelete(function(user,context) {
+exports.deleteUser = functions.firestore.document('users/{userID}').onDelete(async function(user,context) {
   admin.firestore().doc(`user-confirmations/${user.data().uid}`).delete().catch((err) => {return err})
   admin.firestore().doc(`referalStrings/${user.data().referalString}`).delete().catch((err) => {return err})
+  if(user.data().isReferal) {
+    await admin.firestore().doc(`referalStrings/${user.data().referal}`).get().then((userdata) => {
+      const data = userdata.data()
+      admin.firestore().doc(`users/${data.userId}`).get().then((userRefered) => {
+        const referals = userRefered.data().referalNumber - 1
+        userRefered.ref.update({referalNumber: referals}).then(() => {
+          console.log("-1 referal => " + data)
+        }).catch((err) => {
+          console.error(err)
+          return err
+        })
+      }).catch((err) => {return err})
+    }).catch((err) => {return err})
+  }
 })
 
 /* Account verification */
@@ -126,7 +140,7 @@ exports.sendVerification = functions.firestore.document('users/{userId}').onUpda
       admin.firestore().doc(`users/${data.userId}`).get().then((user) => {
         const referals = user.data().referalNumber + 1
         user.ref.update({referalNumber: referals}).then(() => {
-          console.log("+1 referal => " + data.userID)
+          console.log("+1 referal => " + data)
         }).catch((err) => {
           console.error(err)
           return err

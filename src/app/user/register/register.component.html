@@ -5,27 +5,26 @@
         <div class="col-xs bs-wizard-step" [class.disabled]="step < 1" [class.complete]="step > 1" [class.active]="step == 1">
           <div class="text-center bs-wizard-stepnum">Paso 1</div>
           <div class="progress"><div class="progress-bar"></div></div>
-          <a href="#" class="bs-wizard-dot"></a>
+          <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
           <div class="bs-wizard-info text-center">Crear cuenta</div>
         </div>
         <div class="col-xs bs-wizard-step" [class.disabled]="step < 2" [class.complete]="step > 2" [class.active]="step == 2">
           <div class="text-center bs-wizard-stepnum">Paso 2</div>
           <div class="progress"><div class="progress-bar"></div></div>
-          <a href="#" class="bs-wizard-dot"></a>
+          <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
           <div class="bs-wizard-info text-center">Información</div>
         </div>
         <div class="col-xs bs-wizard-step" [class.disabled]="step < 3" [class.complete]="step > 3" [class.active]="step == 3">
           <div class="text-center bs-wizard-stepnum">Paso 3</div>
           <div class="progress"><div class="progress-bar"></div></div>
-          <a href="#" class="bs-wizard-dot"></a>
+          <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
           <div class="bs-wizard-info text-center">Verificación</div>
         </div>
         <div class="col-xs bs-wizard-step disabled" [class.disabled]="step < 4" [class.complete]="step > 4" [class.active]="step == 4" *ngIf="!hasReferalUrl">
           <div class="text-center bs-wizard-stepnum">Paso 4</div>
-          <div class="progress"><div class="progress-bar"></div>
-        </div>
-        <a href="#" class="bs-wizard-dot"></a>
-        <div class="bs-wizard-info text-center">Referido</div>
+          <div class="progress"><div class="progress-bar"></div></div>
+          <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
+          <div class="bs-wizard-info text-center">Referido</div>
         </div>
       </div>
       <div class="clearfix"></div>
@@ -57,7 +56,7 @@
             <input type="password" formControlName="repeatPassword" id="inputPasswordRepeat" class="form-control b2w-confirmPassword" name="repeatPassword" placeholder="Contraseña" required>
           </div>
           I accept the Terms of Service and have read the Services Privacy Policy
-          <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!isSignUpFormValid()">Siguiente</button>
+          <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!isSignUpFormValid() || loading">Siguiente <i class="fas fa-circle-notch fa-spin" *ngIf="loading"></i></button>
         </div>
         <div class="card b2w-login-card">
           <p>Ya dispones de una cuenta <a [routerLink]="['/user/login']">iniciar sesión</a></p>
@@ -122,7 +121,7 @@
             <input type="text" formControlName="idCard" id="inputIdCard" class="form-control" placeholder="Carne de identidad (en caso de querer factura)" required>
           </div>
 
-          <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!isDetailFormValid()">Siguiente</button>
+          <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!isDetailFormValid() || loading2">Siguiente <i class="fas fa-circle-notch fa-spin" *ngIf="loading2"></i></button>
         </div>
       </form>
       <!-- Email confirmation -->
@@ -201,7 +200,7 @@
                     <label for="inputCode" class="sr-only">Codigo de referido</label>
                     <input type="text" formControlName="referalCode" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="false" [class.is-valid]="true">
                   </div>
-                  <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="false">Confirmar</button>
+                  <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="loading3">Confirmar <i class="fas fa-circle-notch fa-spin" *ngIf="loading3"></i></button>
                   <div class="pt-4">
                     <small>Si no te ha referido nadie y quieras empezar a usar nuestro servicio <a href (click)="$event.preventDefault(); passWithoutReferal(user.uid)" class="card-link">haz click aquí</a>, pero recuerde que no se podrá poner a un referido más adelante</small>
                   </div>

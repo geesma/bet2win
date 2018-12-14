@@ -5,12 +5,6 @@ export interface Roles {
   promotor?: boolean;
 }
 //
-// export interface platformsTypes {
-//   name: string,
-//   extraPrice: number,
-//   avaliable: boolean
-// }
-//
 // export interface SubscriptionTypes {
 //   name?: string;
 //   price?: number;

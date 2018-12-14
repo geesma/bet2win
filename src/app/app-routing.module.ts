@@ -8,7 +8,7 @@ import { AuthGuard } from './core/auth/auth.guard';
 
 const routes: Routes = [
   { path: 'user', component: LoginLayoutComponent ,loadChildren:  './core/auth/auth.module#AuthModule'},
-  { path: 'panel', component: UserLayoutComponent , loadChildren: './user/user.module#UserModule' , canActivate: [AuthGuard]},
+  { path: 'dashboard', component: UserLayoutComponent , loadChildren: './user/user.module#UserModule' , canActivate: [AuthGuard]},
   { path: 'error', loadChildren: './errors/errors.module#ErrorsModule'},
   { path: '**', redirectTo: '/error/404', pathMatch: 'full' },
   // { path: 'user/register', loadChildren:  './core/auth/auth.module#AuthModule' },

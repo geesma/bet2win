@@ -24,15 +24,8 @@ export class AuthService {
     this.user = this.afAuth.authState.pipe(
         switchMap(user => {
           if (user) {
-            // logged in, get custom user from Firestore
-            this.afs.doc<User>(`users/${user.uid}`).valueChanges().subscribe((userData) => {
-              if(!userData.email){
-                this.setUserDoc(user)
-              }
-            })
             return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
           } else {
-            // logged out, null
             return of(null)
           }
         }))
@@ -41,7 +34,6 @@ export class AuthService {
   async registerUser(email: string, password: string) {
     try {
       const user = await this.afAuth.auth.createUserWithEmailAndPassword(email, password);
-      await this.setUserDoc(user.user);
       this.handleSuccess('Bienvenido ' + user.user.email);
     }
     catch (error) {
@@ -92,7 +84,6 @@ export class AuthService {
 
   private handleSuccess(message) {
     console.log(message);
-    this.notify.update(message, 'success')
   }
 
   private oAuthLogin(provider) {
@@ -104,18 +95,18 @@ export class AuthService {
     });
   }
 
-  private setUserDoc(user: firebase.User) {
-
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-
-    const data: User = {
-      uid: user.uid,
-      email: user.email
-    }
-
-    return userRef.update(data)
-
-  }
+  // private setUserDoc(user: firebase.User) {
+  //
+  //   const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+  //
+  //   const data: User = {
+  //     uid: user.uid,
+  //     email: user.email
+  //   }
+  //
+  //   return userRef.update(data)
+  //
+  // }
 
   private emailPasswordUserLogin(email: string, password: string) {
     this.afAuth.auth.signInWithEmailAndPassword(email,password).then(userdata => {
@@ -129,4 +120,58 @@ export class AuthService {
   updateUser(user: User, data: any) {
     return this.afs.doc(`users/${user.uid}`).update(data)
   }
+
+  ///// Role-based Authorization //////
+
+  canEdit(user: User): boolean {
+    const allowed = ['admin', 'developer']
+    return this.checkAuthorization(user, allowed)
+  }
+
+  canEditDev(user: User): boolean {
+    const allowed = ['developer']
+    return this.checkAuthorization(user, allowed)
+  }
+
+  canDelete(user: User): boolean {
+    const allowed = ['admin', 'developer']
+    return this.checkAuthorization(user, allowed)
+  }
+
+  canDeleteDev(user: User): boolean {
+    const allowed = ['developer']
+    return this.checkAuthorization(user, allowed)
+  }
+
+  isPremium(user: User): boolean {
+    const allowed = ['premium']
+    return this.checkAuthorization(user, allowed)
+  }
+
+  isAdmin(user: User): boolean {
+    const allowed = ['admin']
+    return this.checkAuthorization(user, allowed)
+  }
+
+  isPromotor(user: User): boolean {
+    const allowed = ['premium']
+    return this.checkAuthorization(user, allowed)
+  }
+
+  isDeveloper(user: User): boolean {
+    const allowed = ['developer']
+    return this.checkAuthorization(user, allowed)
+  }
+
+  // determines if user has matching role
+  private checkAuthorization(user: User, allowedRoles: string[]): boolean {
+    if (!user) return false
+    for (const role of allowedRoles) {
+      if ( user.roles[role] ) {
+        return true
+      }
+    }
+    return false
+  }
+
 }

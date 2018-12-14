@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
         Validators.required
         ]
       ],
-      'remember': ['', []]
+      'remember': ['true', []]
     });
     this.auth.user.subscribe((user) => {
       if(user) {

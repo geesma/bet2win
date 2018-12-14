@@ -51,7 +51,7 @@ import { PricingComponent } from './home-page/pricing/pricing.component';
     ReactiveFormsModule,
     CoreModule,
     HttpClientModule,
-    
+
     /* Routes */
     HomePageModule,
     AppRoutingModule

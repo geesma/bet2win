@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
+import { AuthGuard } from '../core/auth/auth.guard';
 
 const userRoutes: Routes = [
-    { path: 'helllo', component: UserHomePageComponent},
-    { path: 'logged', component: UserHomePageComponent}
+    { path: '', component: UserHomePageComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
