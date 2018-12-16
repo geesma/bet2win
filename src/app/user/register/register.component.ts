@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RegistrationValidator } from '../../core/validators/registration.validator';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-//import { moveIn, fallIn } from '../../router.animations';
+import { moveIn, fallIn } from '../../router.animations';
 import { User } from '../../Interfaces/user';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
@@ -12,7 +12,7 @@ import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functio
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  //animations: [moveIn(), fallIn()]
+  animations: [moveIn(), fallIn()]
 })
 export class RegisterComponent implements OnInit {
 
@@ -109,7 +109,9 @@ export class RegisterComponent implements OnInit {
 
   signUp() {
     this.loading = true;
-    this.auth.registerUser(this.email, this.password)
+    this.auth.registerUser(this.email, this.password).then(() => {
+      this.loading = false
+    })
   }
 
   isDetailFormValid(): boolean {

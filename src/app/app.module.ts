@@ -25,6 +25,8 @@ import { FooterComponent } from './layouts/page-parts/footer/footer.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { InteractiveExampleComponent } from './home-page/interactive-example/interactive-example.component';
 import { PricingComponent } from './home-page/pricing/pricing.component';
+import { LoadingSpinnerComponent } from './layouts/ui/loading-spinner/loading-spinner.component';
+import { RegisterLayoutComponent } from './layouts/register-layout/register-layout.component';
 
 
 @NgModule({
@@ -43,6 +45,8 @@ import { PricingComponent } from './home-page/pricing/pricing.component';
     HomePageComponent,
     InteractiveExampleComponent,
     PricingComponent,
+    LoadingSpinnerComponent,
+    RegisterLayoutComponent,
 
   ],
   imports: [

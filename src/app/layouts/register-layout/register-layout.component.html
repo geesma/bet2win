@@ -1,0 +1,36 @@
+<div class="b2w-full-screen text-center">
+  <div class="b2w-full-screen-form">
+    <app-notification-message></app-notification-message>
+    <div class="b2w-full-screen-form">
+      <div class="container">
+        <div class="row justify-content-center bs-wizard" style="border-bottom:0;">
+          <div class="col-xs bs-wizard-step" [class.disabled]="step < 1" [class.complete]="step > 1" [class.active]="step == 1">
+            <div class="text-center bs-wizard-stepnum">Paso 1</div>
+            <div class="progress"><div class="progress-bar"></div></div>
+            <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
+            <div class="bs-wizard-info text-center">Crear cuenta</div>
+          </div>
+          <div class="col-xs bs-wizard-step" [class.disabled]="step < 2" [class.complete]="step > 2" [class.active]="step == 2">
+            <div class="text-center bs-wizard-stepnum">Paso 2</div>
+            <div class="progress"><div class="progress-bar"></div></div>
+            <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
+            <div class="bs-wizard-info text-center">Información</div>
+          </div>
+          <div class="col-xs bs-wizard-step" [class.disabled]="step < 3" [class.complete]="step > 3" [class.active]="step == 3">
+            <div class="text-center bs-wizard-stepnum">Paso 3</div>
+            <div class="progress"><div class="progress-bar"></div></div>
+            <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
+            <div class="bs-wizard-info text-center">Verificación</div>
+          </div>
+          <div class="col-xs bs-wizard-step disabled" [class.disabled]="step < 4" [class.complete]="step > 4" [class.active]="step == 4" *ngIf="!hasReferalUrl">
+            <div class="text-center bs-wizard-stepnum">Paso 4</div>
+            <div class="progress"><div class="progress-bar"></div></div>
+            <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
+            <div class="bs-wizard-info text-center">Referido</div>
+          </div>
+        </div>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

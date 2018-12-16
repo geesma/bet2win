@@ -5,10 +5,12 @@ import { UserRoutingModule } from './user-routing.module';
 
 /* Components */
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
+import { InfoComponent } from './register/info/info.component';
 
 @NgModule({
   declarations: [
-    UserHomePageComponent
+    UserHomePageComponent,
+    InfoComponent
   ],
   imports: [
     CommonModule,
