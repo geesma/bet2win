@@ -1,30 +1,31 @@
-<div class="b2w-full-screen-form">
   <form [formGroup]="loginForm" (ngSubmit)="loginEmail()" class="form-signin">
     <div class="card login-form">
-      <a class="navbar-brand" [routerLink]="['/']">
-        <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
-                  assets/images/logos/b2w_logo_72px.png 1x,
-                  assets/images/logos/b2w_logo_72px-2x.png 2x,
-                  assets/images/logos/b2w_logo_72px-3x.png 3x"alt="bet2win logo for the login page">
-      </a>
-      <h1 class="h3 mb-3 font-weight-normal">Iniciar sesión</h1>
-      <label for="inputEmail" class="sr-only">Email</label>
-      <input type="email" formControlName="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
-      <div *ngIf="loginForm.controls.email.invalid && loginForm.controls.email.dirty">
-        Your email doesn't look quite right...
+      <div *ngIf="!showSpiner">
+        <a class="navbar-brand" [routerLink]="['/']">
+          <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
+                    assets/images/logos/b2w_logo_72px.png 1x,
+                    assets/images/logos/b2w_logo_72px-2x.png 2x,
+                    assets/images/logos/b2w_logo_72px-3x.png 3x"alt="bet2win logo for the login page">
+        </a>
+        <h1 class="h3 mb-3 font-weight-normal">Iniciar sesión</h1>
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input type="email" formControlName="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+        <div *ngIf="loginForm.controls.email.invalid && loginForm.controls.email.dirty">
+          Your email doesn't look quite right...
+        </div>
+        <label for="inputPassword" class="sr-only">Contraseña</label>
+        <input type="password" formControlName="password" id="inputPassword" class="form-control" placeholder="Contraseña" required>
+        <div *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.dirty" >
+          Password must be between 6 and 24 chars and have at least one number
+        </div>
+        <div *ngIf="loginForm.valid" >Form looks good! Let's do this.</div>
+        <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" formControlName="remember" name="remember"> Mantener sesión iniciada
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!loginForm.valid">Iniciar sesión</button>
       </div>
-      <label for="inputPassword" class="sr-only">Contraseña</label>
-      <input type="password" formControlName="password" id="inputPassword" class="form-control" placeholder="Contraseña" required>
-      <div *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.dirty" >
-        Password must be between 6 and 24 chars and have at least one number
-      </div>
-      <div *ngIf="loginForm.valid" >Form looks good! Let's do this.</div>
-      <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" formControlName="remember" name="remember"> Mantener sesión iniciada
-        </label>
-      </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!loginForm.valid">Iniciar sesión</button>
     </div>
     <div class="card">
       <div class="row">
@@ -37,7 +38,6 @@
       </div>
     </div>
     <div class="card b2w-register-card">
-      <p>Aún no tienes cuenta <a [routerLink]="['/user/register']">crear cuenta</a></p>
+      <p>Aún no tienes cuenta <a [routerLink]="['/register']">crear cuenta</a></p>
     </div>
   </form>
-</div>

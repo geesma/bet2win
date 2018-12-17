@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../../Interfaces/user';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { Router } from '@angular/router';
-// import { moveIn } from '../../router.animations';
+
 
 
 
@@ -11,13 +11,12 @@ import { Router } from '@angular/router';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  // animations: [moveIn()]
-  // host: {'[@moveIn]': ''}
 })
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   user: User;
+  showSpiner: boolean = false;
 
   constructor(public fb: FormBuilder, public auth: AuthService, private router: Router) {}
 
@@ -39,7 +38,7 @@ export class LoginComponent implements OnInit {
     });
     this.auth.user.subscribe((user) => {
       if(user) {
-        this.router.navigate(['/user/register']);
+        this.router.navigate(['/register']);
       }
     })
 
@@ -50,7 +49,9 @@ export class LoginComponent implements OnInit {
   get remember() {return this.loginForm.get('remember').value}
 
   loginEmail() {
+    this.showSpiner = true
     this.auth.loginUser(this.email,this.password, this.remember)
+    this.showSpiner = false
   }
 
   loginGoogle() {

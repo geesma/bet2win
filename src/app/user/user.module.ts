@@ -1,20 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule ,ReactiveFormsModule }   from '@angular/forms';
 
 import { UserRoutingModule } from './user-routing.module';
 
 /* Components */
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
-import { InfoComponent } from './register/info/info.component';
+import { SubscriptionComponent } from './subscription/subscription.component';
 
 @NgModule({
   declarations: [
     UserHomePageComponent,
-    InfoComponent
+    SubscriptionComponent
   ],
   imports: [
     CommonModule,
     UserRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: []
 })

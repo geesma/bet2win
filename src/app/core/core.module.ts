@@ -16,6 +16,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/Storage';
 import { AngularFireMessagingModule } from '@angular/fire/Messaging';
 import { FirebaseFunctionsService } from './services/firebase-functions.service';
+import { LoadingSpinnerComponent } from '../layouts/ui/loading-spinner/loading-spinner.component';
 
 
 const FIREBASE_IMPORTS = [
@@ -29,7 +30,9 @@ const FIREBASE_IMPORTS = [
 ]
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    LoadingSpinnerComponent
+  ],
   imports: [
     CommonModule,
 
@@ -41,6 +44,7 @@ const FIREBASE_IMPORTS = [
     AuthService,
     FirebaseFunctionsService,
     { provide: FunctionsRegionToken, useValue: 'us-central1' }
-  ]
+  ],
+  exports: [LoadingSpinnerComponent]
 })
 export class CoreModule { }

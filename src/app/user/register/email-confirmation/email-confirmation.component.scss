@@ -1,4 +1,7 @@
-.form-details {
+.form-signin,
+.form-details,
+.email-confirmation,
+.referal-form {
   width: 100%;
   margin: auto;
   .card {
@@ -21,12 +24,4 @@
       z-index: 2;
     }
   }
-}
-
-.form-details {
-  max-width: 330px;
-}
-
-.b2w-login-card p{
-  margin: 0px;
 }

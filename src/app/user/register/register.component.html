@@ -1,215 +1,38 @@
 <ng-container *ngIf="(auth.user | async) || {} as user">
-  <div class="b2w-full-screen-form">
-    <div class="container">
-      <div class="row justify-content-center bs-wizard" style="border-bottom:0;">
-        <div class="col-xs bs-wizard-step" [class.disabled]="step < 1" [class.complete]="step > 1" [class.active]="step == 1">
-          <div class="text-center bs-wizard-stepnum">Paso 1</div>
-          <div class="progress"><div class="progress-bar"></div></div>
-          <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
-          <div class="bs-wizard-info text-center">Crear cuenta</div>
+  <form [formGroup]="signupForm" (ngSubmit)="signUp()" class="form-signin">
+    <div class="card register-form">
+      <div *ngIf="!showSpiner">
+        <a class="navbar-brand" [routerLink]="['/']">
+          <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
+                    assets/images/logos/b2w_logo_72px.png 1x,
+                    assets/images/logos/b2w_logo_72px-2x.png 2x,
+                    assets/images/logos/b2w_logo_72px-3x.png 3x"alt="bet2win logo for the login page">
+        </a>
+        <h1 class="h3 mb-3 font-weight-normal">Crear cuenta</h1>
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input type="email" formControlName="email" id="inputEmail" class="form-control" placeholder="Email" value="" required autofocus>
+        <div *ngIf="signupForm.controls.email.invalid && signupForm.controls.email.dirty">
+          Your email doesn't look quite right...
         </div>
-        <div class="col-xs bs-wizard-step" [class.disabled]="step < 2" [class.complete]="step > 2" [class.active]="step == 2">
-          <div class="text-center bs-wizard-stepnum">Paso 2</div>
-          <div class="progress"><div class="progress-bar"></div></div>
-          <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
-          <div class="bs-wizard-info text-center">Información</div>
+        <div [formGroup]="passwordFormGroup">
+          <label for="inputPassword" class="sr-only">Contraseña</label>
+          <input type="password" formControlName="password" id="inputPassword" class="form-control b2w-password" name="password" placeholder="Contraseña" required>
+          <div *ngIf="passwordFormGroup.controls.password.invalid && passwordFormGroup.controls.password.dirty">
+            Password must be between 6 and 24 chars and have at least one number
+          </div>
+          <div *ngIf="passwordFormGroup.errors?.doesMatchPassword">
+            Password does not match
+          </div>
+          <label for="inputPasswordRepeat" class="sr-only">Confirmar contraseña</label>
+          <input type="password" formControlName="repeatPassword" id="inputPasswordRepeat" class="form-control b2w-confirmPassword" name="repeatPassword" placeholder="Contraseña" required>
         </div>
-        <div class="col-xs bs-wizard-step" [class.disabled]="step < 3" [class.complete]="step > 3" [class.active]="step == 3">
-          <div class="text-center bs-wizard-stepnum">Paso 3</div>
-          <div class="progress"><div class="progress-bar"></div></div>
-          <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
-          <div class="bs-wizard-info text-center">Verificación</div>
-        </div>
-        <div class="col-xs bs-wizard-step disabled" [class.disabled]="step < 4" [class.complete]="step > 4" [class.active]="step == 4" *ngIf="!hasReferalUrl">
-          <div class="text-center bs-wizard-stepnum">Paso 4</div>
-          <div class="progress"><div class="progress-bar"></div></div>
-          <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
-          <div class="bs-wizard-info text-center">Referido</div>
-        </div>
+        I accept the Terms of Service and have read the Services Privacy Policy
+        <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!isSignUpFormValid() || loading">Siguiente <i class="fas fa-circle-notch fa-spin" *ngIf="loading"></i></button>
       </div>
-      <div class="clearfix"></div>
-      <!-- Email and password -->
-      <form [formGroup]="signupForm" *ngIf="!user.uid" (ngSubmit)="signUp()" class="form-signin">
-        <div class="card register-form">
-          <a class="navbar-brand" [routerLink]="['/']">
-            <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
-                      assets/images/logos/b2w_logo_72px.png 1x,
-                      assets/images/logos/b2w_logo_72px-2x.png 2x,
-                      assets/images/logos/b2w_logo_72px-3x.png 3x"alt="bet2win logo for the login page">
-          </a>
-          <h1 class="h3 mb-3 font-weight-normal">Crear cuenta</h1>
-          <label for="inputEmail" class="sr-only">Email</label>
-          <input type="email" formControlName="email" id="inputEmail" class="form-control" placeholder="Email" value="" required autofocus>
-          <div *ngIf="signupForm.controls.email.invalid && signupForm.controls.email.dirty">
-            Your email doesn't look quite right...
-          </div>
-          <div [formGroup]="passwordFormGroup">
-            <label for="inputPassword" class="sr-only">Contraseña</label>
-            <input type="password" formControlName="password" id="inputPassword" class="form-control b2w-password" name="password" placeholder="Contraseña" required>
-            <div *ngIf="passwordFormGroup.controls.password.invalid && passwordFormGroup.controls.password.dirty">
-              Password must be between 6 and 24 chars and have at least one number
-            </div>
-            <div *ngIf="passwordFormGroup.errors?.doesMatchPassword">
-              Password does not match
-            </div>
-            <label for="inputPasswordRepeat" class="sr-only">Confirmar contraseña</label>
-            <input type="password" formControlName="repeatPassword" id="inputPasswordRepeat" class="form-control b2w-confirmPassword" name="repeatPassword" placeholder="Contraseña" required>
-          </div>
-          I accept the Terms of Service and have read the Services Privacy Policy
-          <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!isSignUpFormValid() || loading">Siguiente <i class="fas fa-circle-notch fa-spin" *ngIf="loading"></i></button>
-        </div>
-        <div class="card b2w-login-card">
-          <p>Ya dispones de una cuenta <a [routerLink]="['/user/login']">iniciar sesión</a></p>
-        </div>
-      </form>
-      <!-- More information -->
-      <form [formGroup]="detailForm" *ngIf="user.uid && (!user.name || !user.surname || !user.phone || !user.nationality || !user.birthDate)" (ngSubmit)="setDetailsToUser(user)" class="form-details">
-        <div class="card register-form">
-          <a class="navbar-brand" [routerLink]="['/']">
-            <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
-                      assets/images/logos/b2w_logo_72px.png 1x,
-                      assets/images/logos/b2w_logo_72px-2x.png 2x,
-                      assets/images/logos/b2w_logo_72px-3x.png 3x"alt="bet2win logo for the login page">
-          </a>
-          <h1 class="h3 mb-3 font-weight-normal">Informacion del usuario</h1>
-          <div class="form-group">
-            <label for="inputName" class="sr-only">Nombre</label>
-            <input type="text" formControlName="name" id="inputName" class="form-control" placeholder="Nombre" required autofocus>
-            <div *ngIf="detailForm.controls.name.invalid">
-              Your name doesn't look quite right...
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputSurname" class="sr-only">Apellidos</label>
-            <input type="text" formControlName="surname" id="inputSurname" class="form-control" placeholder="Apellidos" required>
-            <div *ngIf="detailForm.controls.surname.invalid">
-              Your surname doesn't look quite right...
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputBirthDate" class="sr-only">Fecha de nacimiento</label>
-            <input type="date" formControlName="birthDate" id="inputBirthDate" class="form-control" placeholder="Fecha de nacimiento" required>
-            <div *ngIf="detailForm.controls.birthDate.invalid">
-              Your birthDate doesn't look quite right...
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputPrefix" class="sr-only">Telefono</label>
-            <div class="row">
-              <div class="col-4">
-                <input type="number" formControlName="prefix" id="inputPrefix" class="form-control" placeholder="Prefijo" required>
-              </div>
-              <div class="col-8">
-                <input type="number" formControlName="phone" id="inputPhone" class="form-control" placeholder="Telefono" required>
-              </div>
-            </div>
-            <div *ngIf="detailForm.controls.phone.invalid">
-              Your phone doesn't look quite right...
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="sr-only" for="inputNationality">Nacionalidad</label>
-            <select class="custom-select" formControlName="nationality">
-              <option selected>Nacionalidad</option>
-              <option value="nationality 1">Nacionalidad 1</option>
-              <option value="nationality 2">Nacionalidad 2</option>
-              <option value="nacionality 3">Nacionalidad 3</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="inputIdCard" class="sr-only">Carne de identidad (en caso de querer factura)</label>
-            <input type="text" formControlName="idCard" id="inputIdCard" class="form-control" placeholder="Carne de identidad (en caso de querer factura)" required>
-          </div>
-
-          <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!isDetailFormValid() || loading2">Siguiente <i class="fas fa-circle-notch fa-spin" *ngIf="loading2"></i></button>
-        </div>
-      </form>
-      <!-- Email confirmation -->
-      <div *ngIf="user.uid && !user.userConfirmed && user.name && user.surname && user.phone && user.nationality && user.birthDate" class="email-confirmation">
-        <div class="card register-form">
-          <div class="card-body">
-            <a class="navbar-brand" [routerLink]="['/']">
-              <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
-                        assets/images/logos/b2w_logo_72px.png 1x,
-                        assets/images/logos/b2w_logo_72px-2x.png 2x,
-                        assets/images/logos/b2w_logo_72px-3x.png 3x"alt="bet2win logo for the login page">
-            </a>
-            <h1 class="card-title">Confirma tu cuenta</h1>
-            <h3 class="card-subtitle mb-2 text-muted">La cuenta debe ser verificada</h3>
-            <div class="row justify-content-around align-items-center">
-              <!-- SMS user confirmation -->
-              <!-- <div class="col-lg-5 col-md-6 col-sm-12 py-3">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">SMS</h4>
-                    <p class="card-text">Va a recibir en su mobil y de forma gratuita un SMS con un codigo de 6 digitos para confirmar su cuenta</p>
-                    <div class="row">
-                      <div class="col-12">
-                        <a href="#" class="card-link">Confirmar por SMS</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-              <div class="col-lg-5 col-md-6 col-sm-12 py-3">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">Correo Electronico</h4>
-                    <p class="card-text">Va a recibir en su email y de forma gratuita un correo con un codigo de 6 digitos para confirmar su cuenta</p>
-                    <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode(user.uid)" class="" *ngIf="user.userConfirmationMethod == 'email'">
-                      <div class="form-group">
-                        <label for="inputCode" class="sr-only">Codigo</label>
-                        <input type="number" formControlName="code" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="emailCodeForm.controls.code.invalid || codeConfirmationError" [class.is-valid]="!emailCodeForm.controls.code.invalid || !codeConfirmationError">
-                        <div *ngIf="emailCodeForm.controls.code.invalid" class="invalid-feedback">
-                          El codigo debe tener 6 digitos.
-                        </div>
-                        <div *ngIf="codeConfirmationError" class="invalid-feedback">
-                          {{ errorMessage }}
-                        </div>
-                      </div>
-                      <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!emailCodeForm.valid || codeConfirmationProcess || errorMessage == 'Demasiados intentos'">Confirmar <i class="fas fa-circle-notch fa-spin" *ngIf="codeConfirmationProcess"></i></button>
-                      <div class="pt-4">
-                        <a href (click)="$event.preventDefault(); sendAnotherEmail(user.uid)" *ngIf="errorMessage == 'Demasiados intentos'" class="card-link">Volver a enviar un correo</a>
-                        <small *ngIf="errorMessage !== 'Demasiados intentos'">Si no ha recibido ningun correo, puede ser que este se encuentre en correo no deseaso, si lo desea puede <a href (click)="$event.preventDefault(); sendAnotherEmail(user.uid)" class="card-link">volver a enviar un correo</a></small>
-                      </div>
-                    </form>
-                    <a href (click)="$event.preventDefault(); nextStepInputCode(user.uid)" *ngIf="(!processEmailVerification || user.userConfirmationMethod !== '' ) && user.userConfirmationMethod !== 'email'" class="card-link">Confirmar por email <i class="fas fa-circle-notch fa-spin" *ngIf="processEmailVerification"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- User Confirmed -->
-      <div class="referal-form" *ngIf="user.uid && user.name && user.surname && user.phone && user.nationality && user.birthDate && user.userConfirmed && !user.isReferal">
-        <div class="card register-form">
-          <div class="card-body">
-            <a class="navbar-brand" [routerLink]="['/']">
-              <img class="mb-4" width="72" height="72" src="assets/images/logos/b2w_logo_72px.png" srcset="
-                        assets/images/logos/b2w_logo_72px.png 1x,
-                        assets/images/logos/b2w_logo_72px-2x.png 2x,
-                        assets/images/logos/b2w_logo_72px-3x.png 3x"alt="bet2win logo for the login page">
-            </a>
-            <h1 class="card-title">Referido</h1>
-            <h3 class="card-subtitle mb-2 text-muted">Estas a un paso de empezar a disfrutar de nuestro servicio, pero antes necesitamos saber si algún usuario te ha referido</h3>
-            <div class="row justify-content-around align-items-center">
-              <div class="col-lg-5 col-md-6 col-sm-12 py-3">
-                <form [formGroup]="referalForm" (ngSubmit)="sendReferal(user.uid)" class="" *ngIf="true">
-                  <div class="form-group">
-                    <label for="inputCode" class="sr-only">Codigo de referido</label>
-                    <input type="text" formControlName="referalCode" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="false" [class.is-valid]="true">
-                  </div>
-                  <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="loading3">Confirmar <i class="fas fa-circle-notch fa-spin" *ngIf="loading3"></i></button>
-                  <div class="pt-4">
-                    <small>Si no te ha referido nadie y quieras empezar a usar nuestro servicio <a href (click)="$event.preventDefault(); passWithoutReferal(user.uid)" class="card-link">haz click aquí</a>, pero recuerde que no se podrá poner a un referido más adelante</small>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-loading-spinner *ngIf="showSpiner"></app-loading-spinner>
     </div>
-  </div>
+    <div class="card b2w-login-card">
+      <p>Ya dispones de una cuenta <a [routerLink]="['/login']">iniciar sesión</a></p>
+    </div>
+  </form>
 </ng-container>

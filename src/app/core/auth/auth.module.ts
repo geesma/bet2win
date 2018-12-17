@@ -4,21 +4,21 @@ import { FormsModule ,ReactiveFormsModule }   from '@angular/forms';
 
 /* Components */
 import { LoginComponent } from '../../user/login/login.component';
-import { SubscriptionComponent } from '../../user/subscription/subscription.component';
 
 /* Modules */
 import { AuthRoutingModule } from './auth-routing.module';
+import { CoreModule } from '../core.module';
 
 @NgModule({
   declarations: [
     LoginComponent,
-    SubscriptionComponent
   ],
   imports: [
     CommonModule,
     AuthRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CoreModule,
   ]
 })
 export class AuthModule { }

@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
-import { AuthGuard } from '../core/auth/auth.guard';
+import { SubscriptionComponent } from './subscription/subscription.component';
 
 const userRoutes: Routes = [
-    { path: '', component: UserHomePageComponent, canActivate: [AuthGuard]}
+    { path: '', component: UserHomePageComponent},
+    { path: 'subscription', component: SubscriptionComponent}
 ];
 
 @NgModule({

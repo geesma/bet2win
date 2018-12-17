@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule ,ReactiveFormsModule }   from '@angular/forms';
 
 /* Modules */
@@ -25,9 +26,7 @@ import { FooterComponent } from './layouts/page-parts/footer/footer.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { InteractiveExampleComponent } from './home-page/interactive-example/interactive-example.component';
 import { PricingComponent } from './home-page/pricing/pricing.component';
-import { LoadingSpinnerComponent } from './layouts/ui/loading-spinner/loading-spinner.component';
 import { RegisterLayoutComponent } from './layouts/register-layout/register-layout.component';
-
 
 @NgModule({
   declarations: [
@@ -45,7 +44,6 @@ import { RegisterLayoutComponent } from './layouts/register-layout/register-layo
     HomePageComponent,
     InteractiveExampleComponent,
     PricingComponent,
-    LoadingSpinnerComponent,
     RegisterLayoutComponent,
 
   ],
@@ -58,7 +56,8 @@ import { RegisterLayoutComponent } from './layouts/register-layout/register-layo
 
     /* Routes */
     HomePageModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
