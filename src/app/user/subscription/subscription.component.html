@@ -49,7 +49,7 @@
       </div>
     </div>
     <!-- Subscriptions packs -->
-    <div class="container" *ngIf="step == 2">
+    <div class="container" *ngIf="step >= 2">
       <div class="row text-left">
         <div class="col-md-5 col-lg-4 order-md-2 mb-4">
           <div class="pb-md-5 text-center">
@@ -93,7 +93,7 @@
           </form>
         </div>
         <div class="col-md-7 col-lg-8 order-md-1">
-          <div class="container">
+          <div class="container" *ngIf="step == 2">
             <form [formGroup]="subscriptionForm" (ngSubmit)="generatePayment()">
               <h4>Tipo de contrato</h4>
               <hr class="my-4">
@@ -217,6 +217,7 @@
                   </label>
                 </div>
               </div>
+              <!-- cart again -->
               <hr class="mb-4">
               <div class="d-block d-md-none mb-5">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -254,8 +255,95 @@
               <button class="btn btn-primary btn-lg btn-block" [disabled]="subscriptionForm.invalid" type="submit">Continua con la compra</button>
             </form>
           </div>
+          <ng-container *ngIf="(auth.user | async) || {} as user">
+            <div class="container" *ngIf="step == 3">
+              <h4 class="mb-3">Información del usuario</h4>
+              <form [formGroup]="idCardForm" (ngSubmit)="goToPayment(user)">
+                <div class="mb-3">
+                  <label for="firstName">Nombre</label>
+                  <input type="text" formControlName="name" class="form-control" id="firstName" placeholder="" required>
+                  <div *ngIf="idCardForm.controls.name.invalid">
+                    Valid first name is required.
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-7 mb-3">
+                    <label for="lastName">Apellidos</label>
+                    <input type="text" formControlName="surname" class="form-control" id="lastName" placeholder="" required>
+                    <div *ngIf="idCardForm.controls.surname.invalid">
+                      Valid last name is required.
+                    </div>
+                  </div>
+                  <div class="col-lg-5 mb-3">
+                    <label for="idCard">Documento de identidad</label>
+                    <input type="text" formControlName="idCard" class="form-control" id="idCard">
+                    <div *ngIf="idCardForm.controls.idCard.invalid">
+                      Please enter a valid id card.
+                    </div>
+                  </div>
+                </div>
+                <hr class="my-4">
+                <h4 class="mb-3 mt-4">Dirección de facturación</h4>
+                <div class="row">
+                  <div class="col-lg-7">
+                    <label for="street">Calle</label>
+                    <input type="text" formControlName="currentAddress" class="form-control" id="street" required>
+                  </div>
+                  <div class="col-6 col-lg-3">
+                    <label for="address2">Número</label>
+                    <input type="text" class="form-control" formControlName="currentAddressNumber" id="address2" placeholder="Apartamento o puerta">
+                  </div>
+                  <div class="col-6 col-lg-2">
+                    <label for="address2">Piso</label>
+                    <input type="text" class="form-control" formControlName="currentAddressDoor" id="address2" placeholder="Apartamento o puerta">
+                  </div>
+                </div>
+                <div *ngIf="idCardForm.controls.currentAddress.invalid || idCardForm.controls.currentAddressNumber.invalid">
+                  Please enter your shipping address.
+                </div>
+
+                <div class="row mt-3">
+                  <div class="col-md-5 col-lg-3 mb-3">
+                    <label for="zip">Codigo postal</label>
+                    <input type="text" class="form-control" id="zip" formControlName="currentZipcode" placeholder="" required>
+                    <div *ngIf="idCardForm.controls.currentZipcode.invalid">
+                      Zip code required.
+                    </div>
+                  </div>
+                  <div class="col-md-7 col-lg-5 mb-3">
+                    <label for="city">Ciudad</label>
+                    <input type="text" class="form-control" id="city" formControlName="currentCity" placeholder="" required>
+                    <div *ngIf="idCardForm.controls.currentCity.invalid">
+                      Please select a valid city.
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-lg-4 mb-3">
+                    <label for="country">Pais</label>
+                    <select class="custom-select d-block w-100" formControlName="currentCountry" id="country" required>
+                      <option value="">Choose...</option>
+                      <option>California</option>
+                    </select>
+                    <div *ngIf="idCardForm.controls.currentCountry.invalid">
+                      Please provide a valid country.
+                    </div>
+                  </div>
+                </div>
+                <hr class="mb-4">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" formControlName="conditions" class="custom-control-input" id="conditions">
+                  <label class="custom-control-label" for="conditions">Acepto las <a href="#">condiciones</a></label>
+                </div>
+                <hr class="mb-4">
+                <button class="mt-5 mt-4 btn btn-primary btn-lg btn-block" [disabled]="idCardForm.invalid" type="submit">Realizar el pago</button>
+              </form>
+            </div>
+            <div class="container" *ngIf="step == 4">
+
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>
   </div>
 </section>
+<script src="https://checkout.stripe.com/checkout.js"></script>

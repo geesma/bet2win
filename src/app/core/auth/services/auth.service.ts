@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { User } from '../../../Interfaces/user';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
 
@@ -89,28 +89,15 @@ export class AuthService {
   private oAuthLogin(provider) {
     this.afAuth.auth.signInWithPopup(provider).then((user) => {
       this.handleSuccess('Bienvenido ' + user.user.email)
-      this.router.navigate(['/user/register']);
+      this.router.navigate(['register']);
     }).catch((err) => {
       return this.handleError(err);
     });
   }
 
-  // private setUserDoc(user: firebase.User) {
-  //
-  //   const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-  //
-  //   const data: User = {
-  //     uid: user.uid,
-  //     email: user.email
-  //   }
-  //
-  //   return userRef.update(data)
-  //
-  // }
-
   private emailPasswordUserLogin(email: string, password: string) {
     this.afAuth.auth.signInWithEmailAndPassword(email,password).then(userdata => {
-      this.router.navigate(['/user/register']);
+      this.router.navigate(['register']);
       this.handleSuccess('Bienvenido ' + userdata.user.email)
     }).catch((err) => {
       this.handleError(err)

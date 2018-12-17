@@ -34,23 +34,16 @@ export class ReferalComponent implements OnInit {
   get referal() {return this.referalForm.get('referalCode').value}
 
   sendReferal(uid: string) {
+    let referal: boolean = false;
+    if(this.referal) {
+      referal = true
+    }
     this.loading = true
     let user: User = {
       uid: uid,
       email: '',
       referal: this.referal,
-      isReferal: true
-    }
-    this.functions.sendReferal(user)
-  }
-
-  passWithoutReferal(uid: string) {
-    this.loading = true
-    let user: User = {
-      uid: uid,
-      email: '',
-      referal: '',
-      isReferal: false
+      isReferal: referal
     }
     this.functions.sendReferal(user)
   }

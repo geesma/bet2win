@@ -27,6 +27,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { InteractiveExampleComponent } from './home-page/interactive-example/interactive-example.component';
 import { PricingComponent } from './home-page/pricing/pricing.component';
 import { RegisterLayoutComponent } from './layouts/register-layout/register-layout.component';
+import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { RegisterLayoutComponent } from './layouts/register-layout/register-layo
     InteractiveExampleComponent,
     PricingComponent,
     RegisterLayoutComponent,
+    DashboardLayoutComponent,
 
   ],
   imports: [

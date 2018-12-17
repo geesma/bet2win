@@ -16,7 +16,7 @@
             <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>
             <div class="bs-wizard-info text-center">Información</div>
           </div>
-          <div class="col-xs bs-wizard-step" [class.disabled]="step < 3" [class.complete]="step > 3" [class.active]="step == 3">
+          <div class="col-xs bs-wizard-step" [class.disabled]="step < 3" [class.complete]="step > 3" [class.active]="step == 3" *ngIf="!isUserConfirmed">
             <div class="text-center bs-wizard-stepnum">Paso 3</div>
             <div class="progress"><div class="progress-bar"></div></div>
             <a href="" (click)="$event.preventDefault();" class="bs-wizard-dot"></a>

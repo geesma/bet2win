@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functions.service';
+import { User } from 'src/app/Interfaces/user';
 
 @Component({
   selector: 'app-subscription',
@@ -11,8 +12,9 @@ import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functio
 })
 export class SubscriptionComponent implements OnInit {
 
+  joinString = "||//||"
+
   step: number = 1;
-  stepOld: number;
   cart: {
     product?: {
       title: string,
@@ -32,6 +34,7 @@ export class SubscriptionComponent implements OnInit {
     totalDefault?: number
   };
   subscriptionForm: FormGroup;
+  idCardForm: FormGroup;
   string_1: string;
   string_2: string;
 
@@ -43,6 +46,11 @@ export class SubscriptionComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.auth.user.subscribe((user) => {
+      if(user) {
+        this.generateIdCardForm(user)
+      }
+    })
   }
 
   freePlan() {
@@ -50,15 +58,13 @@ export class SubscriptionComponent implements OnInit {
   }
 
   premiumPacks() {
-    this.stepOld = this.step;
-    this.step = 2
+    this.step += 1
     this.generateSubscriptionForm()
     this.setOneMonthValues()
   }
 
   stepBack() {
-    this.step = this.stepOld
-    this.stepOld -= 1
+    this.step -=1
   }
 
   payWithPaypal() {
@@ -67,6 +73,10 @@ export class SubscriptionComponent implements OnInit {
 
   payWithCard() {
     alert("card")
+  }
+
+  generatePayment() {
+    this.step++;
   }
 
   get paymentMethod() {return this.subscriptionForm.get('paymentMethod').value}
@@ -180,6 +190,32 @@ export class SubscriptionComponent implements OnInit {
     }
   }
 
+  get idCard() {return this.idCardForm.get('idCard').value}
+  get name() {return this.idCardForm.get('name').value}
+  get surname() {return this.idCardForm.get('surname').value}
+  get currentCity() {return this.idCardForm.get('currentCity').value}
+  get currentAddress() {return this.idCardForm.get('currentAddress').value}
+  get currentAddressNumber() {return this.idCardForm.get('currentAddressNumber').value}
+  get currentAddressDoor() {return this.idCardForm.get('currentAddressDoor').value}
+  get currentCountry() {return this.idCardForm.get('currentCountry').value}
+  get currentZipcode() {return this.idCardForm.get('currentZipcode').value}
+
+  goToPayment(user: User) {
+    const userNew = {
+      name: this.name,
+      surname: this.surname,
+      billingAddress: {
+        currentCity: this.currentCity,
+        currentAddress: this.joinDirection(this.currentAddress, this.currentAddressNumber, this.currentAddressDoor),
+        currentCountry: this.currentCountry,
+        currentZipcode: this.currentZipcode,
+      },
+      idCard: this.idCard,
+    }
+    this.auth.updateUser(user, userNew)
+    this.step += 1
+  }
+
   private generateSubscriptionForm() {
     this.cart = {};
     this.subscriptionForm = this.fb.group({
@@ -187,6 +223,47 @@ export class SubscriptionComponent implements OnInit {
       'paymentFrequency': ['oneMonth', [Validators.required]],
       'paymentTime': ['allNow', [Validators.required]]
     });
+  }
+
+  private generateIdCardForm(data: User = null) {
+    if (data.billingAddress) {
+      this.idCardForm = this.fb.group({
+        'idCard': [data.idCard || "", [Validators.required]],
+        'name': [data.name || "", [Validators.required]],
+        'surname': [data.surname || "", [Validators.required]],
+        'currentCity': [data.billingAddress.currentCity || "", [Validators.required]],
+        'currentAddress': [this.splitDirection(data.billingAddress.currentAddress)[0] || "", [Validators.required]],
+        'currentAddressNumber': [this.splitDirection(data.billingAddress.currentAddress)[1] || "", [Validators.required]],
+        'currentAddressDoor': [this.splitDirection(data.billingAddress.currentAddress)[2] || "",[]],
+        'currentCountry': [data.billingAddress.currentCountry || data.nationality || "", [Validators.required]],
+        'currentZipcode': [data.billingAddress.currentZipcode || "", [Validators.required]],
+        'conditions': [false,[Validators.requiredTrue]]
+      });
+    } else {
+      this.idCardForm = this.fb.group({
+        'idCard': [data.idCard || "", [Validators.required]],
+        'name': [data.name || "", [Validators.required]],
+        'surname': [data.surname || "", [Validators.required]],
+        'currentCity': ["", [Validators.required]],
+        'currentAddress': ["", [Validators.required]],
+        'currentAddressNumber': ["", [Validators.required]],
+        'currentAddressDoor': ["",[]],
+        'currentCountry': ["", [Validators.required]],
+        'currentZipcode': ["", [Validators.required]],
+        'conditions': [false,[Validators.requiredTrue]]
+      });
+    }
+  }
+
+  private splitDirection(direction: string): string[] {
+    if(direction) {
+      return direction.split(this.joinString);
+    }
+    else return ["","",""]
+  }
+
+  private joinDirection(direction1: string, direction2: string, direction3: string): string {
+    return direction1 + this.joinString + direction2 + this.joinString + direction3;
   }
 
   private setOneMonthValues(_price = null) {

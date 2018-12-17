@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class RegisterLayoutComponent implements OnInit {
 
   hasReferalUrl:boolean;
+  isUserConfirmed: boolean;
   step: number = 1;
 
   constructor(public auth: AuthService, private router: Router, route: ActivatedRoute) {
@@ -22,12 +23,15 @@ export class RegisterLayoutComponent implements OnInit {
     this.auth.user.subscribe((user) => {
       if(user) {
         this.step = 2
+        if(user.userConfirmed) {
+          this.isUserConfirmed = user.userConfirmed;
+        }
         if(user.name && user.surname && user.phone && user.nationality && user.birthDate) {
           this.step = 3
           if(user.userConfirmed) {
             this.step = 4
             if(user.isReferal || user.isReferal == false) {
-              this.router.navigate(['/dashboard/subscription']);
+              this.router.navigate(['user/subscription']);
             }
           } else if (user.isReferal || user.isReferal == false) {
             this.hasReferalUrl = true
@@ -35,6 +39,8 @@ export class RegisterLayoutComponent implements OnInit {
         } else if (user.isReferal || user.isReferal == false) {
           this.hasReferalUrl = true
         }
+      } else {
+        this.step = 1
       }
     })
   }

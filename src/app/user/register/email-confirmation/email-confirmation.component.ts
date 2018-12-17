@@ -39,7 +39,7 @@ export class EmailConfirmationComponent implements OnInit {
         if(user.name && user.surname && user.phone && user.nationality && user.birthDate) {
           if(user.userConfirmed) {
             if (user.isReferal || user.isReferal == false) {
-              this.router.navigate(['dashboard'])
+              this.router.navigate(['user/subscription'])
             } else {
               this.router.navigate(['register/referal'])
             }
@@ -82,9 +82,7 @@ export class EmailConfirmationComponent implements OnInit {
     this.errorMessage = "";
     let user: User = {
       email: '',
-      uid: uid,
-      referalNumber: 0,
-      referalString: uid
+      uid: uid
     }
     this.functions.sendVoid(user)
     this.resendEmail = false
@@ -93,9 +91,7 @@ export class EmailConfirmationComponent implements OnInit {
   private sendEmail(uid: string) {
     let user: User = {
       email: '',
-      uid: uid,
-      referalNumber: 0,
-      referalString: uid
+      uid: uid
     }
     this.functions.sendEmail(user)
   }

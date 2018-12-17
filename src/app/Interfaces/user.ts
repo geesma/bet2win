@@ -35,8 +35,13 @@ export interface User {
   idCard?: string;
   birthDate?: Date;
   referalNumber?: number;
-  referalString?: string;
   isReferal?: boolean;
   referal?: string;
   roles?: Roles;
+  billingAddress?: {
+    currentAddress: string;
+    currentCity: string;
+    currentZipcode: string;
+    currentCountry: string;
+  }
 }

@@ -7,11 +7,13 @@ import { UserRoutingModule } from './user-routing.module';
 /* Components */
 import { UserHomePageComponent } from './user-home-page/user-home-page.component';
 import { SubscriptionComponent } from './subscription/subscription.component';
+import { IdCardComponent } from './id-card/id-card.component';
 
 @NgModule({
   declarations: [
     UserHomePageComponent,
-    SubscriptionComponent
+    SubscriptionComponent,
+    IdCardComponent
   ],
   imports: [
     CommonModule,
