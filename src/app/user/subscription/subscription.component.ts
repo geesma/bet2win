@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functions.service';
 import { User } from 'src/app/Interfaces/user';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Component({
   selector: 'app-subscription',
@@ -11,6 +12,8 @@ import { User } from 'src/app/Interfaces/user';
   styleUrls: ['./subscription.component.scss']
 })
 export class SubscriptionComponent implements OnInit {
+
+  @ViewChild('cardForm') cardForm: ElementRef;
 
   joinString = "||//||"
 
@@ -42,7 +45,8 @@ export class SubscriptionComponent implements OnInit {
               public auth: AuthService,
               private route: ActivatedRoute,
               private router: Router,
-              private functions: FirebaseFunctionsService) {
+              private functions: FirebaseFunctionsService,
+              private fun: AngularFireFunctions) {
   }
 
   ngOnInit() {
@@ -92,7 +96,7 @@ export class SubscriptionComponent implements OnInit {
         this.cart.product = {
           title: "Bet2win premium",
           subtitle: "Servicio premium tres meses",
-          price: 29,
+          price: (85/3),
           class: "default",
           monthly: true
         }
@@ -103,7 +107,7 @@ export class SubscriptionComponent implements OnInit {
         this.cart.product = {
           title: "Bet2win premium",
           subtitle: "Servicio premium seis meses",
-          price: 28,
+          price: (160/6),
           class: "default",
           monthly: true
         }
@@ -114,7 +118,7 @@ export class SubscriptionComponent implements OnInit {
         this.cart.product = {
           title: "Bet2win premium",
           subtitle: "Servicio premium 12 meses",
-          price: 27,
+          price: 25,
           class: "default",
           monthly: true
         }
@@ -139,7 +143,7 @@ export class SubscriptionComponent implements OnInit {
           {
             title: "Cargo tarjeta",
             subtitle: "Importe extra al pagar con tarjeta",
-            price: 1.5,
+            price: 0.9,
             class: "danger",
             category: "card"
           }
@@ -153,8 +157,6 @@ export class SubscriptionComponent implements OnInit {
         if(this.paymentFrequency == "oneMonth") {
           this.setOneMonthValues(30)
         } else {
-          this.string_1 = "Mensualmente";
-          this.string_2 = "Todo a la vez";
         }
         break;
       case "allNow":
@@ -162,17 +164,15 @@ export class SubscriptionComponent implements OnInit {
           this.setOneMonthValues()
         }
         else {
-          this.string_1 = "Mensualmente";
-          this.string_2 = "Todo a la vez";
           switch(this.paymentFrequency) {
             case "threeMonth":
-              this.cart.total = (this.cart.totalDefault-2)*3
+              this.cart.total = (this.cart.totalDefault)*3
               break;
             case "sixMonth":
-              this.cart.total = (this.cart.totalDefault-2)*6
+              this.cart.total = (this.cart.totalDefault)*6
               break;
             case 'twelveMonth':
-              this.cart.total = (this.cart.totalDefault-2)*12
+              this.cart.total = (this.cart.totalDefault)*12
               break;
           }
           this.cart.product.monthly = false;
@@ -220,7 +220,7 @@ export class SubscriptionComponent implements OnInit {
     this.cart = {};
     this.subscriptionForm = this.fb.group({
       'paymentMethod': ['paypal', [Validators.required]],
-      'paymentFrequency': ['oneMonth', [Validators.required]],
+      'paymentFrequency': ['oneMonth', []],
       'paymentTime': ['allNow', [Validators.required]]
     });
   }
@@ -276,8 +276,6 @@ export class SubscriptionComponent implements OnInit {
     }
     this.cart.totalDefault = this.cart.product.price;
     this.cart.total = this.cart.totalDefault;
-    this.string_1 = "Mensualmente";
-    this.string_2 = "Solo un mes";
   }
 
 }

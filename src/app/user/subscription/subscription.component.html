@@ -141,29 +141,31 @@
                   </div>
                 </div>
               </div>
-              <h4 class="mt-5">Modalidad de pago</h4>
-              <hr class="my-4">
-              <div class="d-block my-3">
-                <div class="row">
-                  <div class="col-12 col-sm-6">
-                    <input id="monthly" formControlName="paymentTime" value="monthly" type="radio" (change)="updatePrice()" checked required>
-                    <label class="payment-method" for="monthly">
-                      <div class="row justify-content-between">
-                        <div class="col align-self-center">
-                          {{ string_1 }}
+              <div *ngIf="paymentFrequency == 'oneMonth'">
+                <h4 class="mt-5">Modalidad de pago</h4>
+                <hr class="my-4">
+                <div class="d-block my-3">
+                  <div class="row">
+                    <div class="col-12 col-sm-6">
+                      <input id="monthly" formControlName="paymentTime" value="monthly" type="radio" (change)="updatePrice()" checked required>
+                      <label class="payment-method" for="monthly">
+                        <div class="row justify-content-between">
+                          <div class="col align-self-center">
+                            Mensualmente
+                          </div>
                         </div>
-                      </div>
-                    </label>
-                  </div>
-                  <div class="col-12 col-sm-6">
-                    <input id="allNow" formControlName="paymentTime" value="allNow" type="radio" (change)="updatePrice()" checked required>
-                    <label class="payment-method" for="allNow">
-                      <div class="row justify-content-between">
-                        <div class="col align-self-center">
-                          {{ string_2 }}
+                      </label>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                      <input id="allNow" formControlName="paymentTime" value="allNow" type="radio" (change)="updatePrice()" checked required>
+                      <label class="payment-method" for="allNow">
+                        <div class="row justify-content-between">
+                          <div class="col align-self-center">
+                            Un solo mes
+                          </div>
                         </div>
-                      </div>
-                    </label>
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -338,7 +340,7 @@
               </form>
             </div>
             <div class="container" *ngIf="step == 4">
-
+              <app-payment [user]="user"></app-payment>
             </div>
           </ng-container>
         </div>
@@ -346,4 +348,3 @@
     </div>
   </div>
 </section>
-<script src="https://checkout.stripe.com/checkout.js"></script>

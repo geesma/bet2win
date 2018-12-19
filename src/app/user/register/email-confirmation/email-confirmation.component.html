@@ -28,10 +28,10 @@
           </div> -->
           <div class="col-lg-5 col-md-6 col-sm-12 py-3">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body" *ngIf="!resendEmail">
                 <h4 class="card-title">Correo Electronico</h4>
                 <p class="card-text">Va a recibir en su email y de forma gratuita un correo con un codigo de 6 digitos para confirmar su cuenta</p>
-                <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode(user.uid)" class="" *ngIf="user.userConfirmationMethod == 'email'">
+                <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode(user.uid)" *ngIf="user.userConfirmationMethod == 'email' && !resendEmail">
                   <div class="form-group">
                     <label for="inputCode" class="sr-only">Codigo</label>
                     <input type="number" formControlName="code" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="emailCodeForm.controls.code.invalid || codeConfirmationError" [class.is-valid]="!emailCodeForm.controls.code.invalid || !codeConfirmationError">
@@ -48,8 +48,9 @@
                     <small *ngIf="errorMessage !== 'Demasiados intentos'">Si no ha recibido ningun correo, puede ser que este se encuentre en correo no deseaso, si lo desea puede <a href (click)="$event.preventDefault(); sendAnotherEmail(user.uid)" class="card-link">volver a enviar un correo</a></small>
                   </div>
                 </form>
-                <a href (click)="$event.preventDefault(); nextStepInputCode(user.uid)" *ngIf="(!processEmailVerification || user.userConfirmationMethod !== '' ) && user.userConfirmationMethod !== 'email'" class="card-link">Confirmar por email <i class="fas fa-circle-notch fa-spin" *ngIf="processEmailVerification"></i></a>
+                <a href (click)="$event.preventDefault(); nextStepInputCode(user.uid)" *ngIf="(!processEmailVerification || user.userConfirmationMethod !== '' ) && user.userConfirmationMethod !== 'email' && !resendEmail" class="card-link">Confirmar por email <i class="fas fa-circle-notch fa-spin" *ngIf="processEmailVerification"></i></a>
               </div>
+              <app-loading-spinner *ngIf="resendEmail"></app-loading-spinner>
             </div>
           </div>
         </div>

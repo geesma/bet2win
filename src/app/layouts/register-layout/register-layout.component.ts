@@ -23,7 +23,7 @@ export class RegisterLayoutComponent implements OnInit {
     this.auth.user.subscribe((user) => {
       if(user) {
         this.step = 2
-        if(user.userConfirmed) {
+        if(user.userConfirmed && !user.userConfirmationMethod) {
           this.isUserConfirmed = user.userConfirmed;
         }
         if(user.name && user.surname && user.phone && user.nationality && user.birthDate) {

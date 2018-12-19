@@ -1,0 +1,16 @@
+<h4 class="mt-5 mb-5">Información de pago</h4>
+<form [formGroup]="cardNameForm" (submit)="handleForm()" >
+  <div class="mb-3 mt-5">
+    <label for="firstName">Nombre de la tarjeta</label>
+    <input type="text" formControlName="cardName" class="form-control" id="firstName" placeholder="" required>
+    <div *ngIf="cardNameForm.controls.cardName.invalid">
+      Valid first name is required.
+    </div>
+  </div>
+  <label for="cardElement">Numero de la tarjeta</label>
+  <div #cardForm id="cardElement">
+
+  </div>
+  <div id="card-errors" class="mb-5" role="alert"></div>
+  <button class="btn btn-primary btn-lg btn-block mt-5" [disabled]="validateForm()" type="submit">Pagar</button>
+</form>

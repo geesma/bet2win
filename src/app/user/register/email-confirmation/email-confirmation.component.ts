@@ -85,7 +85,7 @@ export class EmailConfirmationComponent implements OnInit {
       uid: uid
     }
     this.functions.sendVoid(user)
-    this.resendEmail = false
+    this.resendEmail = false;
   }
 
   private sendEmail(uid: string) {

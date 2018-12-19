@@ -4,12 +4,15 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as cors from 'cors';
 import * as sgMail from '@sendgrid/mail';
+import * as Stripe from 'stripe';
 
 /* Constants */
 
 const corsHandler = cors({origin: true});
 const SENDGRID_API_KEY = functions.config().sendgrid.key;
 const REGISTER_URL = "https://development.escoliesmartinez.cat/user/register"
+const stripe = new Stripe(functions.config().stripe.secret)
+const db = admin.firestore();
 
 /* Configurations */
 
@@ -228,4 +231,53 @@ exports.createUserWithData = functions.auth.user().onCreate(function(user,contex
 
 exports.deleteUserInformation = functions.auth.user().onDelete(function(user,context){
   admin.firestore().doc(`users/${user.uid}`).delete().catch((err) => {return err})
+})
+
+/* Make payment */
+
+export const startSubscriptionStripe = functions.https.onCall(async (data, context) => {
+  const userId = context.auth.uid
+  const userDoc = await getDataFromDatabase('users',userId)
+
+  const user = userDoc.data();
+
+  const firebaseUID = user.uid;
+
+  const customer = await stripe.customers.create({
+    metadata: { firebaseUID }
+  });
+
+  await updateOrCreateDataToDatabase('users',{
+      uid: userId,
+      subscription: {
+        type: "stripe",
+        stripe: {
+          stripeId: customer.id,
+        }
+      }
+  })
+
+  const source = await stripe.customers.createSource(user.subscription.stripeId, {
+    source: data.source,
+
+  })
+
+  if(!source) {
+    throw new Error('Stripe failed to attach the card')
+  }
+
+  const sub = await stripe.subscriptions.create({
+    customer: user.subscription.stripeId,
+    items: [{plan: 'prod_EB8Ntp2kmvnyFm'}]
+  })
+
+  return db.doc(`users/${userId}`).update({
+    subscription: {
+      stripe: {
+        subscriptionId: sub.id,
+        status: sub.status,
+        itemId: sub.items.data[0].id
+      }
+    }
+  })
 })

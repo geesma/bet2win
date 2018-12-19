@@ -13,13 +13,15 @@ export interface Roles {
 //   platform?: platformsTypes;
 // }
 //
-// export interface Subscriptions {
-//   active?: boolean;
-//   start?: Date;
-//   end?: Date;
-//   price?: number;
-//   type?: SubscriptionTypes;
-// }
+export interface Subscriptions {
+  type: string,
+  stripe?: {
+    stripeId?: string,
+    subscriptionId?: string,
+    status?: string,
+    itemId?: string
+  }
+}
 
 export interface User {
   uid: string;
@@ -43,5 +45,6 @@ export interface User {
     currentCity: string;
     currentZipcode: string;
     currentCountry: string;
-  }
+  },
+  subscription?: Subscriptions
 }
