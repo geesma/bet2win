@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functions.service';
+import { Router } from '@angular/router';
 import { User } from 'src/app/Interfaces/user';
-import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Component({
   selector: 'app-subscription',
@@ -12,12 +10,8 @@ import { AngularFireFunctions } from '@angular/fire/functions';
   styleUrls: ['./subscription.component.scss']
 })
 export class SubscriptionComponent implements OnInit {
-
-  @ViewChild('cardForm') cardForm: ElementRef;
-
-  joinString = "||//||"
-
-  step: number = 1;
+  joinString = '||//||';
+  step = 1;
   cart: {
     product?: {
       title: string,
@@ -38,23 +32,21 @@ export class SubscriptionComponent implements OnInit {
   };
   subscriptionForm: FormGroup;
   idCardForm: FormGroup;
-  string_1: string;
-  string_2: string;
 
   constructor(public fb: FormBuilder,
               public auth: AuthService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private functions: FirebaseFunctionsService,
-              private fun: AngularFireFunctions) {
+              private router: Router) {
   }
 
   ngOnInit() {
     this.auth.user.subscribe((user) => {
-      if(user) {
-        this.generateIdCardForm(user)
+      if (user) {
+        if (user.subscription && user.subscription.status && user.roles.premium) {
+          this.router.navigate(['user']);
+        }
+        this.generateIdCardForm(user);
       }
-    })
+    });
   }
 
   freePlan() {
@@ -62,143 +54,145 @@ export class SubscriptionComponent implements OnInit {
   }
 
   premiumPacks() {
-    this.step += 1
-    this.generateSubscriptionForm()
-    this.setOneMonthValues()
+    this.step += 1;
+    this.generateSubscriptionForm();
+    this.setOneMonthValues();
   }
 
   stepBack() {
-    this.step -=1
+    this.step -= 1;
   }
 
   payWithPaypal() {
-    alert("paypal")
+    alert('paypal');
   }
 
   payWithCard() {
-    alert("card")
+    alert('stripe');
   }
 
   generatePayment() {
     this.step++;
   }
 
-  get paymentMethod() {return this.subscriptionForm.get('paymentMethod').value}
-  get paymentFrequency() {return this.subscriptionForm.get('paymentFrequency').value}
-  get paymentTime() {return this.subscriptionForm.get('paymentTime').value}
+  get paymentMethod() {return this.subscriptionForm.get('paymentMethod').value; }
+  get paymentFrequency() {return this.subscriptionForm.get('paymentFrequency').value; }
+  get paymentTime() {return this.subscriptionForm.get('paymentTime').value; }
 
   updatePrice() {
-    switch(this.paymentFrequency) {
-      case "oneMonth":
-        this.setOneMonthValues()
+    switch (this.paymentFrequency) {
+      case 'oneMonth':
+        this.setOneMonthValues();
         break;
       case 'threeMonth':
         this.cart.product = {
-          title: "Bet2win premium",
-          subtitle: "Servicio premium tres meses",
-          price: (85/3),
-          class: "default",
+          title: 'Bet2win premium',
+          subtitle: 'Servicio premium tres meses',
+          price: (85 / 3),
+          class: 'default',
           monthly: true
-        }
+        };
+        this.subscriptionForm.get('paymentTime').setValue('allNow');
         this.cart.totalDefault = this.cart.product.price;
         this.cart.total = this.cart.totalDefault;
         break;
       case 'sixMonth':
         this.cart.product = {
-          title: "Bet2win premium",
-          subtitle: "Servicio premium seis meses",
-          price: (160/6),
-          class: "default",
+          title: 'Bet2win premium',
+          subtitle: 'Servicio premium seis meses',
+          price: (160 / 6),
+          class: 'default',
           monthly: true
-        }
+        };
+        this.subscriptionForm.get('paymentTime').setValue('allNow');
         this.cart.totalDefault = this.cart.product.price;
         this.cart.total = this.cart.totalDefault;
         break;
       case 'twelveMonth':
         this.cart.product = {
-          title: "Bet2win premium",
-          subtitle: "Servicio premium 12 meses",
+          title: 'Bet2win premium',
+          subtitle: 'Servicio premium 12 meses',
           price: 25,
-          class: "default",
+          class: 'default',
           monthly: true
-        }
+        };
+        this.subscriptionForm.get('paymentTime').setValue('allNow');
         this.cart.totalDefault = this.cart.product.price;
         this.cart.total = this.cart.totalDefault;
         break;
       default:
         break;
     }
-    switch(this.paymentMethod) {
-      case "paypal":
-        if(this.cart.extras) {
-          for (var i = 0; i < this.cart.extras.length; i++ ) {
-            if(this.cart.extras[i].category === "card") {
-              this.cart.extras.splice(i, 1)
+    switch (this.paymentMethod) {
+      case 'paypal':
+        if (this.cart.extras) {
+          for (let i = 0; i < this.cart.extras.length; i++ ) {
+            if (this.cart.extras[i].category === 'card') {
+              this.cart.extras.splice(i, 1);
             }
           }
         }
         break;
-      case "card":
+      case 'stripe':
         this.cart.extras = [
           {
-            title: "Cargo tarjeta",
-            subtitle: "Importe extra al pagar con tarjeta",
+            title: 'Cargo tarjeta',
+            subtitle: 'Importe extra al pagar con tarjeta',
             price: 0.9,
-            class: "danger",
-            category: "card"
+            class: 'danger',
+            category: 'stripe'
           }
-        ]
+        ];
         break;
       default:
         break;
     }
-    switch(this.paymentTime) {
-      case "monthly":
-        if(this.paymentFrequency == "oneMonth") {
-          this.setOneMonthValues(30)
+    switch (this.paymentTime) {
+      case 'monthly':
+        if (this.paymentFrequency === 'oneMonth') {
+          this.setOneMonthValues(30);
         } else {
         }
         break;
-      case "allNow":
-        if(this.paymentFrequency == "oneMonth") {
-          this.setOneMonthValues()
-        }
-        else {
-          switch(this.paymentFrequency) {
-            case "threeMonth":
-              this.cart.total = (this.cart.totalDefault)*3
+      case 'allNow':
+        if (this.paymentFrequency === 'oneMonth') {
+          this.setOneMonthValues();
+        } else {
+          switch (this.paymentFrequency) {
+            case 'threeMonth':
+              this.cart.total = (this.cart.totalDefault) * 3;
               break;
-            case "sixMonth":
-              this.cart.total = (this.cart.totalDefault)*6
+            case 'sixMonth':
+              this.cart.total = (this.cart.totalDefault) * 6;
               break;
             case 'twelveMonth':
-              this.cart.total = (this.cart.totalDefault)*12
+              this.cart.total = (this.cart.totalDefault) * 12;
               break;
           }
           this.cart.product.monthly = false;
-          this.cart.product.price = this.cart.total
-          this.cart.totalDefault = this.cart.total
+          this.cart.product.price = this.cart.total;
+          this.cart.totalDefault = this.cart.total;
         }
         break;
       default:
         break;
     }
-    if(this.cart.extras) {
-      for (var i = 0; i < this.cart.extras.length; i++ ) {
-        this.cart.total = this.cart.totalDefault + this.cart.extras[i].price
+    if (this.cart.extras) {
+      for (let i = 0; i < this.cart.extras.length; i++ ) {
+        this.cart.total = this.cart.totalDefault + this.cart.extras[i].price;
       }
     }
   }
 
-  get idCard() {return this.idCardForm.get('idCard').value}
-  get name() {return this.idCardForm.get('name').value}
-  get surname() {return this.idCardForm.get('surname').value}
-  get currentCity() {return this.idCardForm.get('currentCity').value}
-  get currentAddress() {return this.idCardForm.get('currentAddress').value}
-  get currentAddressNumber() {return this.idCardForm.get('currentAddressNumber').value}
-  get currentAddressDoor() {return this.idCardForm.get('currentAddressDoor').value}
-  get currentCountry() {return this.idCardForm.get('currentCountry').value}
-  get currentZipcode() {return this.idCardForm.get('currentZipcode').value}
+  get idCard() {return this.idCardForm.get('idCard').value; }
+  get name() {return this.idCardForm.get('name').value; }
+  get surname() {return this.idCardForm.get('surname').value; }
+  get currentCity() {return this.idCardForm.get('currentCity').value; }
+  get currentAddress() {return this.idCardForm.get('currentAddress').value; }
+  get currentAddressNumber() {return this.idCardForm.get('currentAddressNumber').value; }
+  get currentAddressDoor() {return this.idCardForm.get('currentAddressDoor').value; }
+  get currentCountry() {return this.idCardForm.get('currentCountry').value; }
+  get currentZipcode() {return this.idCardForm.get('currentZipcode').value; }
 
   goToPayment(user: User) {
     const userNew = {
@@ -210,10 +204,10 @@ export class SubscriptionComponent implements OnInit {
         currentCountry: this.currentCountry,
         currentZipcode: this.currentZipcode,
       },
-      idCard: this.idCard,
-    }
-    this.auth.updateUser(user, userNew)
-    this.step += 1
+      idCard: this.idCard
+    };
+    this.auth.updateUser(user, userNew);
+    this.step += 1;
   }
 
   private generateSubscriptionForm() {
@@ -228,38 +222,37 @@ export class SubscriptionComponent implements OnInit {
   private generateIdCardForm(data: User = null) {
     if (data.billingAddress) {
       this.idCardForm = this.fb.group({
-        'idCard': [data.idCard || "", [Validators.required]],
-        'name': [data.name || "", [Validators.required]],
-        'surname': [data.surname || "", [Validators.required]],
-        'currentCity': [data.billingAddress.currentCity || "", [Validators.required]],
-        'currentAddress': [this.splitDirection(data.billingAddress.currentAddress)[0] || "", [Validators.required]],
-        'currentAddressNumber': [this.splitDirection(data.billingAddress.currentAddress)[1] || "", [Validators.required]],
-        'currentAddressDoor': [this.splitDirection(data.billingAddress.currentAddress)[2] || "",[]],
-        'currentCountry': [data.billingAddress.currentCountry || data.nationality || "", [Validators.required]],
-        'currentZipcode': [data.billingAddress.currentZipcode || "", [Validators.required]],
-        'conditions': [false,[Validators.requiredTrue]]
+        'idCard': [data.idCard || '', [Validators.required]],
+        'name': [data.name || '', [Validators.required]],
+        'surname': [data.surname || '', [Validators.required]],
+        'currentCity': [data.billingAddress.currentCity || '', [Validators.required]],
+        'currentAddress': [this.splitDirection(data.billingAddress.currentAddress)[0] || '', [Validators.required]],
+        'currentAddressNumber': [this.splitDirection(data.billingAddress.currentAddress)[1] || '', [Validators.required]],
+        'currentAddressDoor': [this.splitDirection(data.billingAddress.currentAddress)[2] || '', []],
+        'currentCountry': [data.billingAddress.currentCountry || data.nationality || '', [Validators.required]],
+        'currentZipcode': [data.billingAddress.currentZipcode || '', [Validators.required]],
+        'conditions': [false, [Validators.requiredTrue]]
       });
     } else {
       this.idCardForm = this.fb.group({
-        'idCard': [data.idCard || "", [Validators.required]],
-        'name': [data.name || "", [Validators.required]],
-        'surname': [data.surname || "", [Validators.required]],
-        'currentCity': ["", [Validators.required]],
-        'currentAddress': ["", [Validators.required]],
-        'currentAddressNumber': ["", [Validators.required]],
-        'currentAddressDoor': ["",[]],
-        'currentCountry': ["", [Validators.required]],
-        'currentZipcode': ["", [Validators.required]],
-        'conditions': [false,[Validators.requiredTrue]]
+        'idCard': [data.idCard || '', [Validators.required]],
+        'name': [data.name || '', [Validators.required]],
+        'surname': [data.surname || '', [Validators.required]],
+        'currentCity': ['', [Validators.required]],
+        'currentAddress': ['', [Validators.required]],
+        'currentAddressNumber': ['', [Validators.required]],
+        'currentAddressDoor': ['', []],
+        'currentCountry': ['', [Validators.required]],
+        'currentZipcode': ['', [Validators.required]],
+        'conditions': [false, [Validators.requiredTrue]]
       });
     }
   }
 
   private splitDirection(direction: string): string[] {
-    if(direction) {
+    if (direction) {
       return direction.split(this.joinString);
-    }
-    else return ["","",""]
+    } else { return ['', '', '']; }
   }
 
   private joinDirection(direction1: string, direction2: string, direction3: string): string {
@@ -268,12 +261,12 @@ export class SubscriptionComponent implements OnInit {
 
   private setOneMonthValues(_price = null) {
     this.cart.product = {
-      title: "Bet2win premium",
-      subtitle: "Servicio premium para un mes",
+      title: 'Bet2win premium',
+      subtitle: 'Servicio premium para un mes',
       price: _price || 35,
-      class: "default",
+      class: 'default',
       monthly: false
-    }
+    };
     this.cart.totalDefault = this.cart.product.price;
     this.cart.total = this.cart.totalDefault;
   }

@@ -7,12 +7,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 declare var Stripe: any;
 
 const stripe = Stripe('pk_test_9pbre2HE0vLNLD39bDttlXPP');
-const elements = stripe.elements({locale: "es"});
+const elements = stripe.elements({locale: 'es'});
 
 const card = elements.create('card');
 
 card.addEventListener('change', function(event) {
-  let displayError = document.getElementById('card-errors');
+  const displayError = document.getElementById('card-errors');
   if (event.error) {
     displayError.textContent = event.error.message;
   } else {
@@ -37,23 +37,34 @@ export class PaymentComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.cardNameForm = this.fb.group({
-      'cardName': [this.user.name + " " + this.user.surname || "", [Validators.required]]
+      'cardName': [this.user.name + ' ' + this.user.surname || '', [Validators.required]]
+    });
+    this.auth.user.subscribe((user) => {
+      if (user.subscription) {
+        if ((user.subscription.type && !user.subscription.stripe) || (user.subscription.stripe && !user.subscription.stripe.stripeId)) {
+          console.log('add stripe');
+          this.fun.httpsCallable('addStripeIdToUser')({}).toPromise();
+        }
+      } else {
+        console.log('add stripe');
+        this.fun.httpsCallable('addStripeIdToUser')({}).toPromise();
+      }
     });
   }
 
   ngAfterViewInit(): void {
-    card.mount(this.cardForm.nativeElement)
+    card.mount(this.cardForm.nativeElement);
   }
 
-  validateForm():boolean {
-    let error = document.getElementById('card-errors').textContent != '';
-    let name = this.cardNameForm.invalid;
-    return error || name
+  validateForm(): boolean {
+    const error = document.getElementById('card-errors').textContent !== '';
+    const name = this.cardNameForm.invalid;
+    return error || name;
   }
 
   async handleForm() {
-    const {token,error} = await stripe.createToken(card)
-    await this.fun.httpsCallable('startSubscriptionStripe')({user: this.user, source: token.id}).toPromise()
+    const {token, error} = await stripe.createToken(card);
+    await this.fun.httpsCallable('startSubscriptionStripe')({source: token.id}).toPromise();
   }
 
 }

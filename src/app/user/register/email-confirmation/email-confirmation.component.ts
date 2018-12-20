@@ -13,12 +13,12 @@ import { User } from 'src/app/Interfaces/user';
 export class EmailConfirmationComponent implements OnInit {
 
   emailCodeForm: FormGroup;
-  processEmailVerification: boolean = false;
-  codeConfirmationProcess: boolean = false;
-  codeConfirmationError: boolean = false;
-  resendEmail: boolean = false;
-  errorMessage: string = "";
-  loaded: boolean = false;
+  processEmailVerification = false;
+  codeConfirmationProcess = false;
+  codeConfirmationError = false;
+  resendEmail = false;
+  errorMessage = '';
+  loaded = false;
 
   constructor(public fb: FormBuilder,
               public auth: AuthService,
@@ -33,67 +33,68 @@ export class EmailConfirmationComponent implements OnInit {
         Validators.pattern('^[0-9]{6,6}$'),
         Validators.required
       ]]
-    })
+    });
     this.auth.user.subscribe((user) => {
-      if(user) {
-        if(user.name && user.surname && user.phone && user.nationality && user.birthDate) {
-          if(user.userConfirmed) {
-            if (user.isReferal || user.isReferal == false) {
-              this.router.navigate(['user/subscription'])
+      if (user) {
+        if (user.name && user.surname && user.phone && user.nationality && user.birthDate) {
+          if (user.userConfirmed) {
+            if (user.isReferal || user.isReferal === false) {
+              this.router.navigate(['user/subscription']);
             } else {
-              this.router.navigate(['register/referal'])
+              this.router.navigate(['register/referal']);
             }
           }
         } else {
-          this.router.navigate(['register/information'])
+          this.router.navigate(['register/information']);
         }
       } else {
-        this.router.navigate(['register'])
+        this.router.navigate(['register']);
       }
-    })
+    });
   }
 
   nextStepInputCode(uid: string) {
     this.processEmailVerification = true;
-    this.sendEmail(uid)
+    this.sendEmail(uid);
   }
 
-  get code(){return this.emailCodeForm.get('code').value}
+  get code() {return this.emailCodeForm.get('code').value; }
 
-  sendCode(uid: string) {
+  sendCode() {
     this.codeConfirmationProcess = true;
-    let params = {
-      uid: uid,
+    const params = {
       code: this.code
-    }
-    this.functions.checkCode(params).then(() => {
-      this.codeConfirmationError = false;
-      this.processEmailVerification = false
-    }).catch((err) => {
-      this.errorMessage = err.error.error
-      this.codeConfirmationError = true
-    }).then(()=> {
+    };
+    this.functions.checkCode(params).then((data) => {
+      if (data.result) {
+        this.codeConfirmationError = false;
+        this.processEmailVerification = false;
+      } else {
+        this.errorMessage = data.error;
+        this.codeConfirmationError = true;
+      }
+    }).then(() => {
       this.codeConfirmationProcess = false;
-    })
+    });
   }
 
   sendAnotherEmail(uid: string) {
     this.resendEmail = true;
-    this.errorMessage = "";
-    let user: User = {
+    this.errorMessage = '';
+    const user: User = {
       email: '',
       uid: uid
-    }
-    this.functions.sendVoid(user)
+    };
+    this.functions.sendVoid(user);
     this.resendEmail = false;
   }
 
   private sendEmail(uid: string) {
-    let user: User = {
+    const user: User = {
       email: '',
       uid: uid
-    }
-    this.functions.sendEmail(user)
+    };
+    this.functions.sendEmail(user);
   }
 
 }

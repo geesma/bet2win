@@ -10,7 +10,7 @@ import { AngularFireFunctions } from '@angular/fire/functions';
 })
 export class FirebaseFunctionsService {
 
-  private url: string = "https://us-central1-test-8f9b5.cloudfunctions.net/";
+  private url = 'https://us-central1-test-8f9b5.cloudfunctions.net/';
   private headers = new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
 
   constructor(private http: HttpClient,
@@ -18,28 +18,24 @@ export class FirebaseFunctionsService {
               private fun: AngularFireFunctions) { }
 
   sendEmail(user: User) {
-    this.auth.updateUser(user, {userConfirmationMethod: "email"}).catch(err => {
-      console.log(err)
-    })
+    this.auth.updateUser(user, {userConfirmationMethod: 'email'}).catch(err => {
+      console.log(err);
+    });
   }
 
   sendVoid(user: User) {
-    this.auth.updateUser(user, {userConfirmationMethod: ""}).catch(err => {
-      console.log(err)
-    })
+    this.auth.updateUser(user, {userConfirmationMethod: ''}).catch(err => {
+      console.log(err);
+    });
   }
 
   sendReferal(user: User) {
     this.auth.updateUser(user, {isReferal: user.isReferal, referal: user.referal}).catch(err => {
-      console.log(err)
-    })
+      console.log(err);
+    });
   }
 
   checkCode(params: any) {
-    return this.send("checkEmailWithCode", params).toPromise()
-  }
-
-  private send(uri: string, params: any) {
-    return this.http.post(this.url+uri, params, {headers: this.headers})
+    return this.fun.httpsCallable('checkEmailWithCode')(params).toPromise();
   }
 }

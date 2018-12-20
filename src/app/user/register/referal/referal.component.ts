@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functions.service';
 import { User } from 'src/app/Interfaces/user';
+import {register} from 'ts-node';
 
 @Component({
   selector: 'app-referal',
@@ -28,7 +29,24 @@ export class ReferalComponent implements OnInit {
       'referalCode': ['', [
         Validators.required
       ]]
-    })
+    });
+    this.auth.user.subscribe((user) => {
+      if (user) {
+        if (user.name && user.surname && user.phone && user.nationality && user.birthDate) {
+          if (user.userConfirmed) {
+            if (user.isReferal || user.isReferal === false) {
+              this.router.navigate(['user/subscription']);
+            }
+          } else {
+            this.router.navigate(['register/confirmation']);
+          }
+        } else {
+          this.router.navigate(['register/information']);
+        }
+      } else {
+        this.router.navigate(['register']);
+      }
+    });
   }
 
   get referal() {return this.referalForm.get('referalCode').value}

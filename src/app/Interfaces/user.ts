@@ -14,13 +14,15 @@ export interface Roles {
 // }
 //
 export interface Subscriptions {
-  type: string,
+  type: string;
   stripe?: {
-    stripeId?: string,
-    subscriptionId?: string,
-    status?: string,
-    itemId?: string
-  }
+    stripeId?: string;
+    subscriptionId?: string;
+    status?: string;
+    itemId?: string;
+  };
+  status?: string;
+  renovable?: boolean;
 }
 
 export interface User {
@@ -45,6 +47,6 @@ export interface User {
     currentCity: string;
     currentZipcode: string;
     currentCountry: string;
-  },
-  subscription?: Subscriptions
+  };
+  subscription?: Subscriptions;
 }

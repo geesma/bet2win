@@ -14,17 +14,17 @@ export class InfoComponent implements OnInit {
 
   detailForm: FormGroup;
   referalStringUrl: string;
-  hasReferalUrl: boolean = false;
-  loaded: boolean = false;
-  showSpiner: boolean = false;
+  hasReferalUrl = false;
+  loaded = false;
+  showSpiner = false;
 
   constructor(public fb: FormBuilder,
               public auth: AuthService,
               private route: ActivatedRoute,
               private router: Router,
               private functions: FirebaseFunctionsService) {
-    if(this.route.snapshot.params.referalString) {
-      this.referalStringUrl = this.route.snapshot.params.referalString
+    if (this.route.snapshot.params.referalString) {
+      this.referalStringUrl = this.route.snapshot.params.referalString;
       this.hasReferalUrl = true;
     }
 
@@ -32,16 +32,16 @@ export class InfoComponent implements OnInit {
 
   ngOnInit() {
     this.auth.user.subscribe((user) => {
-      if(user) {
-        this.buidDetailForm(user)
-        this.loaded = true
-        if(user.name && user.surname && user.phone && user.nationality && user.birthDate) {
-          this.router.navigate(['register/confirmation'])
+      if (user) {
+        this.buidDetailForm(user);
+        this.loaded = true;
+        if (user.name && user.surname && user.phone && user.nationality && user.birthDate) {
+          this.router.navigate(['register/confirmation']);
         }
       } else {
-        this.router.navigate(['register'])
+        this.router.navigate(['register']);
       }
-    })
+    });
   }
 
   isDetailFormValid(): boolean {
@@ -52,25 +52,25 @@ export class InfoComponent implements OnInit {
       this.detailForm.controls.prefix.valid &&
       this.detailForm.controls.nationality.valid &&
       this.detailForm.controls.birthDate.valid
-    )
+    );
   }
 
-  get name() {return this.detailForm.get('name').value}
-  get surname() {return this.detailForm.get('surname').value}
-  get prefix() {return this.detailForm.get('prefix').value}
-  get phone() {return this.detailForm.get('phone').value}
-  get nationality() {return this.detailForm.get('nationality').value}
-  get idCard() {return this.detailForm.get('idCard').value}
-  get birthDate(){return this.detailForm.get('birthDate').value}
-  private setPhoneNumber() {return '+'+this.prefix + this.phone}
+  get name() {return this.detailForm.get('name').value; }
+  get surname() {return this.detailForm.get('surname').value; }
+  get prefix() {return this.detailForm.get('prefix').value; }
+  get phone() {return this.detailForm.get('phone').value; }
+  get nationality() {return this.detailForm.get('nationality').value; }
+  get idCard() {return this.detailForm.get('idCard').value; }
+  get birthDate() {return this.detailForm.get('birthDate').value; }
+  private setPhoneNumber() {return '+' + this.prefix + this.phone; }
 
   setDetailsToUser(user: User) {
-    this.showSpiner = true
-    if(this.hasReferalUrl) {
+    this.showSpiner = true;
+    if (this.hasReferalUrl) {
       this.auth.updateUser(user, {
         referal: this.referalStringUrl || null,
         isReferal: this.hasReferalUrl
-      })
+      });
     }
     return this.auth.updateUser(user, {
       name: this.name,
@@ -82,8 +82,8 @@ export class InfoComponent implements OnInit {
       idCard: this.idCard || null,
       birthDate: this.birthDate
     }).then(() => {
-      this.showSpiner = false
-    })
+      this.showSpiner = false;
+    });
   }
 
   private buidDetailForm(data: User = null) {
@@ -93,7 +93,7 @@ export class InfoComponent implements OnInit {
       'phone': [data.phoneNumber || '', [Validators.required]],
       'prefix': [data.prefix || '', [Validators.required]],
       'nationality': [data.nationality || '', [Validators.required]],
-      'idCard': [data.idCard || '',[]],
+      'idCard': [data.idCard || '', []],
       'birthDate': [data.birthDate || '', [Validators.required]]
     });
   }

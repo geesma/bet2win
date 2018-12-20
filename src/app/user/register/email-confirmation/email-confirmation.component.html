@@ -31,7 +31,7 @@
               <div class="card-body" *ngIf="!resendEmail">
                 <h4 class="card-title">Correo Electronico</h4>
                 <p class="card-text">Va a recibir en su email y de forma gratuita un correo con un codigo de 6 digitos para confirmar su cuenta</p>
-                <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode(user.uid)" *ngIf="user.userConfirmationMethod == 'email' && !resendEmail">
+                <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode()" *ngIf="user.userConfirmationMethod == 'email' && !resendEmail">
                   <div class="form-group">
                     <label for="inputCode" class="sr-only">Codigo</label>
                     <input type="number" formControlName="code" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="emailCodeForm.controls.code.invalid || codeConfirmationError" [class.is-valid]="!emailCodeForm.controls.code.invalid || !codeConfirmationError">

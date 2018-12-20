@@ -9,40 +9,40 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class RegisterLayoutComponent implements OnInit {
 
-  hasReferalUrl:boolean;
+  hasReferalUrl: boolean;
   isUserConfirmed: boolean;
-  step: number = 1;
+  step = 1;
 
   constructor(public auth: AuthService, private router: Router, route: ActivatedRoute) {
-    if(route.snapshot.children[0].params.referalString) {
+    if (route.snapshot.children[0].params.referalString) {
       this.hasReferalUrl = true;
     }
   }
 
   ngOnInit() {
     this.auth.user.subscribe((user) => {
-      if(user) {
-        this.step = 2
-        if(user.userConfirmed && !user.userConfirmationMethod) {
+      if (user) {
+        this.step = 2;
+        if (user.userConfirmed && !user.userConfirmationMethod) {
           this.isUserConfirmed = user.userConfirmed;
         }
-        if(user.name && user.surname && user.phone && user.nationality && user.birthDate) {
-          this.step = 3
-          if(user.userConfirmed) {
-            this.step = 4
-            if(user.isReferal || user.isReferal == false) {
+        if (user.name && user.surname && user.phone && user.nationality && user.birthDate) {
+          this.step = 3;
+          if (user.userConfirmed) {
+            this.step = 4;
+            if (user.isReferal || user.isReferal === false) {
               this.router.navigate(['user/subscription']);
             }
-          } else if (user.isReferal || user.isReferal == false) {
-            this.hasReferalUrl = true
+          } else if (user.isReferal || user.isReferal === false) {
+            this.hasReferalUrl = true;
           }
-        } else if (user.isReferal || user.isReferal == false) {
-          this.hasReferalUrl = true
+        } else if (user.isReferal || user.isReferal === false) {
+          this.hasReferalUrl = true;
         }
       } else {
-        this.step = 1
+        this.step = 1;
       }
-    })
+    });
   }
 
 }

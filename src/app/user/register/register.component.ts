@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
   passwordFormGroup: FormGroup;
   user: User;
   currentUser: User;
-  showSpiner: boolean = true;
+  showSpiner = true;
 
   constructor(public fb: FormBuilder,
               public auth: AuthService,
@@ -48,8 +48,8 @@ export class RegisterComponent implements OnInit {
       validator: RegistrationValidator.validate.bind(this)
     });
     this.auth.user.subscribe((user) => {
-      if(user) {
-        if(this.route.snapshot.params.referalString) {
+      if (user) {
+        if (this.route.snapshot.params.referalString) {
           this.router.navigate(['/register/information/'+this.route.snapshot.params.referalString]);
         } else {
           this.router.navigate(['/register/information']);
@@ -59,18 +59,18 @@ export class RegisterComponent implements OnInit {
   }
 
   isSignUpFormValid(): boolean {
-    return this.signupForm.valid && this.passwordFormGroup.valid
+    return this.signupForm.valid && this.passwordFormGroup.valid;
   }
 
-  get email() {return this.signupForm.get('email').value}
-  get password() {return this.passwordFormGroup.get('password').value}
+  get email() {return this.signupForm.get('email').value; }
+  get password() {return this.passwordFormGroup.get('password').value; }
 
   signUp() {
     this.showSpiner = true;
     this.auth.registerUser(this.email, this.password).then(() => {
     }).catch(() => {
       this.showSpiner = false;
-    })
+    });
   }
 
 }
