@@ -1,0 +1,22 @@
+::ng-deep .bg-white {
+  @include bg(white);
+}
+::ng-deep .bg-primary-gradient {
+  @include bg-gradient(#E84118,#FBC531);
+}
+
+::ng-deep .bg-success-gadient{
+  @include bg-gradient(#2bb415,#5ad946);
+}
+
+::ng-deep .bg-info-gadient{
+  @include bg-gradient(#1991eb,#2ea1f8);
+}
+
+::ng-deep .bg-warning-gadient{
+  @include bg-gradient(theme-color(warning) , #FFB656);
+}
+
+::ng-deep .bg-danger-gadient{
+  @include bg-gradient(theme-color(danger) , #f85258);
+}

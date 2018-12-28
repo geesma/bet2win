@@ -15,7 +15,6 @@ import { AngularFireFunctionsModule, FunctionsRegionToken } from '@angular/fire/
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/Storage';
 import { AngularFireMessagingModule } from '@angular/fire/Messaging';
-import { FirebaseFunctionsService } from './services/firebase-functions.service';
 import { LoadingSpinnerComponent } from '../layouts/ui/loading-spinner/loading-spinner.component';
 
 
@@ -42,7 +41,6 @@ const FIREBASE_IMPORTS = [
   providers: [
     NotifyService,
     AuthService,
-    FirebaseFunctionsService,
     { provide: FunctionsRegionToken, useValue: 'us-central1' }
   ],
   exports: [LoadingSpinnerComponent]

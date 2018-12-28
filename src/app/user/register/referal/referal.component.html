@@ -11,14 +11,14 @@
         <h3 class="card-subtitle mb-2 text-muted">Estas a un paso de empezar a disfrutar de nuestro servicio, pero antes necesitamos saber si algún usuario te ha referido</h3>
         <div class="row justify-content-around align-items-center">
           <div class="col-lg-5 col-md-6 col-sm-12 py-3">
-            <form [formGroup]="referalForm" (ngSubmit)="sendReferal(user.uid)" class="" *ngIf="true">
+            <form [formGroup]="referalForm" (ngSubmit)="sendReferal()" class="" *ngIf="true">
               <div class="form-group">
                 <label for="inputCode" class="sr-only">Codigo de referido</label>
                 <input type="text" formControlName="referalCode" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="false" [class.is-valid]="true">
               </div>
               <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="loading">Confirmar <i class="fas fa-circle-notch fa-spin" *ngIf="loading"></i></button>
               <div class="pt-4">
-                <small>Si no te ha referido nadie y quieras empezar a usar nuestro servicio <a href (click)="$event.preventDefault(); passWithoutReferal(user.uid)" class="card-link">haz click aquí</a>, pero recuerde que no se podrá poner a un referido más adelante</small>
+                <small>Si no tienes referido haz click en confirmar, pero recuerde que no se podrá poner a un referido más adelante</small>
               </div>
             </form>
           </div>

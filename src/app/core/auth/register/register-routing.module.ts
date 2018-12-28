@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'confirmation', component: EmailConfirmationComponent },
   { path: 'referal', component: ReferalComponent },
   { path: 'information/:referalString', component: InfoComponent },
-  { path: 'confirmation/:referalString', component: EmailConfirmationComponent },
+  { path: 'confirmation/:code', component: EmailConfirmationComponent },
   { path: ':referalString', component: RegisterComponent },
 ];
 

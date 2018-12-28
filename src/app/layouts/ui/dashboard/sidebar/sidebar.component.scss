@@ -1,0 +1,14 @@
+span.online {
+  &.premium {
+    background: #FBC531;
+    &:after {
+      content: "Premium";
+    }
+  }
+  &.standard {
+    background: #2ea1f8;
+    &:after {
+      content: "Estandard";
+    }
+  }
+}

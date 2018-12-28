@@ -10,13 +10,13 @@
         </a>
         <h1 class="h3 mb-3 font-weight-normal">Crear cuenta</h1>
         <label for="inputEmail" class="sr-only">Email</label>
-        <input type="email" formControlName="email" id="inputEmail" class="form-control" placeholder="Email" value="" required autofocus>
+        <input type="email" formControlName="email" id="inputEmail" class="form-control" placeholder="Email" value="" required autocomplete="email" autofocus>
         <div *ngIf="signupForm.controls.email.invalid && signupForm.controls.email.dirty">
           Your email doesn't look quite right...
         </div>
         <div [formGroup]="passwordFormGroup">
           <label for="inputPassword" class="sr-only">Contraseña</label>
-          <input type="password" formControlName="password" id="inputPassword" class="form-control b2w-password" name="password" placeholder="Contraseña" required>
+          <input type="password" formControlName="password" id="inputPassword" class="form-control b2w-password" name="password" placeholder="Contraseña" autocomplete="new-password" required>
           <div *ngIf="passwordFormGroup.controls.password.invalid && passwordFormGroup.controls.password.dirty">
             Password must be between 6 and 24 chars and have at least one number
           </div>
@@ -24,7 +24,7 @@
             Password does not match
           </div>
           <label for="inputPasswordRepeat" class="sr-only">Confirmar contraseña</label>
-          <input type="password" formControlName="repeatPassword" id="inputPasswordRepeat" class="form-control b2w-confirmPassword" name="repeatPassword" placeholder="Contraseña" required>
+          <input type="password" formControlName="repeatPassword" id="inputPasswordRepeat" class="form-control b2w-confirmPassword" name="repeatPassword" placeholder="Contraseña" autocomplete="new-password" required>
         </div>
         I accept the Terms of Service and have read the Services Privacy Policy
         <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!isSignUpFormValid() || loading">Siguiente <i class="fas fa-circle-notch fa-spin" *ngIf="loading"></i></button>

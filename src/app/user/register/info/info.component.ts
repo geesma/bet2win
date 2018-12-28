@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { User } from '../../../Interfaces/user';
+import {User, UserInformation} from '../../../Interfaces/user';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functions.service';
+import {AngularFireFunctions} from '@angular/fire/functions';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-info',
@@ -22,7 +23,8 @@ export class InfoComponent implements OnInit {
               public auth: AuthService,
               private route: ActivatedRoute,
               private router: Router,
-              private functions: FirebaseFunctionsService) {
+              private fun: AngularFireFunctions,
+              private fbs: AngularFirestore) {
     if (this.route.snapshot.params.referalString) {
       this.referalStringUrl = this.route.snapshot.params.referalString;
       this.hasReferalUrl = true;
@@ -32,12 +34,14 @@ export class InfoComponent implements OnInit {
 
   ngOnInit() {
     this.auth.user.subscribe((user) => {
-      if (user) {
-        this.buidDetailForm(user);
-        this.loaded = true;
-        if (user.name && user.surname && user.phone && user.nationality && user.birthDate) {
-          this.router.navigate(['register/confirmation']);
-        }
+      if (user && user.uid) {
+        this.fbs.doc(`usersInformation/${user.uid}`).valueChanges().subscribe((usersInformation: UserInformation) => {
+          this.buidDetailForm(user, usersInformation);
+          this.loaded = true;
+          if (user.name && user.surname && user.phone && usersInformation.nationality && usersInformation.birthDate) {
+            this.router.navigate(['register/confirmation']);
+          }
+        });
       } else {
         this.router.navigate(['register']);
       }
@@ -64,37 +68,42 @@ export class InfoComponent implements OnInit {
   get birthDate() {return this.detailForm.get('birthDate').value; }
   private setPhoneNumber() {return '+' + this.prefix + this.phone; }
 
-  setDetailsToUser(user: User) {
-    this.showSpiner = true;
-    if (this.hasReferalUrl) {
-      this.auth.updateUser(user, {
-        referal: this.referalStringUrl || null,
-        isReferal: this.hasReferalUrl
+  async setDetailsToUser(user: User) {
+    try {
+      this.showSpiner = true;
+      if (this.hasReferalUrl) {
+        await this.fun.httpsCallable('addReferal')({
+          referal: this.hasReferalUrl,
+          referalUid: this.referalStringUrl,
+        });
+      }
+      await this.auth.updateUser(user, {
+        name: this.name,
+        surname: this.surname,
+        phone: this.setPhoneNumber(),
       });
-    }
-    return this.auth.updateUser(user, {
-      name: this.name,
-      surname: this.surname,
-      phone: this.setPhoneNumber(),
-      phoneNumber: this.phone,
-      prefix: this.prefix,
-      nationality: this.nationality,
-      idCard: this.idCard || null,
-      birthDate: this.birthDate
-    }).then(() => {
+      await this.auth.updateUserInformation(user, {
+        phoneNumber: this.phone,
+        prefix: this.prefix,
+        nationality: this.nationality,
+        idCard: this.idCard || null,
+        birthDate: this.birthDate
+      });
       this.showSpiner = false;
-    });
+    } catch (e) {
+      this.showSpiner = false;
+    }
   }
 
-  private buidDetailForm(data: User = null) {
+  private buidDetailForm(data: User = null, usersInformation = null) {
     this.detailForm = this.fb.group({
       'name': [data.name || '', [Validators.required]],
       'surname': [data.surname || '', [Validators.required]],
-      'phone': [data.phoneNumber || '', [Validators.required]],
-      'prefix': [data.prefix || '', [Validators.required]],
-      'nationality': [data.nationality || '', [Validators.required]],
-      'idCard': [data.idCard || '', []],
-      'birthDate': [data.birthDate || '', [Validators.required]]
+      'phone': [usersInformation.phoneNumber || '', [Validators.required]],
+      'prefix': [usersInformation.prefix || '', [Validators.required]],
+      'nationality': [usersInformation.nationality || '', [Validators.required]],
+      'idCard': [usersInformation.idCard || '', []],
+      'birthDate': [usersInformation.birthDate || '', [Validators.required]]
     });
   }
 

@@ -1,0 +1,16 @@
+::ng-deep .doc-ul {
+  li {
+    font-size: 14px;
+  }
+}
+
+
+::ng-deep .bold{
+  font-weight: 400;
+}
+::ng-deep .bolder{
+  font-weight: 500;
+}
+::ng-deep .boldest{
+  font-weight: 600;
+}

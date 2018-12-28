@@ -4,7 +4,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../../Interfaces/user';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
-import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functions.service';
 
 
 @Component({
@@ -23,8 +22,7 @@ export class RegisterComponent implements OnInit {
   constructor(public fb: FormBuilder,
               public auth: AuthService,
               private route: ActivatedRoute,
-              private router: Router,
-              private functions: FirebaseFunctionsService) {
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -49,13 +47,15 @@ export class RegisterComponent implements OnInit {
     });
     this.auth.user.subscribe((user) => {
       if (user) {
-        if (this.route.snapshot.params.referalString) {
-          this.router.navigate(['/register/information/'+this.route.snapshot.params.referalString]);
-        } else {
-          this.router.navigate(['/register/information']);
+        if (user.uid) {
+          if (this.route.snapshot.params.referalString) {
+            this.router.navigate(['/register/information/' + this.route.snapshot.params.referalString]);
+          } else {
+            this.router.navigate(['/register/information']);
+          }
         }
       }
-    })
+    });
   }
 
   isSignUpFormValid(): boolean {
@@ -67,8 +67,7 @@ export class RegisterComponent implements OnInit {
 
   signUp() {
     this.showSpiner = true;
-    this.auth.registerUser(this.email, this.password).then(() => {
-    }).catch(() => {
+    this.auth.registerUser(this.email, this.password).catch(() => {
       this.showSpiner = false;
     });
   }

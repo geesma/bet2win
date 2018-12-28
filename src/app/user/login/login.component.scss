@@ -1,4 +1,14 @@
-
+.app-body {
+  margin-top: 55px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
 
 .form-signin {
   width: 100%;
@@ -80,5 +90,11 @@
 @media only screen and (min-width: 767px) {
   .b2w-facebook-button-block {
     margin-bottom: inherit;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .main {
+    margin-left: 200px;
   }
 }

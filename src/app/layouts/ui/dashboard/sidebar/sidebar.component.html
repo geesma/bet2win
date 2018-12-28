@@ -1,0 +1,70 @@
+<ng-container *ngIf="user">
+  <nav class="bg-white sidebar sidebar-offcanvas" id="sidebar">
+    <div class="user-info">
+      <img src="images/face.jpg" alt="">
+      <p class="name">{{ user?.name + ' ' + user?.surname }}</p>
+      <p class="designation">
+        <ng-container *ngIf="user?.roles?.developer">Developer</ng-container>
+        <ng-container *ngIf="user?.roles?.admin && !user?.roles.developer">Admin</ng-container>
+        <ng-container *ngIf="user?.roles?.promotor && !user?.roles?.admin && !user?.roles.developer">Promotor</ng-container>
+        <ng-container *ngIf="user?.roles?.premium && !user?.roles?.promotor && !user?.roles?.admin && !user?.roles.developer">Premium</ng-container>
+      </p>
+      <span class="online" [class.premium]="user?.roles?.premium" [class.standard]="!user?.roles?.premium"></span>
+    </div>
+    <ul class="nav">
+      <li class="nav-item active" (mouseenter)="onHovering($event)" (mouseleave)="onUnovering($event)">
+        <a class="nav-link" href="index.html">
+          <img src="assets/images/icons/dashboard.png" srcset="
+                assets/images/icons/dashboard.png 1x,
+                assets/images/icons/dashboard-2x.png 2x,
+                assets/images/icons/dashboard-3x.png 3x">
+          <span class="menu-title">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item" (mouseenter)="onHovering($event)" (mouseleave)="onUnovering($event)">
+        <a class="nav-link" href="pages/widgets.html">
+          <img src="assets/images/icons/users.png" srcset="
+                assets/images/icons/users.png 1x,
+                assets/images/icons/users-2x.png 2x,
+                assets/images/icons/users-3x.png 3x">
+          <span class="menu-title">Users</span>
+        </a>
+      </li>
+      <li class="nav-item" (mouseenter)="onHovering($event)" (mouseleave)="onUnovering($event)">
+        <a class="nav-link" data-toggle="collapse" href="#sample-pages" aria-expanded="false" aria-controls="sample-pages">
+          <img src="assets/images/icons/9.png" alt="">
+          <span class="menu-title">Colapse example<i class="fa fa-sort-down"></i></span>
+        </a>
+        <div class="collapse" id="sample-pages">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item">
+              <a class="nav-link" href="pages/samples/blank_page.html">
+                Blank Page
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="pages/samples/login.html">
+                Login
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="pages/samples/register.html">
+                Register
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="pages/samples/404.html">
+                404
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="pages/samples/500.html">
+                500
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</ng-container>

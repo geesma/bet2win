@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functions.service';
-import { User } from 'src/app/Interfaces/user';
+import {User, UserConfirmation, UserInformation} from 'src/app/Interfaces/user';
+import {AngularFireFunctions} from '@angular/fire/functions';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-email-confirmation',
@@ -13,39 +14,51 @@ import { User } from 'src/app/Interfaces/user';
 export class EmailConfirmationComponent implements OnInit {
 
   emailCodeForm: FormGroup;
+  codeUrl: string;
+  hasCodeUrl = false;
+  comfirmation;
   processEmailVerification = false;
   codeConfirmationProcess = false;
   codeConfirmationError = false;
-  resendEmail = false;
   errorMessage = '';
-  loaded = false;
 
   constructor(public fb: FormBuilder,
               public auth: AuthService,
               private route: ActivatedRoute,
               private router: Router,
-              private functions: FirebaseFunctionsService) {
+              private fun: AngularFireFunctions,
+              private fbs: AngularFirestore) {
+    if (this.route.snapshot.params.code) {
+      this.hasCodeUrl = true;
+      this.sendCode(this.route.snapshot.params.code);
+    }
   }
 
   ngOnInit() {
     this.emailCodeForm = this.fb.group({
-      'code': ['', [
+      'code': [this.hasCodeUrl ? this.route.snapshot.params.code : '', [
         Validators.pattern('^[0-9]{6,6}$'),
         Validators.required
       ]]
     });
     this.auth.user.subscribe((user) => {
       if (user) {
-        if (user.name && user.surname && user.phone && user.nationality && user.birthDate) {
-          if (user.userConfirmed) {
-            if (user.isReferal || user.isReferal === false) {
-              this.router.navigate(['user/subscription']);
+        if (user.uid) {
+          this.fbs.doc(`usersInformation/${user.uid}`).valueChanges().subscribe((usersInformation: UserInformation) => {
+            if (user.name && user.surname && user.phone && usersInformation.nationality && usersInformation.birthDate) {
+              if (user.userConfirmed) {
+                if (user.isReferal || user.isReferal === false) {
+                  this.router.navigate(['user/subscription']);
+                } else {
+                  this.router.navigate(['register/referal']);
+                }
+              } else {
+                this.comfirmation = this.fbs.doc(`usersConfirmation/${user.uid}`).valueChanges();
+              }
             } else {
-              this.router.navigate(['register/referal']);
+              this.router.navigate(['register/information']);
             }
-          }
-        } else {
-          this.router.navigate(['register/information']);
+          });
         }
       } else {
         this.router.navigate(['register']);
@@ -53,19 +66,21 @@ export class EmailConfirmationComponent implements OnInit {
     });
   }
 
-  nextStepInputCode(uid: string) {
-    this.processEmailVerification = true;
-    this.sendEmail(uid);
+  nextStepInputCode() {
+    this.sendEmail();
   }
 
   get code() {return this.emailCodeForm.get('code').value; }
 
-  sendCode() {
+  sendCode(_code) {
+    let codeIn;
+    if (_code) {
+      codeIn = _code;
+    } else {
+      codeIn = this.code;
+    }
     this.codeConfirmationProcess = true;
-    const params = {
-      code: this.code
-    };
-    this.functions.checkCode(params).then((data) => {
+    this.fun.httpsCallable('checkEmailWithCode')({code: codeIn}).toPromise().then((data) => {
       if (data.result) {
         this.codeConfirmationError = false;
         this.processEmailVerification = false;
@@ -78,23 +93,17 @@ export class EmailConfirmationComponent implements OnInit {
     });
   }
 
-  sendAnotherEmail(uid: string) {
-    this.resendEmail = true;
-    this.errorMessage = '';
-    const user: User = {
-      email: '',
-      uid: uid
-    };
-    this.functions.sendVoid(user);
-    this.resendEmail = false;
+  sendAnotherEmail() {
+    this.sendEmail();
   }
 
-  private sendEmail(uid: string) {
-    const user: User = {
-      email: '',
-      uid: uid
-    };
-    this.functions.sendEmail(user);
+  private sendEmail() {
+    this.processEmailVerification = true;
+    this.fun.httpsCallable('sendEmailWithCode')({}).toPromise().then(() => {
+      this.processEmailVerification = false;
+    }).catch(() => {
+      this.processEmailVerification = false;
+    });
   }
 
 }

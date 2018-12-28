@@ -11,7 +11,6 @@ export class UserLayoutComponent implements OnInit {
 
 
   ngOnInit() {
-    
   }
 
 }

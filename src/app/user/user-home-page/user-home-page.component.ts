@@ -13,12 +13,8 @@ export class UserHomePageComponent implements OnInit {
 
   constructor(public auth: AuthService, private router: Router, private afAuth: AngularFireAuth, private fun: AngularFireFunctions) {}
 
-  logout() {
-    this.afAuth.auth.signOut();
-  }
-
   cancelSubscription(type: string) {
-    this.fun.httpsCallable('cancelSubscription')({type: type}).toPromise();
+    this.fun.httpsCallable('cancelSubscription')({type: type}).toPromise().then((response) => console.log(response) );
   }
 
   continueSubscription(type: string) {
@@ -26,5 +22,9 @@ export class UserHomePageComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  logout() {
+    this.afAuth.auth.signOut();
+  }
 
 }

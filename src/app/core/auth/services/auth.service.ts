@@ -78,12 +78,11 @@ export class AuthService {
   }
 
   private handleError(error) {
-    console.error(error);
     this.notify.update(error.message, 'danger');
   }
 
   private handleSuccess(message) {
-    console.log(message);
+    this.notify.update(message, 'primary');
   }
 
   private oAuthLogin(provider) {
@@ -105,7 +104,19 @@ export class AuthService {
   }
 
   updateUser(user: User, data: any) {
+    console.log('here');
     return this.afs.doc(`users/${user.uid}`).update(data);
+  }
+
+  updateUserInformation(user: User, data: any) {
+    console.log('here' + data);
+    return this.afs.doc(`usersInformation/${user.uid}`).update(data);
+  }
+
+  updateUserAddress(user: User, data: any) {
+    return this.afs.doc(`usersAddress/${user.uid}`).set(data).catch(() => {
+      this.afs.doc(`usersAddress/${user.uid}`).update(data);
+    });
   }
 
   ///// Role-based Authorization //////
@@ -160,5 +171,4 @@ export class AuthService {
     }
     return false;
   }
-
 }

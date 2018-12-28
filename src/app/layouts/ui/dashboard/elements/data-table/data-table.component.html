@@ -1,0 +1,29 @@
+<div class="card col-lg-12 px-0 mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Usuarios</h5>
+    <div class="table-responsive">
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="mt-5 table center-aligned-table">
+        <thead>
+        <tr class="text-primary">
+          <th>Nombre</th>
+          <th>Apellidos</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.name }}</td>
+          <td>{{ user.surname }}</td>
+          <td>{{ user.email }}</td>
+          <td><label class="badge badge-success">Premium</label></td>
+          <td><label class="badge badge-success">{{ user?.subscription?.status }}</label></td>
+          <td><label class="badge badge-success">Premium</label></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

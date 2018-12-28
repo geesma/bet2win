@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule ,ReactiveFormsModule }   from '@angular/forms';
+import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 
 /* Modules */
 import { NgModule } from '@angular/core';
@@ -29,6 +29,12 @@ import { PricingComponent } from './home-page/pricing/pricing.component';
 import { RegisterLayoutComponent } from './layouts/register-layout/register-layout.component';
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
 
+import { FooterDashboardComponent } from './layouts/ui/dashboard/footer/footer.component';
+import { NavbarComponent } from './layouts/ui/dashboard/navbar/navbar.component';
+import { SidebarComponent } from './layouts/ui/dashboard/sidebar/sidebar.component';
+import { MailComponent } from './layouts/ui/dashboard/elements/mail/mail.component';
+import { NotificationComponent } from './layouts/ui/dashboard/elements/notification/notification.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +44,7 @@ import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-l
     HomePageLayoutComponent,
     LoginLayoutComponent,
     NotificationMessageComponent,
+    FooterComponent,
 
     /* HomePage */
     HeaderComponent,
@@ -48,6 +55,12 @@ import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-l
     RegisterLayoutComponent,
     DashboardLayoutComponent,
 
+    /* Dashboard */
+    NavbarComponent,
+    SidebarComponent,
+    MailComponent,
+    NotificationComponent,
+    FooterDashboardComponent
   ],
   imports: [
     BrowserModule,

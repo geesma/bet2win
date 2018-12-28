@@ -1,8 +1,8 @@
 <ng-container *ngIf="(auth.user | async) || {} as user">
   <header>
       <button (click)="logout()" class="basic-btn">Logout</button>
-      <button (click)="cancelSubscription(user.type)" *ngIf="user.subscription.status === 'active' && user.subscription.renovable" class="basic-btn">Anular subscripcion</button>
-      <button (click)="continueSubscription(user.type)" *ngIf="user.subscription.status === 'active' && !user.subscription.renovable" class="basic-btn">Reactivar subscripcion</button>
+      <button (click)="cancelSubscription(user.subscription.type)" *ngIf="user.subscription.status === 'active' && user.subscription.renovable" class="basic-btn">Anular subscripcion</button>
+      <button (click)="continueSubscription(user.subscription.type)" *ngIf="user.subscription.status === 'active' && !user.subscription.renovable" class="basic-btn">Reactivar subscripcion</button>
     </header>
 {{ user | json }}
 

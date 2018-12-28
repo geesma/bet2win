@@ -36,6 +36,6 @@ export class FirebaseFunctionsService {
   }
 
   checkCode(params: any) {
-    return this.fun.httpsCallable('checkEmailWithCode')(params).toPromise();
+    return
   }
 }

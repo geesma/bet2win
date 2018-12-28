@@ -1,0 +1,127 @@
+/*--Version 1.0.0--*/
+
+::ng-deep body {
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+::ng-deep .form-control,
+::ng-deep .form-control:focus {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none
+}
+
+::ng-deep .form-control {
+  box-shadow: none
+}
+
+::ng-deep .form-control:focus {
+  outline: 0;
+  box-shadow: none
+}
+
+::ng-deep a,
+::ng-deep div,
+::ng-deep h1,
+::ng-deep h2,
+::ng-deep h3,
+::ng-deep h4,
+::ng-deep h5,
+::ng-deep p,
+::ng-deep span {
+  text-shadow: none;
+  font-family: "Poppins", sans-serif;
+}
+
+::ng-deep [type=button]:focus,
+::ng-deep a:active,
+::ng-deep a:focus,
+::ng-deep a:visited,
+::ng-deep button::-moz-focus-inner,
+::ng-deep input[type=reset]::-moz-focus-inner,
+::ng-deep input[type=button]::-moz-focus-inner,
+::ng-deep input[type=submit]::-moz-focus-inner,
+::ng-deep input[type=file]>input[type=button]::-moz-focus-inner,
+::ng-deep select::-moz-focus-inner {
+  outline: 0
+}
+
+::ng-deep :focus {
+  outline: -webkit-focus-ring-color auto 0 !important
+}
+
+::ng-deep textarea {
+  resize: none
+}
+
+::ng-deep .btn,
+::ng-deep .btn-group.open .dropdown-toggle,
+::ng-deep .btn:active,
+::ng-deep .btn:focus,
+::ng-deep .btn:hover,
+::ng-deep .btn:visited,
+::ng-deep a,
+::ng-deep a:active,
+::ng-deep a:checked,
+::ng-deep a:focus,
+::ng-deep a:hover,
+::ng-deep a:visited,
+::ng-deep body,
+::ng-deep button,
+::ng-deep button:active,
+::ng-deep button:hover,
+::ng-deep button:visited,
+::ng-deep div,
+::ng-deep input,
+::ng-deep input:active,
+::ng-deep input:focus,
+::ng-deep input:hover,
+::ng-deep input:visited,
+::ng-deep select,
+::ng-deep select:active,
+::ng-deep select:focus,
+::ng-deep select:visited,
+::ng-deep textarea,
+::ng-deep textarea:active,
+::ng-deep textarea:focus,
+::ng-deep textarea:hover,
+::ng-deep textarea:visited {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none
+}
+
+::ng-deep .btn.active.focus,
+::ng-deep .btn.active:focus,
+::ng-deep .btn.focus,
+::ng-deep .btn:active.focus,
+::ng-deep .btn:active:focus,
+::ng-deep .btn:focus,
+::ng-deep button,
+::ng-deep button:active,
+::ng-deep button:checked,
+::ng-deep button:focus,
+::ng-deep button:hover,
+::ng-deep button:visited {
+  outline: 0;
+  outline-offset: 0
+}
+
+::ng-deep .bootstrap-select .dropdown-toggle:focus {
+  outline: 0 !important;
+  outline-offset: 0
+}
+
+::ng-deep .dropdown-menu>li>a:active,
+::ng-deep .dropdown-menu>li>a:focus,
+::ng-deep .dropdown-menu>li>a:hover,
+::ng-deep .dropdown-menu>li>a:visited {
+  outline: 0 !important
+}
+
+::ng-deep a:focus,
+::ng-deep input:focus {
+  border-color: transparent;
+  outline: none
+}

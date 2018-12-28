@@ -46,7 +46,7 @@
         </div>
         <div class="form-group">
           <label class="sr-only" for="inputNationality">Nacionalidad</label>
-          <select class="custom-select" formControlName="nationality">
+          <select class="custom-select" id="inputNationality" formControlName="nationality">
             <option selected>Nacionalidad</option>
             <option value="nationality 1">Nacionalidad 1</option>
             <option value="nationality 2">Nacionalidad 2</option>
@@ -60,6 +60,7 @@
 
         <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!isDetailFormValid()">Siguiente <app-loading-spinner *ngIf="showSpiner"></app-loading-spinner></button>
       </div>
+      <app-loading-spinner *ngIf="showSpiner"></app-loading-spinner>
     </div>
   </form>
 </ng-container>

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { Router } from '@angular/router';
-import { User } from 'src/app/Interfaces/user';
+import {User, UserAddress, UserInformation} from 'src/app/Interfaces/user';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-subscription',
@@ -35,16 +36,21 @@ export class SubscriptionComponent implements OnInit {
 
   constructor(public fb: FormBuilder,
               public auth: AuthService,
-              private router: Router) {
+              private router: Router,
+              private fbs: AngularFirestore) {
   }
 
   ngOnInit() {
     this.auth.user.subscribe((user) => {
-      if (user) {
+      if (user && user.uid) {
         if (user.subscription && user.subscription.status && user.roles.premium) {
           this.router.navigate(['user']);
         }
-        this.generateIdCardForm(user);
+        this.fbs.doc(`usersInformation/${user.uid}`).valueChanges().subscribe((usersInformation: UserInformation) => {
+          this.fbs.doc(`usersInformation/${user.uid}`).valueChanges().subscribe((usersAddress: UserAddress) => {
+            this.generateIdCardForm(user, usersInformation, usersAddress);
+          });
+        });
       }
     });
   }
@@ -61,14 +67,6 @@ export class SubscriptionComponent implements OnInit {
 
   stepBack() {
     this.step -= 1;
-  }
-
-  payWithPaypal() {
-    alert('paypal');
-  }
-
-  payWithCard() {
-    alert('stripe');
   }
 
   generatePayment() {
@@ -195,18 +193,16 @@ export class SubscriptionComponent implements OnInit {
   get currentZipcode() {return this.idCardForm.get('currentZipcode').value; }
 
   goToPayment(user: User) {
-    const userNew = {
-      name: this.name,
-      surname: this.surname,
-      billingAddress: {
-        currentCity: this.currentCity,
-        currentAddress: this.joinDirection(this.currentAddress, this.currentAddressNumber, this.currentAddressDoor),
-        currentCountry: this.currentCountry,
-        currentZipcode: this.currentZipcode,
-      },
+    this.auth.updateUser(user, {name: this.name, surname: this.surname});
+    this.auth.updateUserInformation(user, {
       idCard: this.idCard
-    };
-    this.auth.updateUser(user, userNew);
+    });
+    this.auth.updateUserAddress(user, {
+      currentCity: this.currentCity,
+      currentAddress: this.joinDirection(this.currentAddress, this.currentAddressNumber, this.currentAddressDoor),
+      currentCountry: this.currentCountry,
+      currentZipcode: this.currentZipcode
+    });
     this.step += 1;
   }
 
@@ -219,23 +215,23 @@ export class SubscriptionComponent implements OnInit {
     });
   }
 
-  private generateIdCardForm(data: User = null) {
-    if (data.billingAddress) {
+  private generateIdCardForm(data: User = null, dataInformation: UserInformation = null, dataAddress: UserAddress = null) {
+    if (dataAddress.uid) {
       this.idCardForm = this.fb.group({
-        'idCard': [data.idCard || '', [Validators.required]],
+        'idCard': [dataInformation.idCard || '', [Validators.required]],
         'name': [data.name || '', [Validators.required]],
         'surname': [data.surname || '', [Validators.required]],
-        'currentCity': [data.billingAddress.currentCity || '', [Validators.required]],
-        'currentAddress': [this.splitDirection(data.billingAddress.currentAddress)[0] || '', [Validators.required]],
-        'currentAddressNumber': [this.splitDirection(data.billingAddress.currentAddress)[1] || '', [Validators.required]],
-        'currentAddressDoor': [this.splitDirection(data.billingAddress.currentAddress)[2] || '', []],
-        'currentCountry': [data.billingAddress.currentCountry || data.nationality || '', [Validators.required]],
-        'currentZipcode': [data.billingAddress.currentZipcode || '', [Validators.required]],
+        'currentCity': [dataAddress.currentCity || '', [Validators.required]],
+        'currentAddress': [this.splitDirection(dataAddress.currentAddress)[0] || '', [Validators.required]],
+        'currentAddressNumber': [this.splitDirection(dataAddress.currentAddress)[1] || '', [Validators.required]],
+        'currentAddressDoor': [this.splitDirection(dataAddress.currentAddress)[2] || '', []],
+        'currentCountry': [dataAddress.currentCountry || dataInformation.nationality || '', [Validators.required]],
+        'currentZipcode': [dataAddress.currentZipcode || '', [Validators.required]],
         'conditions': [false, [Validators.requiredTrue]]
       });
     } else {
       this.idCardForm = this.fb.group({
-        'idCard': [data.idCard || '', [Validators.required]],
+        'idCard': [dataInformation.idCard || '', [Validators.required]],
         'name': [data.name || '', [Validators.required]],
         'surname': [data.surname || '', [Validators.required]],
         'currentCity': ['', [Validators.required]],

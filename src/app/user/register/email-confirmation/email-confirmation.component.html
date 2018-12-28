@@ -1,4 +1,4 @@
-<ng-container *ngIf="(auth.user | async) || {} as user">
+<ng-container *ngIf="(comfirmation |async) || {} as userComfirmation">
   <!-- Email confirmation -->
   <div class="email-confirmation">
     <div class="card register-form">
@@ -31,10 +31,10 @@
               <div class="card-body" *ngIf="!resendEmail">
                 <h4 class="card-title">Correo Electronico</h4>
                 <p class="card-text">Va a recibir en su email y de forma gratuita un correo con un codigo de 6 digitos para confirmar su cuenta</p>
-                <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode()" *ngIf="user.userConfirmationMethod == 'email' && !resendEmail">
+                <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode()" *ngIf="userComfirmation.method == 'email' || hasCodeUrl">
                   <div class="form-group">
                     <label for="inputCode" class="sr-only">Codigo</label>
-                    <input type="number" formControlName="code" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="emailCodeForm.controls.code.invalid || codeConfirmationError" [class.is-valid]="!emailCodeForm.controls.code.invalid || !codeConfirmationError">
+                    <input type="number" formControlName="code" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="emailCodeForm.controls.code.invalid || codeConfirmationError" [class.is-valid]="!emailCodeForm.controls.code.invalid || !codeConfirmationError" [attr.disabled]="codeConfirmationProcess ? '' : null">
                     <div *ngIf="emailCodeForm.controls.code.invalid" class="invalid-feedback">
                       El codigo debe tener 6 digitos.
                     </div>
@@ -44,11 +44,11 @@
                   </div>
                   <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!emailCodeForm.valid || codeConfirmationProcess || errorMessage == 'Demasiados intentos'">Confirmar <i class="fas fa-circle-notch fa-spin" *ngIf="codeConfirmationProcess"></i></button>
                   <div class="pt-4">
-                    <a href (click)="$event.preventDefault(); sendAnotherEmail(user.uid)" *ngIf="errorMessage == 'Demasiados intentos'" class="card-link">Volver a enviar un correo</a>
-                    <small *ngIf="errorMessage !== 'Demasiados intentos'">Si no ha recibido ningun correo, puede ser que este se encuentre en correo no deseaso, si lo desea puede <a href (click)="$event.preventDefault(); sendAnotherEmail(user.uid)" class="card-link">volver a enviar un correo</a></small>
+                    <a href (click)="$event.preventDefault(); sendAnotherEmail()" *ngIf="errorMessage == 'Demasiados intentos'" class="card-link">Volver a enviar un correo <i class="fas fa-circle-notch fa-spin" *ngIf="codeConfirmationProcess"></i></a>
+                    <small *ngIf="errorMessage !== 'Demasiados intentos'">Si no ha recibido ningun correo, puede ser que este se encuentre en correo no deseaso, si lo desea puede <a href (click)="$event.preventDefault(); sendAnotherEmail()" class="card-link">volver a enviar un correo <i class="fas fa-circle-notch fa-spin" *ngIf="codeConfirmationProcess"></i></a></small>
                   </div>
                 </form>
-                <a href (click)="$event.preventDefault(); nextStepInputCode(user.uid)" *ngIf="(!processEmailVerification || user.userConfirmationMethod !== '' ) && user.userConfirmationMethod !== 'email' && !resendEmail" class="card-link">Confirmar por email <i class="fas fa-circle-notch fa-spin" *ngIf="processEmailVerification"></i></a>
+                <a href (click)="$event.preventDefault(); nextStepInputCode()" *ngIf="(!processEmailVerification || userComfirmation.method !== '' || hasCodeUrl ) && userComfirmation.method !== 'email' && !resendEmail" class="card-link">Confirmar por email <i class="fas fa-circle-notch fa-spin" *ngIf="processEmailVerification"></i></a>
               </div>
               <app-loading-spinner *ngIf="resendEmail"></app-loading-spinner>
             </div>

@@ -4,49 +4,59 @@ export interface Roles {
   admin?: boolean;
   promotor?: boolean;
 }
-//
-// export interface SubscriptionTypes {
-//   name?: string;
-//   price?: number;
-//   autoUpdate?: boolean;
-//   remaining?: number;
-//   platform?: platformsTypes;
-// }
-//
+
 export interface Subscriptions {
-  type: string;
   stripe?: {
     stripeId?: string;
     subscriptionId?: string;
-    status?: string;
     itemId?: string;
   };
-  status?: string;
   renovable?: boolean;
+  start?: Date;
+  discount?: number;
+  discountType?: string;
 }
 
 export interface User {
   uid: string;
   email: string;
   userConfirmed?: boolean;
-  userConfirmationMethod?: string;
   name?: string;
   surname?: string;
   phone?: string;
+  locale?: string;
+  referalNumber: number;
+  isReferal?: boolean;
+  referal?: string;
+  referalString: string;
+  roles: Roles;
+  subscription?: {
+    status: string;
+    type: string;
+    end: Date;
+    renovable: boolean;
+  };
+}
+
+export interface UserInformation {
+  uid: string;
+  userConfirmationMethod?: string;
   phoneNumber?: number;
   prefix?: number;
   nationality?: string;
   idCard?: string;
   birthDate?: Date;
-  referalNumber?: number;
-  isReferal?: boolean;
-  referal?: string;
-  roles?: Roles;
-  billingAddress?: {
-    currentAddress: string;
-    currentCity: string;
-    currentZipcode: string;
-    currentCountry: string;
-  };
-  subscription?: Subscriptions;
+}
+
+export interface UserAddress {
+  uid: string;
+  currentAddress: string;
+  currentCity: string;
+  currentZipcode: string;
+  currentCountry: string;
+}
+
+export interface UserConfirmation {
+  uid: string;
+  method: string;
 }

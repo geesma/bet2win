@@ -9,8 +9,8 @@ import { RegisterLayoutComponent } from './layouts/register-layout/register-layo
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginLayoutComponent ,loadChildren:  './core/auth/auth.module#AuthModule'},
-  { path: 'register', component: RegisterLayoutComponent ,loadChildren:  './core/auth/register/register.module#RegisterModule'},
+  { path: 'login', loadChildren:  './core/auth/auth.module#AuthModule'},
+  { path: 'register', component: RegisterLayoutComponent , loadChildren:  './core/auth/register/register.module#RegisterModule'},
   { path: 'user', component: UserLayoutComponent , loadChildren: './user/user.module#UserModule' , canActivate: [AuthGuard]},
   { path: 'dashboard', component: DashboardLayoutComponent , loadChildren: './dashboard/dashboard.module#DashboardModule' , canActivate: [AuthGuard]},
   { path: 'error', loadChildren: './errors/errors.module#ErrorsModule'},

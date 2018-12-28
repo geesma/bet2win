@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FirebaseFunctionsService } from 'src/app/core/services/firebase-functions.service';
-import { User } from 'src/app/Interfaces/user';
-import {register} from 'ts-node';
+import {AngularFireFunctions} from '@angular/fire/functions';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {UserInformation} from '../../../Interfaces/user';
 
 @Component({
   selector: 'app-referal',
@@ -14,13 +14,14 @@ import {register} from 'ts-node';
 export class ReferalComponent implements OnInit {
 
   referalForm: FormGroup;
-  loading: boolean = false;
+  loading = false;
 
   constructor(public fb: FormBuilder,
               public auth: AuthService,
               private route: ActivatedRoute,
               private router: Router,
-              private functions: FirebaseFunctionsService) {
+              private fun: AngularFireFunctions,
+              private fbs: AngularFirestore) {
 
   }
 
@@ -31,39 +32,42 @@ export class ReferalComponent implements OnInit {
       ]]
     });
     this.auth.user.subscribe((user) => {
-      if (user) {
-        if (user.name && user.surname && user.phone && user.nationality && user.birthDate) {
-          if (user.userConfirmed) {
-            if (user.isReferal || user.isReferal === false) {
-              this.router.navigate(['user/subscription']);
+      if (user && user.uid) {
+        this.fbs.doc(`usersInformation/${user.uid}`).valueChanges().subscribe((usersInformation: UserInformation) => {
+          if (user.name && user.surname && user.phone && usersInformation.nationality && usersInformation.birthDate) {
+            if (user.userConfirmed) {
+              if (user.isReferal || user.isReferal === false) {
+                this.router.navigate(['user/subscription']);
+              }
+            } else {
+              this.router.navigate(['register/confirmation']);
             }
           } else {
-            this.router.navigate(['register/confirmation']);
+            this.router.navigate(['register/information']);
           }
-        } else {
-          this.router.navigate(['register/information']);
-        }
+        });
       } else {
         this.router.navigate(['register']);
       }
     });
   }
 
-  get referal() {return this.referalForm.get('referalCode').value}
+  get referal() { return this.referalForm.get('referalCode').value; }
 
-  sendReferal(uid: string) {
-    let referal: boolean = false;
-    if(this.referal) {
-      referal = true
+  sendReferal() {
+    this.loading = true;
+    let isReferal = false;
+    if (this.referal) {
+      isReferal = true;
     }
-    this.loading = true
-    let user: User = {
-      uid: uid,
-      email: '',
-      referal: this.referal,
-      isReferal: referal
-    }
-    this.functions.sendReferal(user)
+    this.fun.httpsCallable('addReferal')({
+      referal: isReferal,
+      referalUid: this.referal,
+    }).toPromise().then(() => {
+      this.loading = false;
+    }).catch(err => {
+      console.log(err);
+      this.loading = false;
+    });
   }
-
 }
