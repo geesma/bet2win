@@ -1,0 +1,58 @@
+<section id="home-news-area" class="home-news-area my-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 mb-1 mb-md-3 mb-lg-5 text-center">
+        <span class="btn btn-xs btn-soft-success btn-pill mb-2">Noticias</span>
+        <h2>Lea nuestras últimas novedades</h2>
+        <p class="grey">Tu dosis diaria de las últimas noticias sobre los deportes y las apuestas.</p>
+      </div>
+      <div class="col-12">
+        <ngu-carousel class="card-group" #myCarousel [inputs]="carouselTile" [dataSource]="carouselTileItems">
+          <ngu-tile class="card" *nguCarouselDef="let item; let i = index">
+            <div class="card-body text-center with-image" *ngIf="news[i].preview.previewStyle === 'image'" [style.background]="'url(' + news[i].preview.thumbnailUrl + ')'" (click)="goTo('click')">
+              <div class="row align-items-end h-100">
+                <div class="col-12">
+                  <h3 class="h4 text-white">{{ news[i].preview.title }}</h3>
+                  <div class="mt-4">
+                    <strong class="d-block text-white-70 mb-2">{{ news[i].preview.author.name }}</strong>
+                    <div class="u-avatar mx-auto">
+                      <img src="{{ news[i].preview.author.imageUrl }}" class="img-fluid rounded-circle" alt="Author image">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body text-center with-text" *ngIf="news[i].preview.previewStyle === 'text'" [style.background]="'url(' + news[i].preview.thumbnailUrl + ')'">
+              <div class="row align-items-end h-100">
+                <div class="col-12">
+                  <h3 class="h6 font-weight-normal">
+                    <i class="fas fa-quote-left text-black-50"></i>
+                    {{ news[i].preview.text }}
+                    <i class="fas fa-quote-right text-black-50"></i>
+                  </h3>
+                  <div class="my-4">
+                    <strong class="d-block mb-2">{{ news[i].preview.author.name }}</strong>
+                    <div class="u-avatar mx-auto">
+                      <img src="{{ news[i].preview.author.imageUrl }}" class="img-fluid rounded-circle" alt="Author image">
+                    </div>
+                  </div>
+                  <a class="btn btn-sm btn-soft-primary btn-wide transition-3d-hover" href="#" tabindex="0">Leer Más</a>
+                </div>
+              </div>
+            </div>
+          </ngu-tile>
+          <button NguCarouselPrev class="leftRs btn btn-soft-primary"><i class="fas fa-arrow-left"></i></button>
+          <button NguCarouselNext class="rightRs btn btn-soft-primary"><i class="fas fa-arrow-right"></i></button>
+
+          <ul class="ngxcarouselPoint" NguCarouselPoint>
+            <!--
+            <li *ngFor="let i of myCarousel.pointNumbers; let i = index" [class.active]="i===myCarousel.activePoint" (click)="myCarousel.moveTo(i)"></li>
+            -->
+          </ul>
+        </ngu-carousel>
+      </div>
+    </div>
+  </div>
+</section>
+
+

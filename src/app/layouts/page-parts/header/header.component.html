@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white b2w-navbar">
+<nav id="navbar" class="navbar navbar-expand-lg b2w-navbar navbar-custom">
   <div class="container container-navbar">
     <a class="navbar-brand" [routerLink]="['/']">
       <img src="assets/images/logos/b2w_logo_menu_lletres.png" srcset="
@@ -6,24 +6,26 @@
                 assets/images/logos/b2w_logo_menu_lletres-2x.png 2x,
                 assets/images/logos/b2w_logo_menu_lletres-3x.png 3x"alt="bet2win logo for the menu">
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbarToggler" aria-controls="mainNavbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <button class="navbar-toggler hamburger hamburger--elastic" type="button" data-toggle="collapse" data-target="#mainNavbarToggler" aria-controls="mainNavbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+      </span>
     </button>
 
     <div class="collapse navbar-collapse justify-content-end" id="mainNavbarToggler">
       <div class="my-2 my-lg-0">
         <ul class="navbar-nav b2w-navbar-titles">
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" href="#">Caracteristicas <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="#home-how-works-area">Como funciona</a>
           </li>
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" href="#">Ejemplo</a>
+            <a class="nav-link" href="#home-prices-area">Precios</a>
           </li>
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" href="#">Precios</a>
+            <a class="nav-link" href="#home-news-area">Noticias</a>
           </li>
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" href="#">Soporte y ayuda</a>
+          <li class="nav-item" style="margin-right: 20px" routerLinkActive="active">
+            <a class="nav-link" href="#home-contact-area">Contacto</a>
           </li>
           <li class="nav-item">
             <a class="btn btn-primary" [routerLink]="['/login']">Iniciar sesión</a>

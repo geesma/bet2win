@@ -1,9 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 .container {
-  max-width: 960px;
+  overflow-x: hidden !important;
 }
-
 
 .space-10-l {
   margin-left: 10px;
@@ -12,4 +11,116 @@
 
 .space-5-l {
   margin-left: 5px;
+}
+
+.card {
+  border-radius: 0 ;
+  border: none ;
+}
+
+.box-shadow {
+  -webkit-box-shadow: 0px 0.4rem 2rem 0px rgba(79, 79, 79, 0.0980392);
+  -moz-box-shadow: 0px 0.4rem 2rem 0px rgba(79, 79, 79, 0.0980392);
+  box-shadow: 0px 0.4rem 2rem 0px rgba(79, 79, 79, 0.0980392);
+}
+
+input.box-shadow {
+  -webkit-box-shadow: 0px 0.4rem 2rem 0px rgba(79, 79, 79, 0.1480392);
+  -moz-box-shadow: 0px 0.4rem 2rem 0px rgba(79, 79, 79, 0.1480392);
+  box-shadow: 0px 0.4rem 2rem 0px rgba(79, 79, 79, 0.1480392);
+}
+
+.no-border {
+  border: none;
+  border-radius: 0;
+}
+
+.right-0 {
+  right: 0;
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+
+.left-0 {
+  left: 0;
+}
+
+// Custom buttons
+
+.btn-soft-success {
+  color: #00c9a7;
+  background: rgba(0, 201, 167, 0.1);
+  border-color: transparent;
+  cursor: default !important;
+}
+
+.btn-soft-primary[href]:hover,
+.btn-soft-primary[href]:focus,
+.btn-soft-primary[href]:active,
+.btn-soft-primary[href].active,
+.btn-soft-primary[type]:hover,
+.btn-soft-primary[type]:focus,
+.btn-soft-primary[type]:active,
+.btn-soft-primary[type].active,
+.btn-soft-primary:hover {
+  color: #fff;
+  background: #377dff;
+  box-shadow: 0 4px 11px rgba(55, 125, 255, 0.35);
+}
+
+.btn-soft-primary {
+  color: #377dff;
+  background: rgb(234, 242, 255);
+  border-color: transparent;
+  font-weight: 500;
+}
+
+.btn-soft-error {
+  color: #e74c3c;
+  background: rgba(55, 125, 255, 0.1);
+  border-color: transparent;
+}
+
+.btn-pill {
+  border-radius: 6.1875rem;
+}
+
+.btn-xs {
+  font-size: 0.6875rem;
+  font-weight: 400;
+  padding: 0.4375rem 0.9375rem;
+}
+
+.btn-wide {
+  min-width: 9.6875rem;
+}
+
+.btn-sm, .btn-group-sm > .btn {
+  padding: 0.625rem 1.125rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.125rem;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+  font-weight: 300;
+  line-height: 1.5;
+  color: inherit;
+}
+
+// Custom theme options
+
+p.grey,
+label.grey {
+  color: #77838f;
+  margin-top: 0;
+}
+
+p.grey {
+  line-height: 1.7;
+  margin-bottom: 1rem;
 }

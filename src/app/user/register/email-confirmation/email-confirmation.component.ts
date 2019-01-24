@@ -16,7 +16,7 @@ export class EmailConfirmationComponent implements OnInit {
   emailCodeForm: FormGroup;
   codeUrl: string;
   hasCodeUrl = false;
-  comfirmation;
+  confirmation;
   processEmailVerification = false;
   codeConfirmationProcess = false;
   codeConfirmationError = false;
@@ -53,7 +53,7 @@ export class EmailConfirmationComponent implements OnInit {
                   this.router.navigate(['register/referal']);
                 }
               } else {
-                this.comfirmation = this.fbs.doc(`usersConfirmation/${user.uid}`).valueChanges();
+                this.confirmation = this.fbs.doc(`usersConfirmation/${user.uid}`).valueChanges();
               }
             } else {
               this.router.navigate(['register/information']);

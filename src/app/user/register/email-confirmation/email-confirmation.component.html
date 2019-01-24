@@ -1,4 +1,4 @@
-<ng-container *ngIf="(comfirmation |async) || {} as userComfirmation">
+<ng-container *ngIf="(confirmation |async) || {} as userConfirmation">
   <!-- Email confirmation -->
   <div class="email-confirmation">
     <div class="card register-form">
@@ -31,7 +31,7 @@
               <div class="card-body" *ngIf="!resendEmail">
                 <h4 class="card-title">Correo Electronico</h4>
                 <p class="card-text">Va a recibir en su email y de forma gratuita un correo con un codigo de 6 digitos para confirmar su cuenta</p>
-                <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode()" *ngIf="userComfirmation.method == 'email' || hasCodeUrl">
+                <form [formGroup]="emailCodeForm" (ngSubmit)="sendCode()" *ngIf="userConfirmation.method == 'email' || hasCodeUrl">
                   <div class="form-group">
                     <label for="inputCode" class="sr-only">Codigo</label>
                     <input type="number" formControlName="code" id="inputCode" class="form-control text-center" placeholder="Codigo" required autofocus [class.is-invalid]="emailCodeForm.controls.code.invalid || codeConfirmationError" [class.is-valid]="!emailCodeForm.controls.code.invalid || !codeConfirmationError" [attr.disabled]="codeConfirmationProcess ? '' : null">
@@ -48,7 +48,7 @@
                     <small *ngIf="errorMessage !== 'Demasiados intentos'">Si no ha recibido ningun correo, puede ser que este se encuentre en correo no deseaso, si lo desea puede <a href (click)="$event.preventDefault(); sendAnotherEmail()" class="card-link">volver a enviar un correo <i class="fas fa-circle-notch fa-spin" *ngIf="codeConfirmationProcess"></i></a></small>
                   </div>
                 </form>
-                <a href (click)="$event.preventDefault(); nextStepInputCode()" *ngIf="(!processEmailVerification || userComfirmation.method !== '' || hasCodeUrl ) && userComfirmation.method !== 'email' && !resendEmail" class="card-link">Confirmar por email <i class="fas fa-circle-notch fa-spin" *ngIf="processEmailVerification"></i></a>
+                <a href (click)="$event.preventDefault(); nextStepInputCode()" *ngIf="(!processEmailVerification || userConfirmation.method !== '' || hasCodeUrl ) && userConfirmation.method !== 'email' && !resendEmail" class="card-link">Confirmar por email <i class="fas fa-circle-notch fa-spin" *ngIf="processEmailVerification"></i></a>
               </div>
               <app-loading-spinner *ngIf="resendEmail"></app-loading-spinner>
             </div>

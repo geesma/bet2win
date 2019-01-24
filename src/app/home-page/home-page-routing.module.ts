@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 /* HomePage Layout */
-import { HomePageLayoutComponent } from './../layouts/home-page-layout/home-page-layout.component';
+import { HomePageLayoutComponent } from '../layouts/home-page-layout/home-page-layout.component';
 
 /* HomePage Component */
-import { HomePageComponent } from './../home-page/home-page.component';
+import { HomePageComponent } from '../home-page/home-page.component';
 
 const routes: Routes = [
   { path: '', component: HomePageLayoutComponent,

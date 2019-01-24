@@ -1,0 +1,53 @@
+  <!-- Pricing -->
+  <div class="card border-0 box-shadow">
+    <header id="SVGwave1BottomShapeID3" class="card-header border-0 position-relative bg-primary text-white p-5 pb-11" style="">
+      <h3 class="h4 mb-1">{{ name }}</h3>
+      <span class="d-block">
+                  <span class="align-top">€</span>
+                  <span class="display-4 font-weight-semi-bold">{{ price }}</span>
+                  <span *ngIf="time">/{{ time }}</span>
+                </span>
+
+      <div class="position-absolute right-0 bottom-0 left-0">
+        <figure class="ie-wave-1-bottom">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" viewBox="0 0 300 100" style="enable-background:new 0 0 300 100;" xml:space="preserve" class="injected-svg js-svg-injector" data-parent="#SVGwave1BottomShapeID3">
+            <style type="text/css">
+              .wave-bottom-1-0{clip-path:url(#waveBottom1ID2);fill:#FFFFFF;}
+              .wave-bottom-1-1{clip-path:url(#waveBottom1ID2);fill:#FFFFFF;fill-opacity:0;}
+              .wave-bottom-1-2{clip-path:url(#waveBottom1ID2);fill:#FFFFFF;}
+            </style>
+            <g>
+              <defs>
+                <rect id="waveBottom1ID1" width="300" height="100"></rect>
+              </defs>
+              <clipPath id="waveBottom1ID2">
+                <use xlink:href="#waveBottom1ID1" style="overflow:visible;"></use>
+              </clipPath>
+              <path class="wave-bottom-1-0 fill-white" opacity=".4" d="M10.9,63.9c0,0,42.9-34.5,87.5-14.2c77.3,35.1,113.3-2,146.6-4.7C293.7,41,315,61.2,315,61.2v54.4H10.9V63.9z"></path>
+              <path class="wave-bottom-1-0 fill-white" opacity=".4" d="M-55.7,64.6c0,0,42.9-34.5,87.5-14.2c77.3,35.1,113.3-2,146.6-4.7c48.7-4.1,69.9,16.2,69.9,16.2v54.4H-55.7   V64.6z"></path>
+              <path class="wave-bottom-1-1 fill-white" opacity=".4" d="M23.4,118.3c0,0,48.3-68.9,109.1-68.9c65.9,0,98,67.9,98,67.9v3.7H22.4L23.4,118.3z"></path>
+              <path class="wave-bottom-1-2 fill-white" d="M-54.7,83c0,0,56-45.7,120.3-27.8c81.8,22.7,111.4,6.2,146.6-4.7c53.1-16.4,104,36.9,104,36.9l1.3,36.7l-372-3   L-54.7,83z"></path>
+            </g>
+          </svg>
+        </figure>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="card-body pt-0 px-5 pb-5">
+      <ul class="list-group list-group-flush list-group-borderless mb-4" *ngIf="values">
+        <li class="list-group-item" *ngFor="let value of values" [class.disabled]="value.disabled">
+          <div class="d-flex align-items-center">
+            <span class="btn btn-xs btn-icon rounded-circle mr-3" [class.btn-soft-primary]="value.advantage" [class.btn-soft-error]="!value.advantage">
+              <span class="fas btn-icon__inner" [class.fa-check]="value.advantage" [class.fa-times]="!value.advantage"></span>
+            </span>
+            {{ value.value }}
+          </div>
+        </li>
+      </ul>
+
+      <button type="button" class="btn btn-sm btn-block btn-soft-primary transition-3d-hover">Suscribirme</button>
+    </div>
+    <!-- End Content -->
+  </div>
+  <!-- End Pricing -->

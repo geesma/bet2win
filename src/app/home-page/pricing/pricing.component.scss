@@ -1,26 +1,84 @@
-#price {
-  background-color: #f5f5f5;
+h2 {
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+  font-weight: 300;
+  line-height: 1.5;
+  color: inherit;
 }
 
-.pricing-header,
-.pricing-bottom {
-    max-width: 700px;
+p {
+  color: #77838f;
+  line-height: 1.7;
+  margin-bottom: 1rem;
 }
 
-.b2w-pricing-cards {
-  .card {
-    min-width: 290px;
-    width: 100%;
-    .card-body {
-      .card-title {
-        min-height: 100px;
-        text-align: center;
-        vertical-align: middle;
-      }
-      ul li .pricing-option-not-available{
-        text-decoration: line-through;
-        color: grey;
-      }
-    }
+.btn-custom-toggle-primary:not(:disabled):not(.disabled):active, .btn-custom-toggle-primary:not(:disabled):not(.disabled).active, .btn-custom-toggle-primary:not(:disabled):not(.disabled):active, .btn-custom-toggle-primary:not(:disabled):not(.disabled).active {
+  color: #fff;
+  background-color: #377dff;
+  border-color: #377dff;
+}
+
+.btn {
+  padding: 0.75rem 1rem;
+}
+
+.btn-custom-toggle-primary:hover,
+.btn-custom-toggle-primary:active {
+  color: #377dff;
+  background-color: transparent;
+}
+
+.btn-outline-secondary {
+  color: #77838f;
+  background-color: transparent;
+  background-image: none;
+  border: none;
+}
+
+.btn-sm-wide {
+  min-width: 8.4375rem;
+}
+
+.badge-pos:not([class*="--top-left"]):not([class*="--bottom-left"]):not([class*="--bottom-right"]) {
+  top: 0;
+  right: 0;
+  -webkit-transform: translate(50%, -50%);
+  transform: translate(50%, -50%);
+}
+
+.badge.badge-pos {
+  position: absolute;
+}
+
+.badge-bigger {
+  padding: 0.625rem;
+}
+
+.mb-7, .my-7 {
+  margin-bottom: 3rem !important;
+}
+
+@media (min-width: 576px){
+  .mb-sm-0, .my-sm-0 {
+    margin-bottom: 0 !important;
   }
+}
+
+.text-muted {
+  color: #8c98a4 !important;
+}
+
+.link-muted {
+  color: #8c98a4;
+  border-bottom: 1px dashed #97a4af;
+  transition: all 0.2s ease-in-out;
+}
+
+a:hover {
+  color: #0052ea;
+  text-decoration: none;
+}
+
+.link-muted:hover {
+  border-color: #0052ea;
 }

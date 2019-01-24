@@ -1,0 +1,17 @@
+.home-banner-area {
+  background: url(../../../assets/images/backgrounds/home-banner-bg.jpg) center;
+  background-size: cover;
+  .fullscreen {
+    height: 100vh !important;
+    min-height: 750px;
+    @media (max-width: 768px) {
+      min-height: 900px;
+    }
+    @media (max-width: 576px) {
+      min-height: auto;
+    }
+  }
+}
+.font-weight-semi-bold {
+  font-weight: 600 !important;
+}

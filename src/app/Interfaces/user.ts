@@ -11,7 +11,6 @@ export interface Subscriptions {
     subscriptionId?: string;
     itemId?: string;
   };
-  renovable?: boolean;
   start?: Date;
   discount?: number;
   discountType?: string;
@@ -46,6 +45,7 @@ export interface UserInformation {
   nationality?: string;
   idCard?: string;
   birthDate?: Date;
+  imageUrl?: string;
 }
 
 export interface UserAddress {

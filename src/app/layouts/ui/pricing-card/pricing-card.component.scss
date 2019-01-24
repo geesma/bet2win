@@ -1,0 +1,81 @@
+figure {
+  margin-bottom: 0;
+  svg {
+    margin-bottom: -0.4375rem;
+    vertical-align: baseline;
+  }
+}
+
+.pb-11, .py-11 {
+  padding-bottom: 5rem !important;
+}
+
+.btn:not([href]):not([type]):not(:disabled):not(.disabled) {
+  cursor: default;
+  .btn-icon__inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}
+
+.btn-icon.btn-xs {
+  font-size: 0.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-weight: 400;
+}
+
+.btn-icon {
+  position: relative;
+  line-height: 0;
+  padding: 0;
+}
+
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: 0.425rem 1.25rem;
+  background-color: #fff;
+  border: none;
+}
+
+.list-group-flush .list-group-item {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.pl-5, .px-5 {
+  padding-left: 2rem !important;
+}
+
+.pb-5, .py-5 {
+  padding-bottom: 2rem !important;
+}
+.pr-5, .px-5 {
+  padding-right: 2rem !important;
+}
+
+.btn-soft-error[href]:hover, .btn-soft-error[href]:focus, .btn-soft-error[href]:active, .btn-soft-error[href].active, .btn-soft-error[type]:hover, .btn-soft-error[type]:focus, .btn-soft-error[type]:active, .btn-soft-error[type].active {
+  color: #fff;
+  background: #377dff;
+  box-shadow: 0 4px 11px rgba(55, 125, 255, 0.35);
+}
+
+.transition-3d-hover {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-sm, .btn-group-sm > .btn {
+  padding: 0.625rem 1.125rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.125rem;
+}
+
+.list-group-item.disabled, .list-group-item:disabled {
+  color: #8c98a4;
+  background-color: #fff;
+}

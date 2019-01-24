@@ -41,7 +41,7 @@ export class PaymentComponent implements AfterViewInit, OnInit {
     });
     this.auth.user.subscribe((user) => {
       if (user.subscription) {
-        if ((user.subscription.type && !user.subscription.stripe) || (user.subscription.stripe && !user.subscription.stripe.stripeId)) {
+        if (!user.subscription.type) {
           console.log('add stripe');
           this.fun.httpsCallable('addStripeIdToUser')({}).toPromise();
         }
