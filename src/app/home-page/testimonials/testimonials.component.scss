@@ -1,0 +1,41 @@
+.carousel {
+  margin: 50px auto;
+  padding: 0 20px;
+  .carousel-indicators {
+    bottom: -40px;
+    li {
+      background: #e2e2e2;
+      border: 4px solid #fff;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      margin: 1px 3px;
+      &.active {
+        color: #fff;
+        background: #377dff;
+        border: 5px double;
+      }
+    }
+  }
+  .item {
+    color: #77838f;
+    overflow: hidden;
+    min-height: 120px;
+    font-size: 13px;
+  }
+  .media {
+    img {
+      width: 80px;
+      height: 80px;
+      display: block;
+      border-radius: 50%;
+    }
+  }
+  .testimonial {
+    padding: 0 15px 0 30px;
+    position: relative;
+    .overview b {
+      color: #377dff;
+    }
+  }
+}

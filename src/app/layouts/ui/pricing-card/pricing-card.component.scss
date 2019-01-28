@@ -79,3 +79,39 @@ figure {
   color: #8c98a4;
   background-color: #fff;
 }
+
+.pb-16 {
+  padding-bottom: 8rem !important;
+}
+
+.mt--2 {
+  margin-top: -2rem !important;
+}
+
+.leftRs {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  height: 50px;
+  box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, .3);
+  border-radius: 999px;
+  left: -15px;
+}
+
+.rightRs {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  height: 50px;
+  box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, .3);
+  border-radius: 999px;
+  right: -15px;
+}
+
+::ng-deep .no-shadow .tile {
+  box-shadow: none !important;
+}

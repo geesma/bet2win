@@ -60,6 +60,11 @@
   }
 }
 
+::ng-deep .ngu-touch-container {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
 ::ng-deep .ngucarousel-items {
   flex-flow: row;
   display: flex !important;

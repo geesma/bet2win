@@ -1,42 +1,78 @@
 <section id="home-contact-area" class="home-contact-area">
   <div class="container">
     <div class="row fullscreen d-flex align-items-center justify-content-between">
-      <div class="col-6" style="background-color: blue; height: 200px"></div>
-      <div class="col-6" style="background-color: orange">
-        <form class="contact100-form validate-form">
-          <span class="contact100-form-title">
-          Send Us A Message
-          </span>
-          <label class="label-input100" for="first-name">Tell us your name *</label>
-          <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Type first name">
-            <input id="first-name" class="input100" type="text" name="first-name" placeholder="First name">
-            <span class="focus-input100"></span>
+      <div class="col-lg-5 mb-7 mb-lg-0">
+        <!-- Title -->
+        <div class="pr-lg-4 mb-7">
+          <span class="btn btn-xs btn-soft-success btn-pill mb-2">Contacto</span>
+          <p class="grey mb-2 mt-4">Si tienes alguna consulta o algun problema contacta con nosotros y nuestro equipo se encargara de ello.</p>
+          <h2 >Puedes encontrarnos en</h2>
+          <div class="my-5 ml-3 text-grey">
+            <div class="mb-4 d-flex flex-row align-content-center">
+              <i class="far fa-envelope-open mr-3 big-icon"></i>
+              <strong class="mr-3">Correo:</strong>
+              <a class="link-muted" href="mailto:contact@b2win.es">contact@b2win.es</a>
+            </div>
+            <div class="my-4 d-flex flex-row align-content-center">
+              <i class="fas fa-phone mr-3 big-icon"></i>
+              <strong class="mr-3">Telefono*:</strong>
+              <a class="link-muted" href="tel:+34123456789">123456789</a>
+            </div>
+            <div class="mt-4">
+              <div class="d-flex-flex-row align-content-center">
+                <i class="fab fa-telegram-plane mr-3 big-icon"></i>
+                <strong>Telegram: </strong>
+              </div>
+              <div class="my-3 ml-5">
+                <a href="#" class="link-muted">Bet2Win Info</a>
+              </div>
+              <div class="my-3 ml-5">
+                <a href="#" class="link-muted">Bet2Win Free</a>
+              </div>
+            </div>
           </div>
-          <div class="wrap-input100 rs2-wrap-input100 validate-input" data-validate="Type last name">
-            <input class="input100" type="text" name="last-name" placeholder="Last name">
-            <span class="focus-input100"></span>
-          </div>
-          <label class="label-input100" for="email">Enter your email *</label>
-          <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-            <input id="email" class="input100" type="text" name="email" placeholder="Eg. example@email.com">
-            <span class="focus-input100"></span>
-          </div>
-          <label class="label-input100" for="phone">Enter phone number</label>
-          <div class="wrap-input100">
-            <input id="phone" class="input100" type="text" name="phone" placeholder="Eg. +1 800 000000">
-            <span class="focus-input100"></span>
-          </div>
-          <label class="label-input100" for="message">Message *</label>
-          <div class="wrap-input100 validate-input" data-validate="Message is required">
-            <textarea id="message" class="input100" name="message" placeholder="Write us a message" data-gramm="true" data-txt_gramm_id="3b06c143-b4da-3e98-2743-94822f4cc95b" data-gramm_id="3b06c143-b4da-3e98-2743-94822f4cc95b" spellcheck="false" data-gramm_editor="true" style="z-index: auto; position: relative; line-height: 21px; font-size: 18px; transition: none; background-color: transparent !important; background-position: initial initial !important; background-repeat: initial initial !important;"></textarea>
-            <span class="focus-input100"></span>
-          </div>
-          <div class="container-contact100-form-btn">
-            <button class="contact100-form-btn">
-              Send Message
-            </button>
-          </div>
-        </form>
+          <p class="mt-3 small text-muted text-center">
+             * No respondemos a llamadas telefonicas pero si a mensajes de texto y WhatsApp.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="card my-5 box-shadow p-sm-5 p-3">
+          <form action="" class="mt-2">
+            <div class="mb-7">
+              <h1 class="h3 text-primary font-weight-normal mb-0">Contacta con nosotros</h1>
+              <p class="grey pb-2">Rellena este formulario.</p>
+            </div>
+            <div class="js-form-message form-group">
+              <label class="form-label grey" for="contactSrName">Nombre</label>
+              <input type="text" class="form-control no-border box-shadow" name="name" id="contactSrName" placeholder="Nombre" aria-label="Nombre" required="">
+            </div>
+            <div class="js-form-message form-group">
+              <label class="form-label grey" for="contactSrEmail">Correo electronico</label>
+              <input type="email" class="form-control no-border box-shadow" name="email" id="contactSrEmail" placeholder="Correo electronico" aria-label="Correo electronico" required="">
+            </div>
+            <div class="js-form-message form-group">
+              <label class="form-label grey" for="message">Mensaje</label>
+              <textarea class="form-control no-border box-shadow" name="message" placeholder="Escribe aqui tu mensaje" rows="5" id="message"></textarea>
+            </div>
+            <div class="js-form-message mb-5">
+              <div class="custom-control custom-checkbox d-flex align-items-center text-muted">
+                <input type="checkbox" class="custom-control-input" id="termsCheckboxContact" name="termsCheckboxContact" required="">
+                <label class="custom-control-label grey" for="termsCheckboxContact">
+                  <small>
+                    Acepto los
+                    <a class="link-muted" href="../pages/terms.html">terminos y condiciones</a>
+                  </small>
+                </label>
+              </div>
+            </div>
+            <div class="row align-items-center mb-1">
+              <div class="col-12 text-right">
+                <button type="submit" class="btn btn-soft-primary btn-lg btn-block transition-3d-hover">Enviar mensaje</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

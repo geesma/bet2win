@@ -1,0 +1,26 @@
+.big-icon {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  margin-top: -0.2rem;
+}
+
+.text-grey {
+  color: #77838f;
+}
+
+.link-muted {
+  color: #8c98a4;
+  border-bottom: 1px dashed #97a4af;
+  transition: all 0.2s ease-in-out;
+  height: 1.5rem;
+}
+
+a:hover {
+  color: #0052ea;
+  text-decoration: none;
+}
+
+.link-muted:hover {
+  border-color: #0052ea;
+}
+

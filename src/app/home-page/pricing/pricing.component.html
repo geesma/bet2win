@@ -1,96 +1,30 @@
-<!-- <section id="price-old">
-  <div class="container">
-    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-      <h1 class="display-4">Precios</h1>
-      <p class="lead">Tenemos ofertas para todos los bolsillos.</p>
-    </div>
-    <div class="card-deck mb-3 text-center b2w-pricing-cards">
-      <div class="card mb-4 box-shadow">
-        <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Premium 1 mes</h4>
-        </div>
-        <div class="card-body">
-          <h1 class="card-title pricing-card-title">35€</h1>
-          <ul class="list-unstyled mt-3 mb-4">
-            <li>Pagas por solo un mes de servicio</li>
-            <li><span class="pricing-option-not-available">Precio fijo asegurado</span></li>
-            <li><span class="pricing-option-not-available">Pago automatico</span></li>
-            <li><span class="pricing-option-not-available">Ventajas de fidelidad</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="card mb-4 box-shadow">
-        <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Premium mensual</h4>
-        </div>
-        <div class="card-body">
-          <h1 class="card-title pricing-card-title">30€ <small class="text-muted">/ mes</small></h1>
-          <ul class="list-unstyled mt-3 mb-4">
-            <li>Pagas cada mes pago automatico</li>
-            <li>Precio fijo asegurado*</li>
-            <li>Pago automatico</li>
-            <li>Ventajas de fidelidad</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="pricing-bottom px-3 py-3 mx-auto text-center">
-      <p>* Precio fijo asegurado con las funciones contratadas, en caso de una actualización de la cuota mensual con nuevas funciones, cada cliente tendra la opción de mantener o actualizar la cuota, dependiendo si desea las nuevas funcionalidades o mantener las actuales</p>
-    </div>
-  </div>
-</section> -->
-
 <section class="my-5" id="home-prices-area">
 <div class="container">
-  <div class="row">
+  <div class="row align-items-center">
     <div class="col-lg-5 mb-7 mb-lg-0">
-      <!-- Title -->
       <div class="pr-lg-4 mb-7">
         <span class="btn btn-xs btn-soft-success btn-pill mb-2">Precios</span>
         <h2>Paga por lo que necesites.</h2>
         <p>Elige el plan de pago que mejor se adapte para ti.</p>
       </div>
-      <!-- End Title -->
-
-      <!-- Button Group -->
       <div class="btn-group btn-group-toggle box-shadow">
-        <a class="js-animation-link btn btn-outline-secondary btn-custom-toggle-primary btn-sm-wide active" href="javascript:;" data-target="#pricingMonthly" data-link-group="idPricing" data-animation-in="slideInUp">Un mes</a>
-        <a class="js-animation-link btn btn-outline-secondary btn-custom-toggle-primary btn-sm-wide" href="javascript:;" data-target="#pricingYearly" data-link-group="idPricing" data-animation-in="slideInUp">
+        <a class="js-animation-link btn btn-outline-secondary btn-custom-toggle-primary btn-sm-wide" [class.active]="month" (click)="changeToMonth()" href="javascript:;" data-target="#pricingMonthly" data-link-group="idPricing" data-animation-in="slideInUp">Un mes</a>
+        <a class="js-animation-link btn btn-outline-secondary btn-custom-toggle-primary btn-sm-wide" [class.active]="pack" (click)="changeToPack()" href="javascript:;" data-target="#pricingYearly" data-link-group="idPricing" data-animation-in="slideInUp">
           Paquetes
           <span class="badge badge-success badge-pill badge-bigger badge-pos">Descuento</span>
         </a>
       </div>
-      <!-- End Button Group -->
     </div>
 
     <div class="col-lg-7">
-      <!-- Monthly Plans -->
-      <div id="pricingMonthly" class="row align-items-center mb-3" data-target-group="idPricing" style="opacity: 1;">
-        <app-pricing-card [name]="'Pago mensual'" [price]="30" [time]="'mes'" [values]="[
-          {value: 'Rentabilidad ilimitada', disabled: false, advantage: true},
-          {value: 'Pago automatico', disabled: false, advantage: true},
-          {value: 'Ventajas de fidelidad', disabled: false, advantage: true},
-          {value: 'Precio fijo asegurado *', disabled: true, advantage: true}
-         ]" class="col-sm-6 mb-7 mb-sm-0"></app-pricing-card>
-        <app-pricing-card [name]="'Un solo mes'" [price]="35" [time]="" [values]="[
-          {value: 'Rentabilidad ilimitada', disabled: false, advantage: true},
-          {value: 'Pagas por solo un mes', disabled: true, advantage: true},
-          {value: 'Precio fijo asegurado', disabled: true, advantage: false},
-          {value: 'Pago automatico', disabled: true, advantage: false},
-          {value: 'Ventajas de fidelidad', disabled: true, advantage: false}
-         ]" class="col-sm-6"></app-pricing-card>
+      <div id="pricingMonthly" class="row align-items-center mb-3" data-target-group="idPricing" *ngIf="month">
+        <app-pricing-card class="w-100" [name]="'Pago mensual'" [price]="'30'" [time]="'mes'" [values]="valuesMonth"></app-pricing-card>
       </div>
-      <!-- End Monthly Plans -->
-
-      <!-- Yearly Plans -->
-      <div id="pricingYearly" class="row align-items-center mb-3" style="opacity: 0; display: none;" data-target-group="idPricing">
-        <app-pricing-card class="col-sm-6 mb-7 mb-sm-0"></app-pricing-card>
-        <app-pricing-card class="col-sm-6"></app-pricing-card>
-        <app-pricing-card class="col-sm-6"></app-pricing-card>
+      <div id="pricingYearly box-shadow" class="row align-items-center mb-4 mx-sm-1" data-target-group="idPricing" *ngIf="pack">
+        <app-pricing-card [values]="valuesPack" class="col-12"></app-pricing-card>
       </div>
-      <!-- End Yearly Plans -->
 
-      <p class="small text-muted text-center">
+      <p class="small text-muted text-center" *ngIf="month">
         * Las <a class="link-muted" href="../pages/terms.html">condiciones</a> están sujetas a cambios.
       </p>
     </div>

@@ -34,6 +34,8 @@ import { StatsComponent } from './home-page/stats/stats.component';
 import { ContactComponent } from './home-page/contact/contact.component';
 import { HowWorksComponent } from './home-page/how-works/how-works.component';
 import { NewsComponent } from './home-page/news/news.component';
+import { TestimonialsComponent } from './home-page/testimonials/testimonials.component';
+
 
 
 import { FooterDashboardComponent } from './layouts/ui/dashboard/footer/footer.component';
@@ -68,6 +70,7 @@ import { PricingCardComponent } from './layouts/ui/pricing-card/pricing-card.com
     ContactComponent,
     HowWorksComponent,
     NewsComponent,
+    TestimonialsComponent,
 
     /* Dashboard */
     NavbarComponent,

@@ -109,8 +109,7 @@ export class NewsComponent implements OnInit {
     slide: 1,
     speed: 300,
     point: {
-      visible: true,
-      hideOnSingleSlide: true
+      visible: false
     },
     load: 2,
     velocity: 0,

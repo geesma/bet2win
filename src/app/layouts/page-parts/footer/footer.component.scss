@@ -1,0 +1,14 @@
+.grey {
+  color: grey;
+}
+
+.justify:before {
+  display: block;
+  content: " ";
+}
+
+p.text-center {
+  @media (max-width: 575px) {
+    margin-left: -2.7rem !important;
+  }
+}
