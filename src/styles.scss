@@ -26,7 +26,10 @@
 
 input.box-shadow,
 textarea.box-shadow {
-  border: 1px solid rgba(0,0,0,.05);
+  border: 1px solid rgba(0,0,0,.15);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 
 .no-border {

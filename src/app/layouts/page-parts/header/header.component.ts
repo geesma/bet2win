@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit {
   private menuButtons() {
     $(document).ready(function() {
       const topMenu = $('#mainNavbarToggler'),
-            topMenuHeight = topMenu.outerHeight() + 70,
+            topMenuHeight = topMenu.outerHeight() + 60,
             menuItems = topMenu.find('a'),
             scrollItems = menuItems.map(function() {
               const name = $(this).attr('href');
@@ -52,7 +52,11 @@ export class HeaderComponent implements OnInit {
 
       menuItems.click(function(e) {
         const href = $(this).attr('href'),
-          offsetTop = href === '#' ? 0 : $(href).offset().top - topMenuHeight;
+          offsetTop = href === '#' ? 0 : $(href).offset().top - topMenuHeight,
+          menu = $('.collapse.navbar-collapse.justify-content-end');
+        if (menu.hasClass('show')) {
+          $('.navbar-toggler.hamburger.hamburger--elastic').click();
+        }
         window.scroll({top: offsetTop, left: 0, behavior: 'smooth' });
         e.preventDefault();
       });
